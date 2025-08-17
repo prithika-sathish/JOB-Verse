@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networking Mastery Module</title>
+    <style>
+        :root {
+            --primary-start: #00E6D0;
+            --primary-end: #735BFF;
+            --background: #0D0D1A;
+            --card-bg: #1B1C29;
+            --bright-blue: #00E6D0;
+            --pink-highlight: #FF4E8D;
+            --xp-progress: #C270FF;
+            --xp-bg: #2C2C3E;
+            --high-priority: #B84040;
+            --yellow-xp: #FFEB75;
+            --green: #38FF88;
+            --red: #FF3860;
+            --purple: #A365FF;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--white);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            background: linear-gradient(to right, var(--primary-start), var(--primary-end));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-top: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .xp-bar-container {
+            width: 200px;
+            height: 20px;
+            background-color: var(--xp-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .xp-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--xp-progress);
+            transition: width 0.5s ease-in-out;
+        }
+
+        .xp-text {
+            color: var(--yellow-xp);
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .module-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .module-description {
+            color: #B3B3CC;
+            margin-bottom: 20px;
+        }
+
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: rgba(27, 28, 41, 0.7);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .checklist-item.completed {
+            border-left: 4px solid var(--green);
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--primary-start);
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .checkbox.checked {
+            background: linear-gradient(to right, var(--primary-start), var(--primary-end));
+            border: none;
+        }
+
+        .checkbox.checked::after {
+            content: "✓";
+            color: var(--white);
+            font-weight: bold;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--white);
+            margin-bottom: 5px;
+        }
+
+        .item-description {
+            font-size: 14px;
+            color: #B3B3CC;
+        }
+
+        .skill-tag {
+            background-color: rgba(0, 230, 208, 0.2);
+            color: var(--primary-start);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 5px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        button {
+            background: linear-gradient(to right, var(--primary-start), var(--primary-end));
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(115, 91, 255, 0.4);
+        }
+
+        button:disabled {
+            background: #3A3A4A;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--white);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            background-color: #2C2C3E;
+            color: var(--white);
+            border: 1px solid #444;
+            margin-top: 10px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #2C2C3E;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .option:hover {
+            background-color: #3A3A4A;
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--bright-blue);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .success {
+            background-color: rgba(56, 255, 136, 0.1);
+            color: var(--green);
+            border: 1px solid var(--green);
+        }
+
+        .failure {
+            background-color: rgba(255, 56, 96, 0.1);
+            color: var(--red);
+            border: 1px solid var(--red);
+        }
+
+        .chatbot-container {
+            height: 500px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="module-title">Networking Mastery Module</h1>
+            <div style="display: flex; align-items: center;">
+                <div class="xp-bar-container">
+                    <div class="xp-bar" id="xpBar"></div>
+                </div>
+                <span class="xp-text" id="xpText">0/100 XP</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <p class="module-description">Make even introverts confident in outreach, conversation, and follow-ups. Complete the lessons, exercises, and challenges below to master networking skills.</p>
+            
+            <ul class="checklist">
+                <li class="checklist-item" id="videoLessons">
+                    <div class="checkbox" onclick="toggleCheckbox('videoLessons')"></div>
+                    <div class="item-content">
+                        <h3 class="item-title">Video Lessons</h3>
+                        <p class="item-description">Learn the fundamentals of networking through realistic scene demonstrations.</p>
+                        <div>
+                            <span class="skill-tag">Cold Emailing</span>
+                            <span class="skill-tag">Approaching Mentors</span>
+                            <span class="skill-tag">Body Language</span>
+                        </div>
+                        <button onclick="openModal('videoModal')">Start Lessons</button>
+                    </div>
+                </li>
+                
+                <li class="checklist-item" id="emailTemplate">
+                    <div class="checkbox" onclick="toggleCheckbox('emailTemplate')"></div>
+                    <div class="item-content">
+                        <h3 class="item-title">Cold Email Template Exercise</h3>
+                        <p class="item-description">Create effective cold email templates for different networking scenarios.</p>
+                        <div>
+                            <span class="skill-tag">Email Crafting</span>
+                            <span class="skill-tag">Personal Branding</span>
+                        </div>
+                        <button onclick="openModal('emailModal')">Submit Template</button>
+                    </div>
+                </li>
+                
+                <li class="checklist-item" id="networkingQuiz">
+                    <div class="checkbox" onclick="toggleCheckbox('networkingQuiz')"></div>
+                    <div class="item-content">
+                        <h3 class="item-title">Networking Knowledge Quiz</h3>
+                        <p class="item-description">Test your understanding of networking principles with a short quiz (80% to pass).</p>
+                        <div>
+                            <span class="skill-tag">Cold Outreach</span>
+                            <span class="skill-tag">DM Templates</span>
+                        </div>
+                        <button onclick="openModal('quizModal')">Take Quiz</button>
+                    </div>
+                </li>
+                
+                <li class="checklist-item" id="simulatedExercise">
+                    <div class="checkbox" onclick="toggleCheckbox('simulatedExercise')"></div>
+                    <div class="item-content">
+                        <h3 class="item-title">Simulated Exercise</h3>
+                        <p class="item-description">Network with a simulated professional using an AI-powered chatbot.</p>
+                        <div>
+                            <span class="skill-tag">Conversation</span>
+                            <span class="skill-tag">Relationship Building</span>
+                        </div>
+                        <button onclick="openModal('simulationModal')">Start Simulation</button>
+                    </div>
+                </li>
+                
+                <li class="checklist-item" id="miniChallenges">
+                    <div class="checkbox" onclick="toggleCheckbox('miniChallenges')"></div>
+                    <div class="item-content">
+                        <h3 class="item-title">Mini-Challenges</h3>
+                        <p class="item-description">Complete practical networking challenges to solidify your skills.</p>
+                        <div>
+                            <span class="skill-tag">Mentor Connection</span>
+                            <span class="skill-tag">Network Utilization</span>
+                        </div>
+                        <button onclick="openModal('challengesModal')">View Challenges</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Video Lessons Modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('videoModal')">&times;</span>
+            <h2>Networking Video Lessons</h2>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/videoseries?list=PLXpUVmqkUFeEj50sPBoYqg9ObChqrav6F" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <h3>Professional Networking Course Playlist</h3>
+            <p>This comprehensive playlist covers all essential networking skills from cold outreach to relationship building.</p>
+            
+            <h3>Key Video Topics:</h3>
+            <ul style="color: #B3B3CC; margin-bottom: 20px;">
+                <li>Cold Emailing & DM Templates</li>
+                <li>How to Approach Mentors/Investors/Prospects</li>
+                <li>Reading Body Language, Tonality, Mirroring</li>
+                <li>Following Up Effectively</li>
+                <li>Building Long-term Professional Relationships</li>
+            </ul>
+            
+            <button onclick="completeTask('videoLessons')">Mark As Complete</button>
+        </div>
+    </div>
+
+
+    <!-- Email Template Modal -->
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('emailModal')">&times;</span>
+            <h2>Cold Email Template Submission</h2>
+            <p>Create a cold email template for reaching out to a potential mentor in your industry.</p>
+            
+            <div class="form-group">
+                <label for="emailSubject">Email Subject Line:</label>
+                <input type="text" id="emailSubject" style="width: 100%; padding: 10px; background-color: #2C2C3E; color: white; border: 1px solid #444; border-radius: 6px;">
+            </div>
+            
+            <div class="form-group">
+                <label for="emailBody">Email Body:</label>
+                <textarea id="emailBody" placeholder="Write your cold email template here..."></textarea>
+            </div>
+            
+            <button onclick="submitEmailTemplate()">Submit Template</button>
+            
+            <div id="emailResult" class="result">
+                <p id="emailResultText"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('quizModal')">&times;</span>
+            <h2>Networking Knowledge Quiz</h2>
+            <p>Score at least 80% to pass this quiz. You can retake it if needed.</p>
+            
+            <div class="quiz-container">
+                <div class="question">
+                    <p><strong>1. What is the ideal length for a cold outreach email?</strong></p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="a"> As long as needed to explain everything about yourself
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="b"> Short and concise (3-5 sentences)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="c"> At least 2-3 paragraphs to show depth
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="d"> Only 1-2 sentences to save time
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>2. When is the best time to follow up after sending an initial outreach message?</strong></p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="a"> The next day
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="b"> After 3-5 business days
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="c"> After 2-3 weeks
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="d"> Don't follow up; wait for them to respond
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>3. Which of the following is the most effective subject line for a cold email?</strong></p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="a"> "URGENT: Please Read This Important Message"
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="b"> "Quick question about [specific work/article/project]"
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="c"> "Introducing myself - [Your Name]"
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="d"> "Looking for career advice"
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>4. What should you research about someone before reaching out to them?</strong></p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="a"> Their personal life and family details
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="b"> Their recent work, publications, or accomplishments
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="c"> Their salary and financial information
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="d"> No research is needed; just introduce yourself
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>5. What is the primary goal of an initial networking message?</strong></p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="a"> To ask for a job or opportunity immediately
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="b"> To establish a connection and open a dialogue
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="c"> To share your entire resume and life story
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="d"> To impress them with industry jargon
+                        </label>
+                    </div>
+                </div>
+                
+                <button onclick="submitQuiz()">Submit Quiz</button>
+                
+                <div id="quizResult" class="result">
+                    <p id="quizResultText"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simulation Modal -->
+    <div id="simulationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('simulationModal')">&times;</span>
+            <h2>Networking Simulation</h2>
+            <p>Practice networking with an AI-powered professional. Your goal is to establish a connection and learn about their role and expertise.</p>
+            
+            <div style="margin-top: 20px;">
+                <h3>Simulation Scenario</h3>
+                <p>You're attending a virtual industry conference and have the opportunity to chat with Sarah Chen, a Product Manager at TechCorp. Initiate and maintain a conversation to build your professional network.</p>
+                
+                <script>
+                    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="18WPu1H1pnu5I5Q5HFncE";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+                </script>
+                
+                <iframe src="https://www.chatbase.co/chatbot-iframe/18WPu1H1pnu5I5Q5HFncE" class="chatbot-container"></iframe>
+                
+                <button onclick="completeTask('simulatedExercise')" style="margin-top: 20px;">Complete Simulation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mini-Challenges Modal -->
+    <div id="challengesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('challengesModal')">&times;</span>
+            <h2>Networking Mini-Challenges</h2>
+            <p>Complete these practical challenges to apply your networking skills.</p>
+            
+            <div id="challenge1" class="card" style="margin-top: 20px;">
+                <h3>Challenge 1: Land a Mock Mentor Call</h3>
+                <p>Reach out to someone in your field (or a friend acting as a mentor) and successfully schedule a 15-minute call to discuss your career path.</p>
+                <button id="challenge1Btn" onclick="openChallengeForm('challenge1Form')">Start Challenge</button>
+                
+                <div id="challenge1Form" style="display: none; margin-top: 15px;">
+                    <div class="form-group">
+                        <label>Who did you reach out to?</label>
+                        <input type="text" id="mentorName" style="width: 100%; padding: 10px; background-color: #2C2C3E; color: white; border: 1px solid #444; border-radius: 6px;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>What approach did you use to contact them?</label>
+                        <textarea id="mentorApproach" style="height: 80px;"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Was your call scheduled? When?</label>
+                        <input type="text" id="mentorSchedule" style="width: 100%; padding: 10px; background-color: #2C2C3E; color: white; border: 1px solid #444; border-radius: 6px;">
+                    </div>
+                    
+                    <button onclick="submitChallenge('challenge1')">Submit</button>
+                </div>
+            </div>
+            
+            <div id="challenge2" class="card" style="margin-top: 20px;">
+                <h3>Challenge 2: Network to Help a Teammate</h3>
+                <p>Identify a task or problem a colleague is facing and use your network to find resources or information to help them.</p>
+                <button id="challenge2Btn" onclick="openChallengeForm('challenge2Form')">Start Challenge</button>
+                
+                <div id="challenge2Form" style="display: none; margin-top: 15px;">
+                    <div class="form-group">
+                        <label>What was the task/problem your colleague faced?</label>
+                        <textarea id="teammateTask" style="height: 80px;"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Who in your network did you reach out to for help?</label>
+                        <input type="text" id="networkContact" style="width: 100%; padding: 10px; background-color: #2C2C3E; color: white; border: 1px solid #444; border-radius: 6px;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>What was the outcome?</label>
+                        <textarea id="helpOutcome" style="height: 80px;"></textarea>
+                    </div>
+                    
+                    <button onclick="submitChallenge('challenge2')">Submit</button>
+                </div>
+            </div>
+            
+            <button id="completeAllChallenges" style="margin-top: 20px; display: none;" onclick="completeTask('miniChallenges')">Complete All Challenges</button>
+        </div>
+    </div>
+
+    <script>
+        // Track completion status
+        const completionStatus = {
+            videoLessons: false,
+            emailTemplate: false,
+            networkingQuiz: false,
+            simulatedExercise: false,
+            miniChallenges: false,
+            challenge1: false,
+            challenge2: false
+        };
+        
+        let xp = 0;
+        const maxXP = 100;
+        
+        // Open modal
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+        }
+        
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+        
+        // Toggle checkbox
+        function toggleCheckbox(itemId) {
+            const item = document.getElementById(itemId);
+            const checkbox = item.querySelector('.checkbox');
+            
+            if (completionStatus[itemId]) {
+                checkbox.classList.remove('checked');
+                item.classList.remove('completed');
+                completionStatus[itemId] = false;
+                updateXP(-20); // Remove XP
+            } else if (canComplete(itemId)) {
+                checkbox.classList.add('checked');
+                item.classList.add('completed');
+                completionStatus[itemId] = true;
+                updateXP(20); // Add XP
+            }
+        }
+        
+        // Check if an item can be completed manually
+        function canComplete(itemId) {
+            // These items should only be completed through their respective forms/activities
+            const restrictedItems = ['emailTemplate', 'networkingQuiz', 'miniChallenges'];
+            return !restrictedItems.includes(itemId);
+        }
+        
+        // Complete task programmatically
+        function completeTask(itemId) {
+            const item = document.getElementById(itemId);
+            const checkbox = item.querySelector('.checkbox');
+            
+            checkbox.classList.add('checked');
+            item.classList.add('completed');
+            completionStatus[itemId] = true;
+            updateXP(20); // Add XP
+            
+            if (itemId !== 'miniChallenges') {
+                closeModal(getModalIdForItem(itemId));
+            }
+        }
+        
+        // Get modal ID for item
+        function getModalIdForItem(itemId) {
+            const modalMap = {
+                'videoLessons': 'videoModal',
+                'emailTemplate': 'emailModal',
+                'networkingQuiz': 'quizModal',
+                'simulatedExercise': 'simulationModal',
+                'miniChallenges': 'challengesModal'
+            };
+            return modalMap[itemId];
+        }
+        
+        // Update XP bar
+        function updateXP(amount) {
+            xp += amount;
+            if (xp < 0) xp = 0;
+            if (xp > maxXP) xp = maxXP;
+            
+            const percentage = (xp / maxXP) * 100;
+            document.getElementById('xpBar').style.width = percentage + '%';
+            document.getElementById('xpText').innerText = xp + '/' + maxXP + ' XP';
+        }
+        
+        // Submit email template
+        function submitEmailTemplate() {
+            const subject = document.getElementById('emailSubject').value.trim();
+            const body = document.getElementById('emailBody').value.trim();
+            const resultElement = document.getElementById('emailResult');
+            const resultTextElement = document.getElementById('emailResultText');
+            
+            if (subject.length < 5 || body.length < 50) {
+                resultElement.className = 'result failure';
+                resultTextElement.innerText = 'Your email template needs more content. The subject should be compelling, and the body should be detailed enough to make a good impression.';
+                resultElement.style.display = 'block';
+                return;
+            }
+            
+            // Simple check for basic email components
+            const hasIntroduction = /(?:hi|hello|dear)/i.test(body);
+            const hasContext = body.length > 100;
+            const hasCallToAction = /(?:would you|could you|please|hoping|look forward)/i.test(body);
+            
+            if (hasIntroduction && hasContext && hasCallToAction) {
+                resultElement.className = 'result success';
+                resultTextElement.innerText = 'Great job! Your email template includes a proper introduction, context, and call to action. This template would be effective for cold outreach.';
+                resultElement.style.display = 'block';
+                completeTask('emailTemplate');
+            } else {
+                resultElement.className = 'result failure';
+                resultTextElement.innerText = 'Your email needs improvement. Make sure to include: a proper greeting, context about why you\'re reaching out, and a clear call to action.';
+                resultElement.style.display = 'block';
+            }
+        }
+        
+        // Submit quiz
+        function submitQuiz() {
+            const answers = {
+                q1: document.querySelector('input[name="q1"]:checked')?.value,
+                q2: document.querySelector('input[name="q2"]:checked')?.value,
+                q3: document.querySelector('input[name="q3"]:checked')?.value,
+                q4: document.querySelector('input[name="q4"]:checked')?.value,
+                q5: document.querySelector('input[name="q5"]:checked')?.value
+            };
+            
+            const correctAnswers = {
+                q1: 'b', // Short and concise
+                q2: 'b', // 3-5 business days
+                q3: 'b', // Quick question about specific work
+                q4: 'b', // Recent work and accomplishments
+                q5: 'b'  // Establish connection and open dialogue
+            };
+            
+            const resultElement = document.getElementById('quizResult');
+            const resultTextElement = document.getElementById('quizResultText');
+            
+            // Check if all questions answered
+            for (const question in answers) {
+                if (!answers[question]) {
+                    resultElement.className = 'result failure';
+                    resultTextElement.innerText = 'Please answer all questions before submitting.';
+                    resultElement.style.display = 'block';
+                    return;
+                }
+            }
+            
+            // Calculate score
+            let score = 0;
+            for (const question in answers) {
+                if (answers[question] === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = (score / 5) * 100;
+            
+            if (percentage >= 80) {
+                resultElement.className = 'result success';
+                resultTextElement.innerText = `Congratulations! You scored ${percentage}%. You have demonstrated strong understanding of networking principles.`;
+                resultElement.style.display = 'block';
+                completeTask('networkingQuiz');
+            } else {
+                resultElement.className = 'result failure';
+                resultTextElement.innerText = `You scored ${percentage}%. You need 80% to pass. Please review the material and try again.`;
+                resultElement.style.display = 'block';
+            }
+        }
+        
+        // Open challenge form
+        function openChallengeForm(formId) {
+            document.getElementById(formId).style.display = 'block';
+            document.getElementById(formId.replace('Form', 'Btn')).style.display = 'none';
+        }
+        
+        // Submit challenge
+        function submitChallenge(challengeId) {
+            completionStatus[challengeId] = true;
+            document.getElementById(challengeId + 'Form').innerHTML = '<p style="color: var(--green);">✓ Challenge completed successfully!</p>';
+            
+            // Check if all challenges are complete
+            if (completionStatus.challenge1 && completionStatus.challenge2) {
+                document.getElementById('completeAllChallenges').style.display = 'block';
+            }
+        }
+        
+        // Initialize XP bar
+        updateXP(0);
+    </script>
+</body>
+</html>

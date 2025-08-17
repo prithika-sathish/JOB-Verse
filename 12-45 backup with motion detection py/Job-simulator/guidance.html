@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Insights</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #0D0D1A;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #00E6D0, #735BFF);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .domain-selector {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .domain-btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            background-color: #2C2C3E;
+            color: #00E6D0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #735BFF;
+        }
+        
+        .domain-btn:hover {
+            background-color: #3a3a4f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(115, 91, 255, 0.3);
+        }
+        
+        .domain-btn.active {
+            background-color: #735BFF;
+            color: white;
+            border-color: #00E6D0;
+        }
+        
+        .professionals-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .professional-card {
+            background-color: #1B1C29;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            display: none;
+            border: 1px solid #2C2C3E;
+        }
+        
+        .professional-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            border-color: #735BFF;
+        }
+        
+        .card-header {
+            position: relative;
+            height: 200px;
+            background-color: #2C2C3E;
+            border-bottom: 2px solid #735BFF;
+        }
+        
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #FFEB75;
+        }
+        
+        .title {
+            color: #00E6D0;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .company {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #C270FF;
+        }
+        
+        .company-logo {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            border-radius: 50%;
+            border: 1px solid #00E6D0;
+        }
+        
+        .video-container {
+            margin: 15px 0;
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border: 1px solid #2C2C3E;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        
+        .interview-experience {
+            background-color: #2C2C3E;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            border-left: 3px solid #FF4E8D;
+        }
+        
+        .interview-experience h4 {
+            color: #FF4E8D;
+            margin-top: 0;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .social-btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .linkedin {
+            background-color: #2C2C3E;
+            color: #00E6D0;
+            border: 1px solid #00E6D0;
+        }
+        
+        .linkedin:hover {
+            background-color: #3a3a4f;
+            box-shadow: 0 0 10px rgba(0, 230, 208, 0.3);
+        }
+        
+        .twitter {
+            background-color: #2C2C3E;
+            color: #A365FF;
+            border: 1px solid #A365FF;
+        }
+        
+        .twitter:hover {
+            background-color: #3a3a4f;
+            box-shadow: 0 0 10px rgba(163, 101, 255, 0.3);
+        }
+        
+        .portfolio {
+            background-color: #2C2C3E;
+            color: #38FF88;
+            border: 1px solid #38FF88;
+        }
+        
+        .portfolio:hover {
+            background-color: #3a3a4f;
+            box-shadow: 0 0 10px rgba(56, 255, 136, 0.3);
+        }
+        
+        .resume {
+            background-color: #2C2C3E;
+            color: #FFEB75;
+            border: 1px solid #FFEB75;
+        }
+        
+        .resume:hover {
+            background-color: #3a3a4f;
+            box-shadow: 0 0 10px rgba(255, 235, 117, 0.3);
+        }
+        
+        .icon {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: #C270FF;
+            grid-column: 1 / -1;
+            display: none;
+        }
+        
+        .domain-description {
+            background-color: #1B1C29;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            display: none;
+            border-left: 4px solid #00E6D0;
+        }
+        
+        .domain-description h2 {
+            color: #FFEB75;
+            margin-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .professionals-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .domain-btn {
+                width: calc(50% - 10px);
+            }
+        }
+
+        /* Video Modal Styles */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 80%;
+            max-width: 1200px;
+            position: relative;
+            background-color: transparent;
+        }
+
+        .modal-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+            transition: color 0.2s ease;
+        }
+
+        .close-modal:hover {
+            color: #00E6D0;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+            }
+            
+            .close-modal {
+                top: -50px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Interview Insights</h1>
+        <p>Learn about interview experiences from professionals in AI, Cybersecurity, Full Stack Development, and Cloud Computing</p>
+    </div>
+    
+    <div class="domain-selector">
+        <button class="domain-btn" data-domain="ai">AI & Machine Learning</button>
+        <button class="domain-btn" data-domain="cybersecurity">Cybersecurity</button>
+        <button class="domain-btn" data-domain="fullstack">Full Stack Development</button>
+        <button class="domain-btn" data-domain="cloud">Cloud Computing</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const domainButtons = document.querySelectorAll('.domain-btn');
+            const aiCards = document.querySelectorAll('.ai-card');
+            const cyberCards = document.querySelectorAll('.cybersecurity-card');
+            const fullstackCards = document.querySelectorAll('.fullstack-card');
+            const cloudCards = document.querySelectorAll('.cloud-card');
+            
+            const aiDescription = document.getElementById('ai-description');
+            const cyberDescription = document.getElementById('cybersecurity-description');
+            const fullstackDescription = document.getElementById('fullstack-description');
+            const cloudDescription = document.getElementById('cloud-description');
+            
+            function hideAllCards() {
+                document.querySelectorAll('.professional-card').forEach(card => {
+                    card.style.display = 'none';
+                });
+                
+                document.querySelectorAll('.domain-description').forEach(desc => {
+                    desc.style.display = 'none';
+                });
+                
+                domainButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            }
+            
+            domainButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const domain = this.getAttribute('data-domain');
+                    hideAllCards();
+                    this.classList.add('active');
+                    
+                    switch(domain) {
+                        case 'ai':
+                            aiCards.forEach(card => {
+                                card.style.display = 'block';
+                            });
+                            aiDescription.style.display = 'block';
+                            break;
+                        case 'cybersecurity':
+                            cyberCards.forEach(card => {
+                                card.style.display = 'block';
+                            });
+                            cyberDescription.style.display = 'block';
+                            break;
+                        case 'fullstack':
+                            fullstackCards.forEach(card => {
+                                card.style.display = 'block';
+                            });
+                            fullstackDescription.style.display = 'block';
+                            break;
+                        case 'cloud':
+                            cloudCards.forEach(card => {
+                                card.style.display = 'block';
+                            });
+                            cloudDescription.style.display = 'block';
+                            break;
+                    }
+                });
+            });
+            
+            // Auto-select the first domain on page load
+            domainButtons[0].click();
+        });
+
+        function openVideoModal(videoUrl) {
+            const modal = document.getElementById('videoModal');
+            const videoFrame = document.getElementById('modalVideo');
+            videoFrame.src = videoUrl;  // Use the embed URL directly
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const videoFrame = document.getElementById('modalVideo');
+            modal.classList.remove('active');
+            videoFrame.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Modify the video container click handler
+        document.querySelectorAll('.video-container').forEach(container => {
+            container.addEventListener('click', function() {
+                const videoUrl = this.querySelector('iframe').src;
+                openVideoModal(videoUrl);
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
+    </script>
+    
+    <div id="ai-description" class="domain-description">
+        <h2>Artificial Intelligence & Machine Learning</h2>
+        <p>AI professionals work on developing intelligent systems that can learn from data, make decisions, and solve complex problems. Roles in this field include Machine Learning Engineers, AI Researchers, Data Scientists, and Natural Language Processing (NLP) Specialists.</p>
+    </div>
+    
+    <div id="cybersecurity-description" class="domain-description">
+        <h2>Cybersecurity</h2>
+        <p>Cybersecurity experts protect systems, networks, and programs from digital attacks. This field includes roles like Security Engineers, Penetration Testers, Security Analysts, and Chief Information Security Officers (CISOs).</p>
+    </div>
+    
+    <div id="fullstack-description" class="domain-description">
+        <h2>Full Stack Development</h2>
+        <p>Full Stack Developers work on both client and server sides of applications, handling everything from user interfaces to databases. They typically know multiple programming languages and frameworks for both frontend and backend development.</p>
+    </div>
+    
+    <div id="cloud-description" class="domain-description">
+        <h2>Cloud Computing</h2>
+        <p>Cloud Computing professionals design, implement, and manage cloud infrastructure and services. Roles include Cloud Architects, Cloud Engineers, DevOps Engineers, and Cloud Security Specialists.</p>
+    </div>
+    
+    <div class="professionals-container">
+        <!-- AI Professionals -->
+        <div class="professional-card ai-card">
+            <div class="card-header">
+                <img src="https://media.licdn.com/dms/image/v2/D5603AQHfpwl-uxTmXg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1635695667396?e=1752105600&v=beta&t=pbAoY4HTHPOhCgH5g8HY5lPvSiVW0talKGYZNToZ0_Y" alt="Sarah Chen" class="profile-img">
+            </div>
+            <div class="card-body">
+                <h3 class="name">Sarah Chen</h3>
+                <p class="title">Senior Machine Learning Engineer</p>
+                <div class="company">
+                    <img src="https://www.citypng.com/public/uploads/preview/google-logo-icon-gsuite-hd-701751694791470gzbayltphh.png" alt="Google" class="company-logo">
+                    <span>Google AI</span>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/K4kcAT0Y8Yg" title="Machine Learning Engineer Interview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="interview-experience">
+                    <h4>Interview Experience</h4>
+                    <p>My interview process at Google consisted of 5 rounds: an initial screening, a technical phone interview with coding, and an onsite with 3 interviews (system design, ML concepts, and behavioral). The ML concepts round focused heavily on model evaluation metrics, bias-variance tradeoff, and feature engineering. Prepare to whiteboard solutions and explain your thought process!</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/eniolaalese/" class="social-btn linkedin">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://medium.com/@eniola.alese" class="social-btn twitter">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Medium
+                    </a>
+                    <a href="https://www.youtube.com/@eniolaa" class="social-btn portfolio">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></svg>
+                        Youtube
+                    </a>
+                    <a href="https://resumegenius.com/wp-content/uploads/machine-learning-resume-example.png?w=1600" class="social-btn resume">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="professional-card ai-card">
+            <div class="card-header">
+                <img src="https://npwg.berkeley.edu/wp-content/uploads/2022/09/karina_nguyen_photo-Karina-Le-scaled.jpg" alt="Dr. Michael Park" class="profile-img">
+            </div>
+            <div class="card-body">
+                <h3 class="name">Karina Nguyen</h3>
+                <p class="title">AI Research Scientist</p>
+                <div class="company">
+                    <img src="data:image/jpeg;base64,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" alt="OpenAI" class="company-logo">
+                    <span>OpenAI</span>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/DeskgjrLxxs" title="AI Research Scientist Interview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="interview-experience">
+                    <h4>Interview Experience</h4>
+                    <p>OpenAI's interview process was rigorous but fair. After submitting my research portfolio, I had a research presentation where I discussed my past work, followed by three technical interviews focusing on deep learning theory, reinforcement learning, and a coding challenge. The final round was a values alignment interview with the team lead. They particularly valued creative thinking and ability to design novel research approaches.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/karinanguyen28/" class="social-btn linkedin">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://x.com/karinanguyen_?lang=en" class="social-btn twitter">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="https://karinanguyen.com/" class="social-btn portfolio">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></svg>
+                        Portfolio
+                    </a>
+                    <a href="https://resumegenius.com/wp-content/uploads/machine-learning-resume-example.png?w=1600" class="social-btn resume">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="professional-card ai-card">
+            <div class="card-header">
+                <img src="https://media.licdn.com/dms/image/v2/D5603AQFSR5Y8NfK7FA/profile-displayphoto-shrink_800_800/B56ZO.DNd8HoAk-/0/1734060333290?e=1752105600&v=beta&t=9irmMIGEDTaWGjCvyYiwRHPgbsrAk4oeiZ4wY3a5wfo" alt="Priya Sharma" class="profile-img">
+            </div>
+            <div class="card-body">
+                <h3 class="name">Ilya Reznik</h3>
+                <p class="title">ML Engineer</p>
+                <div class="company">
+                    <img src="data:image/png;base64,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" alt="AWS" class="company-logo">
+                    <span>Amazon Web Services</span>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/utoxXfLYV9E" title="Full Stack Engineer Interview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="interview-experience">
+                    <h4>Interview Experience</h4>
+                    <p>The interview process at Netflix was comprehensive and challenging. After the initial screening, I had a series of technical interviews focusing on system design, frontend architecture, and backend scalability. The most challenging part was the system design interview where I had to design a scalable video streaming platform. They were particularly interested in my experience with microservices, React performance optimization, and my ability to handle large-scale distributed systems.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/eczachly/" class="social-btn linkedin">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://x.com/EcZachly" class="social-btn twitter">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="#" class="social-btn portfolio">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></svg>
+                        Portfolio
+                    </a>
+                     </a>
+                                        <a href="https://resumegenius.com/wp-content/uploads/machine-learning-resume-example.png?w=1600" class="social-btn resume">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="professional-card cybersecurity-card">
+            <div class="card-header">
+                <img src="https://media.licdn.com/dms/image/v2/C5603AQHpf0q-yqyH5g/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1632749855496?e=1752105600&v=beta&t=y1zcr2md3sWGFk8ru2k00ayrpUaS5My9qPupifgEhoY" alt="Alex Rivera" class="profile-img">
+            </div>
+            <div class="card-body">
+                <h3 class="name">Sanjana Shinde</h3>
+                <p class="title">Senior Security Engineer</p>
+                <div class="company">
+                    <img src="https://cdn.worldvectorlogo.com/logos/crowdstrike-1.svg" alt="CrowdStrike" class="company-logo">
+                    <span>CrowdStrike</span>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/RrnVlbiMaBQ" title="Security Engineer Interview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="interview-experience">
+                    <h4>Interview Experience</h4>
+                    <p>The interview process at CrowdStrike was intense but rewarding. After the initial screening, I had a series of technical interviews focusing on endpoint security, threat detection, and incident response. The most challenging part was the practical assessment where I had to identify and exploit vulnerabilities in a simulated environment. The technical interviews focused on web application security, network security, and exploit development. They were particularly interested in my bug bounty experience and my ability to think creatively about security vulnerabilities.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/sanjana-shindedesai/" class="social-btn linkedin">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="#" class="social-btn twitter">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="#" class="social-btn portfolio">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></svg>
+                        Portfolio
+                    </a>
+                                        <a href="https://resumegenius.com/wp-content/uploads/machine-learning-resume-example.png?w=1600" class="social-btn resume">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="professional-card cybersecurity-card">
+            <div class="card-header">
+                <img src="https://media.licdn.com/dms/image/v2/D5603AQHQ9kyEPIFkhA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1716281276483?e=1752105600&v=beta&t=GxyM1QCEPvVen47dqGJgyGBtwPln0ljnf72JQTtDnVs" alt="Dr. Sarah Chen" class="profile-img">
+            </div>
+            <div class="card-body">
+                <h3 class="name">Anshika Upadhyay</h3>
+                <p class="title">Software Development Engineer</p>
+                <div class="company">
+                    <img src="https://yt3.googleusercontent.com/ytc/AIdro_kxWmgVWVOW2FSiRcm7EKmAf_fdv804HFoBjuvxvYSZVA_W=s900-c-k-c0x00ffffff-no-rj" alt="Palo Alto Networks" class="company-logo">
+                    <span>Palo Alto Networks</span>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/X4ah3MPCZYU" title="CISO Interview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="interview-experience">
+                    <h4>Interview Experience</h4>
+                    <p>Joining Palo Alto Networks as a CISO was a rigorous process. After the initial screening, I had multiple rounds of interviews focusing on security strategy, risk management, and leadership. The most challenging part was presenting a comprehensive security roadmap for a hypothetical enterprise. They were particularly interested in my experience with cloud security, zero-trust architecture, and my ability to align security initiatives with business objectives.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/anshika-upadhyay-a43b911b1/" class="social-btn linkedin">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="#" class="social-btn twitter">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="#" class="social-btn portfolio">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></svg>
+                        Portfolio
+                    </a>
+                     </a>
+                                        <a href="https://resumegenius.com/wp-content/uploads/machine-learning-resume-example.png?w=1600" class="social-btn resume">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="professional-card cybersecurity-card">
+            <div class="card-header">
+                <img src="https://media.licdn.com/dms/image/v2/C5603AQFWnJGx38U38Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1660766462461?e=1752105600&v=beta&t=h7eGcDDCxJ_362v-tIA8Ac1aiwAFd_5JpqZ6xnqhyy8" alt="James Wilson" class="profile-img">
+            </div>
+            <div class="card-body">
+                <h3 class="name">Brett Buerhaus</h3>
+                <p class="title">Staff Security Engineer</p>
+                <div class="company">
+                    <img src="https://static-00.iconduck.com/assets.00/hackerone-icon-2048x2048-ctdo8ks8.png" alt="HackerOne" class="company-logo">
+                    <span>HackerOne</span>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/O6dt_5Je4rA" title="Penetration Tester Interview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="interview-experience">
+                    <h4>Interview Experience</h4>
+                    <p>The interview process at HackerOne was unique and challenging. After the initial screening, I had to complete a practical penetration testing assessment where I had to identify and exploit vulnerabilities in a simulated environment. The technical interviews focused on web application security, network security, and exploit development. They were particularly interested in my bug bounty experience and my ability to think creatively about security vulnerabilities.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/bbuerhaus/" class="social-btn linkedin">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://x.com/bbuerhaus" class="social-btn twitter">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="https://buer.haus/resume/" class="social-btn portfolio">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></svg>
+                        Portfolio
+                    </a>
+                     </a>
+                                        <a href="https://resumegenius.com/wp-content/uploads/machine-learning-resume-example.png?w=1600" class="social-btn resume">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+ 
+
+        <!-- Full Stack Development Professionals -->
+        <div class="professional-card fullstack-card">
+            <div class="card-header">
+                <img src="https://pbs.twimg.com/profile_images/1677386353217265664/B0VSKY7c_400x400.jpg" alt="Emily Chen" class="profile-img">
+            </div>
+            <div class="card-body">
+                <h3 class="name">Zach Morris Wilson</h3>
+                <p class="title">Senior Full Stack Engineer</p>
+                <div class="company">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRD3CEvIwF-ddgpLTomWYVqqwA1RdLhoV2Agg&s" alt="Netflix" class="company-logo">
+                    <span>Netflix</span>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/utoxXfLYV9E" title="Full Stack Engineer Interview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="interview-experience">
+                    <h4>Interview Experience</h4>
+                    <p>The interview process at Netflix was comprehensive and challenging. After the initial screening, I had a series of technical interviews focusing on system design, frontend architecture, and backend scalability. The most challenging part was the system design interview where I had to design a scalable video streaming platform. They were particularly interested in my experience with microservices, React performance optimization, and my ability to handle large-scale distributed systems.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/eczachly/" class="social-btn linkedin">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://x.com/EcZachly" class="social-btn twitter">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="#" class="social-btn portfolio">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></svg>
+                        Portfolio
+                    </a>
+                                         </a>
+                                        <a href="https://resumegenius.com/wp-content/uploads/machine-learning-resume-example.png?w=1600" class="social-btn resume">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="professional-card fullstack-card">
+            <div class="card-header">
+                <img src="https://pbs.twimg.com/profile_images/1477841735170473985/9JV9uHYe_400x400.jpg" alt="David Kim" class="profile-img">
+            </div>
+            <div class="card-body">
+                <h3 class="name">luba yudasina</h3>
+                <p class="title">Full Stack Developer</p>
+                <div class="company">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRoVzceiyRuS1ZfvebW6k_7PeKVdLFpSffag&s" alt="Airbnb" class="company-logo">
+                    <span>Airbnb</span>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/Wp6Z2wVyPeY" title="Full Stack Developer Interview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="interview-experience">
+                    <h4>Interview Experience</h4>
+                    <p>The interview process at Airbnb was both challenging and rewarding. After the initial screening, I had a series of technical interviews focusing on React performance, Node.js backend architecture, and database optimization. The most challenging part was the system design interview where I had to design a scalable booking system. They were particularly interested in my experience with GraphQL, TypeScript, and my ability to write clean, maintainable code.</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-btn linkedin">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="#" class="social-btn twitter">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="#" class="social-btn portfolio">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></svg>
+                        Portfolio
+                    </a>
+                                         </a>
+                                        <a href="https://resumegenius.com/wp-content/uploads/machine-learning-resume-example.png?w=1600" class="social-btn resume">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Cloud Computing Professionals -->
+        <div class="professional-card cloud-card">
+            <div class="card-header">
+                <img src="https://media.licdn.com/dms/image/v2/D5603AQHL9HFNqNHKaQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1675580716674?e=1752105600&v=beta&t=mfzlJjzYRMLqcmGUJJBG_k-B5uCUszEZlywSYfjGRMY" alt="Michael Johnson" class="profile-img">
+            </div>
+            <div class="card-body">
+                <h3 class="name">Sruthi Bijoy</h3>
+                <p class="title">Cloud Solutions Architect</p>
+                <div class="company">
+                    <img src="data:image/png;base64,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" alt="AWS" class="company-logo">
+                    <span>Amazon Web Services</span>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/x4YN7xOODrg" title="Cloud Solutions Architect Interview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="interview-experience">
+                    <h4>Interview Experience</h4>
+                    <p>The interview process at AWS was comprehensive and challenging. After the initial screening, I had a series of technical interviews focusing on cloud architecture, infrastructure as code, and system design. The most challenging part was the system design interview where I had to design a highly available, scalable cloud infrastructure. They were particularly interested in my experience with AWS services, Terraform, and my ability to design cost-effective solutions.</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-btn linkedin">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="#" class="social-btn twitter">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="#" class="social-btn portfolio">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/></svg>
+                        Portfolio
+                    </a>
+                                         </a>
+                                        <a href="https://resumegenius.com/wp-content/uploads/machine-learning-resume-example.png?w=1600" class="social-btn resume">
+                        <svg class="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-modal" id="videoModal">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeVideoModal()">&times;</button>
+                <iframe class="modal-video" id="modalVideo" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

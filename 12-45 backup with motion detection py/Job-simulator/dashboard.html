@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOB Verse - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="dark-mode">
+    <div class="dashboard-container">
+        <button id="backButton" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span>JOB</span>Verse
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn active" data-section="tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>Your Tasks</span>
+                </button>
+                <button class="nav-btn" data-section="colleagues">
+                    <i class="fas fa-users"></i>
+                    <span>Colleagues</span>
+                </button>
+                <button class="nav-btn" data-section="erp">
+                    <i class="fas fa-building"></i>
+                    <span>Company's ERP</span>
+                </button>
+                <button class="nav-btn" data-section="job-finder">
+                    <i class="fas fa-search"></i>
+                    <span>Job Finder</span>
+                </button>
+                <button class="nav-btn" data-section="tech-upskilling">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Upskilling</span>
+                </button>
+                <button class="nav-btn" data-section="soft-upskilling">
+                    <i class="fas fa-comments"></i>
+                    <span>Soft Skill Upskilling</span>
+                </button>
+                <button class="nav-btn" data-section="switch-prep">
+                    <i class="fas fa-video"></i>
+                    <span>Switch & Prep</span>
+                </button>
+                <button class="nav-btn" data-section="code-lab">
+                    <i class="fas fa-code"></i>
+                    <span>Code Lab</span>
+                </button>
+                <button class="nav-btn" data-section="flashcards">
+                    <i class="fas fa-clipboard"></i>
+                    <span>Flashcards</span>
+                </button>
+                <button class="nav-btn" data-section="career-twin">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Career Twin</span>
+                </button>
+                <button class="nav-btn" data-section="spin2solve">
+                    <i class="fas fa-sync"></i>
+                    <span>spin2solve</span>
+                </button>
+                <button class="nav-btn" data-section="decision-lab">
+                    <i class="fas fa-flask"></i>
+                    <span>Decision Lab</span>
+                </button>
+                <button class="nav-btn" data-section="workflow-management">
+                    <i class="fas fa-cogs"></i>
+                    <span>Job Workflow</span>
+                </button>
+            </div>
+            <div class="user-section">
+                <span id="userEmail"></span>
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div id="tasks" class="content-section active">
+                <div class="tasks-header">
+                    <h1>Your Tasks</h1>
+                    <div class="stats-boxes">
+                        <div class="stats-box">
+                            <i class="fas fa-star"></i>
+                            <span>Points: 1250</span>
+                        </div>
+                        <div class="stats-box">
+                            <i class="fas fa-rupee-sign"></i>
+                            <span>Salary: 35,000 Rs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tasks-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>STATUS</th>
+                                <th>TASK NAME</th>
+                                <th>DESCRIPTION</th>
+                                <th>PRIORITY</th>
+                                <th>TIME ESTIMATE</th>
+                                <th>DEADLINE</th>
+                                <th>STARTER FILE</th>
+                                <th>UPLOAD WORK</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasksTableBody">
+                            <tr>
+                                <td><i class="fas fa-check-circle"></i></td>
+                                <td>Implement Smart Contact Autocomplete</td>
+                                <td>Function that returns contact suggestions matching a typed query from a contact list.</td>
+                                <td>Medium</td>
+                                <td>2 hours</td>
+                                <td>2025-05-05</td>
+                                <td>
+                                    <button class="download-btn">Download Starter File</button>
+                                </td>
+                                <td>
+                                    <div class="file-upload-container">
+                                        <input type="file" accept="*/*" />
+                                        <small>Max file size: 1MB</small>
+                                        <button class="download-btn">Download File ✓</button>
+                                        <div class="status">✓ Task completed</div>
+                                        <div class="status">Submitted</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-check-circle"></i></td>
+                                <td>Convert Meeting Notes to Tasks</td>
+                                <td>Analyze meeting discussion and extract clear, actionable tasks.</td>
+                                <td>Medium</td>
+                                <td>1 hour</td>
+                                <td>2025-05-04</td>
+                                <td>
+                                    <button class="download-btn">Download Starter File</button>
+                                </td>
+                                <td>
+                                    <div class="file-upload-container">
+                                        <input type="file" accept="*/*" />
+                                        <small>Max file size: 1MB</small>
+                                        <button class="download-btn">Download File ✓</button>
+                                        <div class="status">✓ Task completed</div>
+                                        <div class="status">Submitted</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-clock"></i></td>
+                                <td>Mobile Responsiveness Fix</td>
+                                <td>Make the UI responsive across all devices using media queries and flexible layout techniques.</td>
+                                <td>High</td>
+                                <td>2 hours</td>
+                                <td>2025-05-04</td>
+                                <td>
+                                    <button class="download-btn">Download Starter File</button>
+                                </td>
+                                <td>
+                                    <div class="file-upload-container">
+                                        <input type="file" accept="*/*" />
+                                        <small>Max file size: 1MB</small>
+                                        <button class="choose-file">Choose File</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-times-circle"></i></td>
+                                <td>Buggy Login Page Fix</td>
+                                <td>Fix password case sensitivity issue to prevent authentication bypass.</td>
+                                <td>High</td>
+                                <td>1.5 hours</td>
+                                <td>2025-05-04</td>
+                                <td>
+                                    <button class="download-btn">Download Starter File</button>
+                                </td>
+                                <td>
+                                    <div class="file-upload-container">
+                                        <input type="file" accept="*/*" />
+                                        <small>Max file size: 1MB</small>
+                                        <button class="choose-file">Choose File</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-clock"></i></td>
+                                <td>Attendance Hour Fix (HR Module)</td>
+                                <td>Correct logic for updating working hours on Half-Day or On-Duty status to avoid full-day errors.</td>
+                                <td>High</td>
+                                <td>3 hours</td>
+                                <td>2025-05-05</td>
+                                <td>
+                                    <button class="download-btn">Download Starter File</button>
+                                </td>
+                                <td>
+                                    <div class="file-upload-container">
+                                        <input type="file" accept="*/*" />
+                                        <small>Max file size: 1MB</small>
+                                        <button class="choose-file">Choose File</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="colleagues" class="content-section">
+                <h1>Your Colleagues</h1>
+                <div class="colleagues-container">
+                    <!-- Boss Section -->
+                    <div class="colleague-card">
+                        <div class="colleague-image">
+                            <img src="assets/boss.jpg" alt="Mr. Raze - Boss">
+                        </div>
+                        <div class="colleague-info">
+                            <h2>🧠 Boss: Mr. Raze</h2>
+                            <p>Cold-blooded strategist, transforms, doesn't manage. One look—promotion or warning.</p>
+                            
+                            <h3>⚡ Powers:</h3>
+                            <ul>
+                                <li><strong>Task Judge:</strong> Reviews work like a battlefield commander.</li>
+                                <li><strong>Pattern Sniper:</strong> Spots habits, hits hard or heals.</li>
+                                <li><strong>Mood Shifter:</strong> Praise, pressure, or warning based on performance.</li>
+                                <li><strong>Reality Warper:</strong> Turns work into a high-stakes game.</li>
+                            </ul>
+                            <p>Chat with Mr. Raze to get guidance and feedback.</p>
+                            <button class="chat-btn">Chat with Mr. Raze</button>
+                        </div>
+                    </div>
+
+                    <!-- Junior Dev Section -->
+                    <div class="colleague-card">
+                        <div class="colleague-image">
+                            <img src="assets/Junior-dev.jpg" alt="Alex - Junior Dev">
+                        </div>
+                        <div class="colleague-info">
+                            <h2>👨‍💻 Junior Dev: Alex</h2>
+                            <p>Smart, scrappy, always caffeinated. Drowns in tabs, but always pushes through.</p>
+                            
+                            <h3>⚡ Powers:</h3>
+                            <ul>
+                                <li><strong>Bug Magnet:</strong> Attracts weird errors.</li>
+                                <li><strong>Fast Learner:</strong> Absorbs knowledge—when focused.</li>
+                                <li><strong>Eager Helper:</strong> Always offers a hand, even when drowning.</li>
+                                <li><strong>Overcommitter:</strong> Takes on too much, panics, but delivers.</li>
+                            </ul>
+                            <p>Chat with Alex about technical challenges and coding problems.</p>
+                            <button class="chat-btn">Chat with Alex</button>
+                        </div>
+                    </div>
+
+                    <!-- Career Coach Section -->
+                    <div class="colleague-card">
+                        <div class="colleague-image">
+                            <img src="assets/career guidance.jpg" alt="Sarah - Career Coach">
+                        </div>
+                        <div class="colleague-info">
+                            <h2>👩‍💻 Career Coach: Sarah</h2>
+                            <p>Strategic, insightful, your calm in career chaos.</p>
+                            
+                            <h3>⚡ Powers:</h3>
+                            <ul>
+                                <li><strong>Path Finder:</strong> Cuts through career confusion.</li>
+                                <li><strong>Visionary:</strong> Sees potential in you before you do.</li>
+                                <li><strong>Empathy Master:</strong> Deeply understands struggles, offers motivating guidance.</li>
+                                <li><strong>Reality Check:</strong> Tough love balancing ambition with practicality.</li>
+                                <li><strong>Goal Setter:</strong> Breaks down big goals into small wins.</li>
+                            </ul>
+                            <p>Chat with Sarah for career advice and professional development.</p>
+                            <button class="chat-btn">Chat with Sarah</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="erp" class="content-section">
+                <h1>Company's ERP</h1>
+                <p>ERP system content will be added here.</p>
+            </div>
+            
+            <!-- Workflow Management Section -->
+            <div id="workflow-management" class="content-section">
+                <h1>Job Workflow Management</h1>
+                <div class="workflow-container">
+                    <div class="workflow-status-card">
+                        <div class="status-header">
+                            <h3>Workflow Status</h3>
+                            <div class="status-indicator" id="workflow-status-indicator">
+                                <span class="status-dot"></span>
+                                <span class="status-text">Ready</span>
+                            </div>
+                        </div>
+                        <div class="status-details">
+                            <div class="status-item">
+                                <span class="label">Last Run:</span>
+                                <span class="value" id="last-run-time">Never</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">Jobs Processed:</span>
+                                <span class="value" id="jobs-processed">0</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">Jobs Added:</span>
+                                <span class="value" id="jobs-added">0</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">Next Scheduled Run:</span>
+                                <span class="value" id="next-run-time">Daily at 9:00 AM</span>
+                            </div>
+                        </div>
+                        <div class="workflow-actions">
+                            <button class="action-btn primary" id="run-workflow-btn" onclick="triggerWorkflow()">
+                                <i class="fas fa-play"></i> Run Now
+                            </button>
+                            <button class="action-btn secondary" onclick="viewWorkflowLogs()">
+                                <i class="fas fa-history"></i> View Logs
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="workflow-config-card">
+                        <h3>Workflow Configuration</h3>
+                        <div class="config-section">
+                            <h4>RSS Feed Source</h4>
+                            <div class="config-item">
+                                <span class="config-label">URL:</span>
+                                <span class="config-value">https://remoteok.io/remote-dev+python-jobs.rss</span>
+                            </div>
+                            <div class="config-item">
+                                <span class="config-label">Update Frequency:</span>
+                                <span class="config-value">Daily at 9:00 AM</span>
+                            </div>
+                        </div>
+                        
+                        <div class="config-section">
+                            <h4>Filter Criteria</h4>
+                            <div class="filter-tags">
+                                <span class="filter-tag">Software Developer</span>
+                                <span class="filter-tag">Backend</span>
+                                <span class="filter-tag">Full Stack</span>
+                                <span class="filter-tag">Python</span>
+                                <span class="filter-tag">React</span>
+                                <span class="filter-tag">Django</span>
+                                <span class="filter-tag">Machine Learning</span>
+                                <span class="filter-tag">AI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-jobs-card">
+                        <h3>Recent Jobs Added</h3>
+                        <div class="recent-jobs-list" id="recent-jobs-list">
+                            <div class="no-jobs-message">
+                                <i class="fas fa-briefcase"></i>
+                                <p>No jobs added yet. Run the workflow to fetch new jobs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyByE-IoxarDhlLKwLn4K1N3y0Swy2-hVxE",
+            authDomain: "job-verse-c35ff.firebaseapp.com",
+            databaseURL: "https://job-verse-c35ff-default-rtdb.firebaseio.com",
+            projectId: "job-verse-c35ff",
+            storageBucket: "job-verse-c35ff.firebasestorage.app",
+            messagingSenderId: "313840143364",
+            appId: "1:313840143364:web:7de4898b589edbff54b951",
+            measurementId: "G-F1VGQ7ELLW"
+        };
+
+        try {
+            // Initialize Firebase
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            const analytics = firebase.analytics();
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            
+            // Enable offline persistence
+            db.enablePersistence()
+              .catch((err) => {
+                  if (err.code == 'failed-precondition') {
+                      console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+                  } else if (err.code == 'unimplemented') {
+                      console.log('The current browser does not support persistence.');
+                  }
+              });
+
+            // Make Firebase instances available globally
+            window.db = db;
+            window.auth = auth;
+            window.analytics = analytics;
+
+            console.log('Firebase initialized successfully in dashboard');
+        } catch (error) {
+            console.error('Error initializing Firebase in dashboard:', error);
+        }
+    </script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Career Roadmap 2024</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #0D0D1A;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #00E6D0, #735BFF);
+            border-radius: 2px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #00E6D0, #735BFF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .roadmap-paths {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .roadmap-path {
+            background: #1B1C29;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .roadmap-path::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, #00E6D0, #735BFF);
+        }
+
+        .path-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .path-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            background: linear-gradient(45deg, #00E6D0, #735BFF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        h2 {
+            font-size: 2rem;
+            background: linear-gradient(to right, #00E6D0, #735BFF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .checklist {
+            margin-bottom: 2rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            background: rgba(44, 44, 62, 0.6);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            border-left: 4px solid #735BFF;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .checklist-item:hover {
+            background: rgba(44, 44, 62, 0.9);
+            transform: translateX(10px);
+            border-left-color: #00E6D0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #735BFF;
+            border-radius: 6px;
+            margin-right: 1rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item input[type="checkbox"]:checked {
+            background: #00E6D0;
+            border-color: #00E6D0;
+        }
+
+        .checklist-item input[type="checkbox"]:checked::before {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #0D0D1A;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.completed {
+            background: rgba(0, 230, 208, 0.1);
+            border-left-color: #00E6D0;
+        }
+
+        .checklist-item.completed label {
+            text-decoration: line-through;
+            color: #00E6D0;
+            opacity: 0.8;
+        }
+
+        .category {
+            margin-bottom: 3rem;
+            position: relative;
+            background: rgba(27, 28, 41, 0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .category h3 {
+            color: #00E6D0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #2C2C3E;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-align: center;
+        }
+
+        .category h4 {
+            color: #735BFF;
+            margin: 2.5rem 0 1.5rem;
+            font-size: 1.4rem;
+            letter-spacing: 1.2px;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(to right, rgba(115, 91, 255, 0.15), rgba(0, 230, 208, 0.05));
+            border-radius: 12px;
+            display: inline-block;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .category h4::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, #735BFF, #00E6D0);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #2C2C3E;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #00E6D0, #735BFF);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .generate-resume {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        button {
+            background: linear-gradient(to right, #00E6D0, #735BFF);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(115, 91, 255, 0.4);
+        }
+
+        .priority-high {
+            color: #B84040;
+        }
+
+        .xp-text {
+            color: #FFEB75;
+        }
+
+        .status-light {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-light.green {
+            background-color: #38FF88;
+        }
+
+        .status-light.red {
+            background-color: #FF3860;
+        }
+
+        .status-light.purple {
+            background-color: #A365FF;
+        }
+
+        @media (max-width: 768px) {
+            .roadmap-paths {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .selection-container {
+            background: #1B1C29;
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 2rem auto;
+            text-align: center;
+            max-width: 800px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .selection-group {
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        select {
+            background: #2C2C3E;
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid #735BFF;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin: 0 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:hover {
+            border-color: #00E6D0;
+        }
+
+        .year-timeline {
+            display: flex;
+            justify-content: center;
+            margin: 3rem auto;
+            position: relative;
+            max-width: 800px;
+            padding: 0 2rem;
+            gap: 2rem;
+        }
+
+        .year-timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            right: 50px;
+            height: 3px;
+            background: linear-gradient(to right, #00E6D0, #735BFF);
+            z-index: 1;
+        }
+
+        .year-marker {
+            background: #1B1C29;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            border: 2px solid #735BFF;
+            color: #fff;
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .year-marker:hover {
+            background: linear-gradient(45deg, #735BFF, #00E6D0);
+            transform: translateY(-3px);
+            border-color: transparent;
+        }
+
+        .year-marker.active {
+            background: linear-gradient(45deg, #735BFF, #00E6D0);
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(115, 91, 255, 0.6);
+            transform: translateY(-3px);
+        }
+
+        .path-description {
+            background: rgba(115, 91, 255, 0.1);
+            border-left: 4px solid #735BFF;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 15px 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .path-description h4 {
+            color: #00E6D0;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+
+        .path-description p {
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .resources-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 230, 208, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 230, 208, 0.2);
+        }
+
+        .resources-section h4 {
+            color: #00E6D0;
+            margin-bottom: 0.5rem;
+        }
+
+        .resources-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .resources-section li {
+            margin: 0.5rem 0;
+            color: #fff;
+        }
+
+        .resources-section a {
+            color: #735BFF;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .resources-section a:hover {
+            color: #00E6D0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Future Tech Roadmap</h1>
+            <p style="color: #00E6D0; font-size: 1.2rem;">Chart Your Path to Tech Excellence</p>
+        </header>
+
+        <div class="selection-container">
+            <div class="selection-group">
+                <label for="domain" style="color: #00E6D0; margin-right: 1rem;">Select Your Domain:</label>
+                <select id="domain" onchange="updateRoadmap()">
+                    <option value="ai">AI Engineering</option>
+                    <option value="cyber">Cybersecurity Architecture</option>
+                    <option value="fullstack">Full Stack Development</option>
+                    <option value="cloud">Cloud Engineering</option>
+                </select>
+            </div>
+            <div class="selection-group">
+                <label for="year" style="color: #00E6D0; margin-right: 1rem;">Current Year:</label>
+                <select id="year" onchange="updateRoadmap()">
+                    <option value="1">First Year</option>
+                    <option value="2">Second Year</option>
+                    <option value="3">Third Year</option>
+                    <option value="4">Fourth Year</option>
+                </select>
+            </div>
+            <div class="selection-group">
+                <label for="progress" style="color: #00E6D0; margin-right: 1rem;">Current Progress:</label>
+                <select id="progress" onchange="updateRoadmap()">
+                    <option value="beginner">Beginner (0-25%)</option>
+                    <option value="intermediate">Intermediate (26-50%)</option>
+                    <option value="advanced">Advanced (51-75%)</option>
+                    <option value="expert">Expert (76-100%)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="year-timeline">
+            <div class="year-marker" onclick="selectYear(1)">Year 1</div>
+            <div class="year-marker" onclick="selectYear(2)">Year 2</div>
+            <div class="year-marker" onclick="selectYear(3)">Year 3</div>
+            <div class="year-marker" onclick="selectYear(4)">Year 4</div>
+        </div>
+
+        <div class="roadmap-paths">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+
+        <div class="generate-resume">
+            <button onclick="generateResume()">Generate Tech Resume</button>
+        </div>
+    </div>
+
+    <script>
+        const roadmapData = {
+    ai: {
+        1: {
+            title: "AI Engineering - First Year",
+            description: "Building the foundation for AI and Machine Learning",
+            skills: [
+                "Python Programming Fundamentals",
+                "Basic Data Structures",
+                "Calculus & Linear Algebra Basics",
+                "Probability & Statistics",
+                "Introduction to Data Science"
+            ],
+            resources: [
+                {
+                    title: "Python for Everybody - Coursera",
+                    url: "https://www.coursera.org/specializations/python"
+                },
+                {
+                    title: "Mathematics for Machine Learning - Coursera",
+                    url: "https://www.coursera.org/specializations/mathematics-machine-learning"
+                }
+            ],
+            softSkills: [
+                "Analytical Thinking",
+                "Basic Problem Solving",
+                "Learning Mindset",
+                "Documentation Skills",
+                "Time Management"
+            ],
+            certifications: [
+                "Python Programming - Coursera",
+                "Mathematics for ML - Imperial College",
+                "Data Science Foundations - IBM"
+            ]
+        },
+        2: {
+            title: "AI Engineering - Second Year",
+            description: "Core ML concepts and frameworks",
+            skills: [
+                "Machine Learning Algorithms",
+                "Neural Networks Fundamentals",
+                "TensorFlow & PyTorch",
+                "Data Preprocessing",
+                "Model Evaluation & Validation"
+            ],
+            resources: [
+                {
+                    title: "Machine Learning - Stanford",
+                    url: "https://www.coursera.org/learn/machine-learning"
+                },
+                {
+                    title: "Deep Learning Specialization",
+                    url: "https://www.coursera.org/specializations/deep-learning"
+                }
+            ],
+            softSkills: [
+                "Project Planning",
+                "Technical Writing",
+                "Data Visualization",
+                "Team Collaboration",
+                "Problem Analysis"
+            ],
+            certifications: [
+                "TensorFlow Developer Certificate",
+                "AWS Machine Learning Specialty",
+                "Deep Learning Specialization"
+            ]
+        },
+        3: {
+            title: "AI Engineering - Third Year",
+            description: "Advanced AI applications and deployment",
+            skills: [
+                "Computer Vision & CNN",
+                "Natural Language Processing",
+                "MLOps & Model Deployment",
+                "Reinforcement Learning",
+                "Generative AI Models"
+            ],
+            resources: [
+                {
+                    title: "Full Stack Deep Learning",
+                    url: "https://fullstackdeeplearning.com/"
+                },
+                {
+                    title: "Practical Deep Learning for Coders",
+                    url: "https://course.fast.ai/"
+                }
+            ],
+            softSkills: [
+                "Research Skills",
+                "System Design",
+                "Project Leadership",
+                "Cross-functional Collaboration",
+                "Technical Mentoring"
+            ],
+            certifications: [
+                "Professional ML Engineer - Google",
+                "Azure AI Engineer",
+                "Deep Learning Specialization"
+            ]
+        },
+        4: {
+            title: "AI Engineering - Fourth Year",
+            description: "Research and specialized applications",
+            skills: [
+                "Transformer Architecture",
+                "Large Language Models",
+                "AI System Architecture",
+                "Distributed Training",
+                "AI Ethics & Governance"
+            ],
+            resources: [
+                {
+                    title: "Advanced ML - Google Research",
+                    url: "https://research.google/pubs/"
+                },
+                {
+                    title: "Papers with Code",
+                    url: "https://paperswithcode.com/"
+                }
+            ],
+            softSkills: [
+                "Research Leadership",
+                "Strategic Thinking",
+                "Innovation Management",
+                "Business Acumen",
+                "Ethics & Responsibility"
+            ],
+            certifications: [
+                "NVIDIA DLI Professional",
+                "MLOps Professional",
+                "AI Ethics Professional"
+            ]
+        }
+    },
+        cyber: {
+        1: {
+            title: "Cybersecurity Engineering - First Year",
+            description: "Building foundational knowledge in cybersecurity concepts",
+            skills: [
+                "Learn Network Security Fundamentals",
+                "Understand Cryptography Basics",
+                "Master Operating Systems Security",
+                "Introduction to Ethical Hacking",
+                "Firewalls and Intrusion Detection Systems"
+            ],
+            resources: [
+            {
+        title: "Practical Ethical Hacking - Udemy",
+        url: "https://www.udemy.com/course/practical-ethical-hacking/"
+    }
+            ],
+                softSkills: [
+                    "Basic Problem Solving",
+                    "Written Communication",
+                    "Time Management",
+                    "Learning Mindset",
+                    "Team Collaboration"
+                ],
+                certifications: [
+                    "CompTIA Security+ Certification",
+                    "Cisco Certified Technician (CCT)",
+                    "AWS Cloud Practitioner"
+                ]
+            },
+            2: {
+                title: "Cybersecurity Engineering - Second Year",
+                description: "Advanced techniques in securing networks and systems",
+                skills: [
+                    "Network Protocol Analysis",
+                    "Security Information and Event Management (SIEM)",
+                    "Vulnerability Assessment",
+                    "Security Architecture Design",
+                    "Cloud Security Fundamentals"
+                ],
+                resources: [
+                {
+                    title: "Advanced Network Security - Coursera",
+                    url: "https://www.coursera.org/specializations/advanced-network-security"
+                }
+                ],
+                softSkills: [
+                    "Technical Documentation",
+                    "Project Planning",
+                    "Cross-team Collaboration",
+                    "Problem Analysis",
+                    "Client Communication"
+                ],
+                certifications: [
+                    "Certified Ethical Hacker (CEH)",
+                    "GIAC Security Essentials (GSEC)",
+                    "Microsoft Security Operations Analyst"
+                ]
+            },
+            3: {
+                title: "Cybersecurity Engineering - Third Year",
+                description: "Specializing in incident handling and system hardening",
+                skills: [
+                    "Advanced Malware Analysis",
+                    "Threat Hunting & Intelligence",
+                    "Incident Response Management",
+                    "Zero Trust Architecture",
+                    "DevSecOps Implementation"
+                ],
+                resources: [
+                {
+                    title: "Advanced Cybersecurity Specialization - Coursera",
+                    url: "https://www.coursera.org/specializations/advanced-cyber-security"
+                }
+                ],
+                softSkills: [
+                    "Team Leadership",
+                    "Strategic Planning",
+                    "Risk Assessment",
+                    "Stakeholder Management",
+                    "Crisis Communication"
+                ],
+                certifications: [
+                    "CISSP Associate",
+                    "GIAC Certified Incident Handler (GCIH)",
+                    "Certified Cloud Security Professional (CCSP)"
+                ]
+            },
+            4: {
+                title: "Cybersecurity Engineering - Fourth Year",
+                description: "Mastering enterprise security and leadership",
+                skills: [
+                    "Enterprise Security Architecture",
+                    "Security Program Management",
+                    "Advanced Threat Detection",
+                    "Security Automation & Orchestration",
+                    "Blockchain Security"
+                ],
+                resources: [
+                {
+                    title: "Enterprise Security Leadership - ISC2",
+                    url: "https://www.isc2.org/Training"
+                }
+                ],
+                softSkills: [
+                    "Executive Communication",
+                    "Strategic Leadership",
+                    "Business Acumen",
+                    "Organizational Development",
+                    "Change Management"
+                ],
+                certifications: [
+                    "CISSP (Full)",
+                    "CISM (Certified Information Security Manager)",
+                    "CGEIT (Certified in Governance of Enterprise IT)"
+                ]
+            }
+    },
+    fullstack: {
+        1: {
+            title: "Full-Stack Development - First Year",
+            description: "Building core web development foundations",
+            skills: [
+                "HTML5 & CSS3 Fundamentals",
+                "JavaScript Basics & ES6+",
+                "Responsive Web Design",
+                "Version Control (Git)",
+                "Command Line Basics"
+            ],
+            resources: [
+                {
+                    title: "Web Development Bootcamp",
+                    url: "https://www.udemy.com/course/the-web-developer-bootcamp/"
+                },
+                {
+                    title: "freeCodeCamp Responsive Web Design",
+                    url: "https://www.freecodecamp.org/learn/responsive-web-design/"
+                }
+            ],
+            softSkills: [
+                "Problem-Solving Basics",
+                "Learning Mindset",
+                "Basic Communication",
+                "Time Management",
+                "Attention to Detail"
+            ],
+            certifications: [
+                "freeCodeCamp Web Design",
+                "JavaScript Essentials - Coursera",
+                "HTML/CSS - W3Schools"
+            ]
+        },
+        2: {
+            title: "Full-Stack Development - Second Year",
+            description: "Modern frontend and backend fundamentals",
+            skills: [
+                "React.js & Component Design",
+                "Node.js & Express.js",
+                "SQL & NoSQL Databases",
+                "RESTful API Development",
+                "Testing Fundamentals"
+            ],
+            resources: [
+                {
+                    title: "Full Stack Open",
+                    url: "https://fullstackopen.com/en/"
+                },
+                {
+                    title: "React - The Complete Guide",
+                    url: "https://www.udemy.com/course/react-the-complete-guide-incl-redux/"
+                }
+            ],
+            softSkills: [
+                "Technical Writing",
+                "Team Collaboration",
+                "Code Review Skills",
+                "Project Planning",
+                "Documentation"
+            ],
+            certifications: [
+                "Meta Frontend Developer",
+                "Node.js Developer - OpenJS",
+                "MongoDB Developer"
+            ]
+        },
+        3: {
+            title: "Full-Stack Development - Third Year",
+            description: "Advanced concepts and architecture",
+            skills: [
+                "Advanced State Management",
+                "GraphQL & Apollo",
+                "Microservices Architecture",
+                "CI/CD Implementation",
+                "Cloud Services (AWS/Azure)"
+            ],
+            resources: [
+                {
+                    title: "Advanced React Patterns",
+                    url: "https://frontendmasters.com/courses/advanced-react-patterns/"
+                },
+                {
+                    title: "AWS for Developers",
+                    url: "https://aws.amazon.com/training/learn-about/developer/"
+                }
+            ],
+            softSkills: [
+                "System Design",
+                "Technical Leadership",
+                "Mentoring",
+                "Client Communication",
+                "Architecture Planning"
+            ],
+            certifications: [
+                "AWS Developer Associate",
+                "Azure Developer Associate",
+                "Professional Scrum Developer"
+            ]
+        },
+        4: {
+            title: "Full-Stack Development - Fourth Year",
+            description: "Enterprise development and optimization",
+            skills: [
+                "Enterprise Architecture",
+                "Performance Optimization",
+                "Security Implementation",
+                "Scalable Systems Design",
+                "DevOps Integration"
+            ],
+            resources: [
+                {
+                    title: "System Design for Developers",
+                    url: "https://www.educative.io/path/scalability-system-design"
+                },
+                {
+                    title: "Enterprise Architecture Patterns",
+                    url: "https://learn.microsoft.com/en-us/azure/architecture/patterns/"
+                }
+            ],
+            softSkills: [
+                "Enterprise Communication",
+                "Team Leadership",
+                "Project Management",
+                "Strategic Planning",
+                "Business Analysis"
+            ],
+            certifications: [
+                "Solutions Architect - AWS",
+                "DevOps Engineer Professional",
+                "Full Stack Engineering Leader"
+            ]
+        }
+    },
+    cloud: {
+        1: {
+            title: "Cloud Engineering - First Year",
+            description: "Building a strong foundation in cloud computing concepts",
+            skills: [
+                "Cloud Computing Fundamentals", 
+                "Linux Administration",
+                "Networking Fundamentals",
+                "Containerization (Docker)",
+                "Cloud Security Basics"
+            ],
+            resources: [
+            {
+        title: "Cloud Computing Fundamentals - edX",
+        url: "https://www.edx.org/course/cloud-computing-fundamentals"
+    },
+    {
+        title: "Google Cloud Computing Foundations - edX",
+        url: "https://www.edx.org/certificates/professional-certificate/google-cloud-computing-foundations"
+    }
+            ],
+            softSkills: [
+                "Problem Solving",
+                "Communication",
+            ],
+            certifications: [
+                "AWS Certified Cloud Essentials",
+                "Azure Administrator Associate",
+                "Google Cloud Certified Associate"
+            ]
+        },
+        2: {
+            title: "Cloud Engineering - Second Year",
+            description: "Advanced cloud computing concepts and services",
+            skills: [
+                "Cloud Security",
+                "Infrastructure as Code",
+                "Containerization (Docker)",
+                "Cloud Security Basics"
+            ],
+            resources: [
+            {
+        title: "Linux Administration Bootcamp: Go from Beginner to Advanced - Udemy",
+        url: "https://www.udemy.com/course/linux-administration-bootcamp/"
+    },  
+            ],
+            softSkills: [
+                "Problem Solving",
+                "Communication",
+            ],
+            certifications: [
+                "AWS Certified Cloud Essentials",
+                "Azure Administrator Associate",
+                "Google Cloud Certified Associate"
+            ]
+        },
+        3: {
+            title: "Cloud Engineering - Third Year",
+            description: "Advanced cloud computing concepts and services",
+            skills: [
+                "Cloud Security",
+                "Infrastructure as Code",
+                "Containerization (Docker)",
+                "Cloud Security Basics"
+            ],
+            resources: [
+            {
+        title: "Linux Foundation: Introduction to Cloud Infrastructure Technologies - edX",
+        url: "https://www.edx.org/learn/cloud-computing/the-linux-foundation-introduction-to-cloud-infrastructure-technologies"
+    },
+    {
+        title: "IBM: Introduction to Cloud Computing - edX",
+        url: "https://www.edx.org/learn/cloud-computing/ibm-introduction-to-cloud-computing"
+    }
+            ],
+            softSkills: [
+                "Problem Solving",
+                "Communication",
+            ],
+            certifications: [
+                "AWS Certified Cloud Essentials",
+                "Azure Administrator Associate",
+                "Google Cloud Certified Associate"]
+          },
+          4: {
+            title: "Cloud Engineering - Fourth Year",
+            description: "Advanced cloud computing concepts and services",
+            skills: [
+                "Cloud Security",
+                "Infrastructure as Code",
+                "Containerization (Docker)",
+                "Cloud Security Basics"
+            ],
+            resources: [    {
+        title: "Complete Linux Training Course to Get Your Dream IT Job 2025 - Udemy",
+        url: "https://www.udemy.com/course/complete-linux-training-course-to-get-your-dream-it-job/"
+    },
+    {
+        title: "Hands-On Linux System Administration - Udemy",
+        url: "https://www.udemy.com/course/hands-on-linux-system-administration/"
+    }
+
+            ],
+            softSkills: [
+                "Problem Solving",
+                "Communication",
+            ],
+            certifications: [
+                "AWS Certified Cloud Essentials",
+                "Azure Administrator Associate",
+                "Google Cloud Certified Associate"
+            ]
+        }
+    }
+    };
+    function generateAdaptiveRoadmap(domain, currentYear, progress) {
+    const totalYears = 4;
+    const remainingYears = totalYears - currentYear + 1;
+    const data = roadmapData[domain];
+    
+    // Create an adaptive roadmap based on remaining time and progress
+    let adaptiveRoadmap = {
+        title: `${domain.charAt(0).toUpperCase() + domain.slice(1)} Engineering - Catch-up Plan`,
+        description: `${remainingYears}-year accelerated roadmap`,
+        skills: [],
+        resources: [],
+        yearBreakdown: []
+    };
+
+    // Get first year skills and resources to distribute
+    const firstYearSkills = data[1].skills;
+    const firstYearSoftSkills = data[1].softSkills;
+    const firstYearCertifications = data[1].certifications;
+    const firstYearResources = data[1].resources;
+
+    // Distribute first year skills across remaining years
+    const skillsPerYear = Math.ceil(firstYearSkills.length / remainingYears);
+    const softSkillsPerYear = Math.ceil(firstYearSoftSkills.length / remainingYears);
+    const certificationsPerYear = Math.ceil(firstYearCertifications.length / remainingYears);
+    
+    // Create distributed arrays
+    const distributedFirstYearSkills = distributeItems(firstYearSkills, skillsPerYear);
+    const distributedFirstYearSoftSkills = distributeItems(firstYearSoftSkills, softSkillsPerYear);
+    const distributedFirstYearCertifications = distributeItems(firstYearCertifications, certificationsPerYear);
+
+    // Combine skills and resources from all years
+    const allSkills = [];
+    const allSoftSkills = [];
+    const allCertifications = [];
+    const allResources = new Set();
+
+    // Distribute first year content
+    distributedFirstYearSkills.forEach((yearSkills) => allSkills.push(...yearSkills));
+    distributedFirstYearSoftSkills.forEach((yearSoftSkills) => allSoftSkills.push(...yearSoftSkills));
+    distributedFirstYearCertifications.forEach((yearCertifications) => allCertifications.push(...yearCertifications));
+
+    // Add resources from the first year
+    firstYearResources.forEach(resource => allResources.add(resource));
+
+    // Add current and future year skills, soft skills, and certifications
+    for (let year = currentYear; year <= totalYears; year++) {
+        allSkills.push(...data[year].skills);
+        allSoftSkills.push(...data[year].softSkills);
+        allCertifications.push(...data[year].certifications);
+        data[year].resources.forEach(resource => allResources.add(resource));
+    }
+
+    // Create the year-by-year breakdown
+    let skillIndex = 0;
+    let softSkillIndex = 0;
+    let certificationIndex = 0;
+
+    for (let year = currentYear; year <= totalYears; year++) {
+        let yearSkills = allSkills.slice(skillIndex, skillIndex + 5);
+        skillIndex += 5;
+        let yearSoftSkills = allSoftSkills.slice(softSkillIndex, softSkillIndex + 2); // Adjust as needed
+        softSkillIndex += 2;
+        let yearCertifications = allCertifications.slice(certificationIndex, certificationIndex + 1); // Adjust as needed
+
+        adaptiveRoadmap.yearBreakdown.push({
+            year: year,
+            title: `Year ${year} - ${year === currentYear ? 'Current' : 'Future'} Focus`,
+            description: data[year].description,
+            skills: yearSkills,
+            softSkills: yearSoftSkills,
+            certifications: yearCertifications,
+            resources: data[year].resources
+        });
+    }
+
+    // Finalize resources
+    adaptiveRoadmap.resources = Array.from(allResources);
+
+    // Add catch-up note for the first year
+    if (currentYear > 1) {
+        adaptiveRoadmap.description += `\nNote: This plan includes essential first-year skills distributed across remaining years to ensure a strong foundation.`;
+    }
+
+    return adaptiveRoadmap;
+}
+
+// Helper function to distribute items evenly across years
+function distributeItems(items, itemsPerYear) {
+    let distributedItems = [];
+    for (let i = 0; i < items.length; i += itemsPerYear) {
+        distributedItems.push(items.slice(i, i + itemsPerYear));
+    }
+    return distributedItems;
+}
+
+
+        function prioritizeSkills(domain, progressLevel, skills, currentYear) {
+            // Define skill priorities for each domain and progress level
+            const priorities = {
+                ai: {
+                    year2: [
+                        // First year essentials
+                        "Master Python Programming",
+                        "Learn Linear Algebra and Calculus",
+                        "Complete Introduction to Machine Learning",
+                        // Second year skills
+                        "Deep Learning Fundamentals",
+                        "Neural Networks and Backpropagation",
+                        "TensorFlow and PyTorch Basics",
+                        "Data Preprocessing and Feature Engineering"
+                    ],
+                    year3: [
+                        // First year essentials
+                        "Master Python Programming",
+                        "Learn Linear Algebra and Calculus",
+                        // Second year essentials
+                        "Deep Learning Fundamentals",
+                        "Neural Networks and Backpropagation",
+                        // Third year skills
+                        "Natural Language Processing",
+                        "Computer Vision",
+                        "Reinforcement Learning",
+                        "Model Deployment and MLOps"
+                    ],
+                    year4: [
+                        // First year essentials
+                        "Master Python Programming",
+                        // Second year essentials
+                        "Deep Learning Fundamentals",
+                        // Third year essentials
+                        "Natural Language Processing",
+                        "Computer Vision",
+                        // Fourth year skills
+                        "Advanced AI Research",
+                        "Large Language Models",
+                        "AI Ethics and Responsible AI",
+                        "Industry Project Implementation"
+                    ]
+                },
+                cyber: {
+                    year2: [
+                        // First year essentials
+                        "Network Security Basics",
+                        "Operating System Security",
+                        "Basic Cryptography",
+                        // Second year skills
+                        "Advanced Network Security",
+                        "Web Application Security",
+                        "Penetration Testing",
+                        "Security Architecture Design"
+                    ],
+                    year3: [
+                        // First year essentials
+                        "Network Security Basics",
+                        "Basic Cryptography",
+                        // Second year essentials
+                        "Advanced Network Security",
+                        "Web Application Security",
+                        // Third year skills
+                        "Cloud Security (AWS, Azure, GCP)",
+                        "Threat Intelligence",
+                        "Security Operations Center",
+                        "Advanced Cryptography"
+                    ],
+                    year4: [
+                        // First year essentials
+                        "Network Security Basics",
+                        // Second year essentials
+                        "Advanced Network Security",
+                        // Third year essentials
+                        "Cloud Security (AWS, Azure, GCP)",
+                        // Fourth year skills
+                        "Security Architecture Design",
+                        "Risk Management",
+                        "Security Leadership",
+                        "Advanced Threat Hunting"
+                    ]
+                },
+                fullstack: {
+                    year2: [
+                        // First year essentials
+                        "HTML5, CSS3, and JavaScript",
+                        "Basic Frontend Development",
+                        "Introduction to Backend Development",
+                        // Second year skills
+                        "React.js and Modern Frontend Frameworks",
+                        "Node.js and Express.js",
+                        "RESTful API Design",
+                        "Database Management Systems"
+                    ],
+                    year3: [
+                        // First year essentials
+                        "HTML5, CSS3, and JavaScript",
+                        // Second year essentials
+                        "React.js and Modern Frontend Frameworks",
+                        "Node.js and Express.js",
+                        // Third year skills
+                        "Advanced Frontend Architecture",
+                        "Microservices Architecture",
+                        "DevOps and CI/CD",
+                        "Testing and Quality Assurance"
+                    ],
+                    year4: [
+                        // First year essentials
+                        "HTML5, CSS3, and JavaScript",
+                        // Second year essentials
+                        "React.js and Modern Frontend Frameworks",
+                        // Third year essentials
+                        "Microservices Architecture",
+                        // Fourth year skills
+                        "System Design and Architecture",
+                        "Cloud Integration",
+                        "Advanced Security Practices",
+                        "Team Leadership"
+                    ]
+                },
+                cloud: {
+                    year2: [
+                        // First year essentials
+                        "Cloud Computing Basics",
+                        "Linux Administration",
+                        "Networking Fundamentals",
+                        // Second year skills
+                        "AWS/Azure/GCP Core Services",
+                        "Infrastructure as Code",
+                        "Containerization (Docker)",
+                        "Cloud Security Basics"
+                    ],
+                    year3: [
+                        // First year essentials
+                        "Cloud Computing Basics",
+                        // Second year essentials
+                        "AWS/Azure/GCP Core Services",
+                        "Infrastructure as Code",
+                        // Third year skills
+                        "Cloud Architecture Design",
+                        "Kubernetes and Container Orchestration",
+                        "Serverless Architecture",
+                        "Cloud Security Advanced"
+                    ],
+                    year4: [
+                        // First year essentials
+                        "Cloud Computing Basics",
+                        // Second year essentials
+                        "AWS/Azure/GCP Core Services",
+                        // Third year essentials
+                        "Cloud Architecture Design",
+                        // Fourth year skills
+                        "Multi-Cloud Architecture",
+                        "Cloud Cost Optimization",
+                        "Disaster Recovery Planning",
+                        "Team Leadership"
+                    ]
+                }
+                
+            };
+
+            // Get priority skills based on current year
+            const yearKey = `year${currentYear}`;
+            const prioritySkills = priorities[domain][yearKey] || priorities[domain].year4;
+            
+            // Filter and sort skills based on priorities
+            return skills.filter(skill => prioritySkills.includes(skill))
+                        .sort((a, b) => prioritySkills.indexOf(a) - prioritySkills.indexOf(b));
+        }
+        function updateRoadmap() {
+    const domain = document.getElementById('domain').value;
+    const year = document.getElementById('year').value;
+    const progress = document.getElementById('progress').value;
+    
+    // Generate adaptive roadmap
+    const data = generateAdaptiveRoadmap(domain, parseInt(year), progress);
+    
+    // Update year markers
+    document.querySelectorAll('.year-marker').forEach(marker => {
+        marker.classList.remove('active');
+        if (marker.textContent.includes(year)) {
+            marker.classList.add('active');
+        }
+    });
+
+    // Get the selected year's data
+    const selectedYearData = data.yearBreakdown.find(yearData => yearData.year === parseInt(year));
+    
+    // Update roadmap content
+    const roadmapContent = `
+        <div class="roadmap-path">
+            <div class="path-header">
+                <span class="path-icon">${getDomainIcon(domain)}</span>
+                <h2>${selectedYearData.title}</h2>
+            </div>
+            <div class="path-description">
+                <h4>Description</h4>
+                <p>${selectedYearData.description}</p>
+            </div>
+            <div class="checklist">
+                <div class="category">
+                    <h3>${selectedYearData.title}</h3>
+                    <p style="color: #00E6D0; margin-bottom: 2rem;">${selectedYearData.description}</p>
+                    
+                    <!-- Technical Skills -->
+                    <h4>🔧 Technical Skills</h4>
+                    ${selectedYearData.skills.map((skill, skillIndex) => `
+                        <div class="checklist-item">
+                            <input type="checkbox" id="skill_${skillIndex}" onchange="updateProgress('${domain}')">
+                            <label for="skill_${skillIndex}">${skill}</label>
+                        </div>
+                    `).join('')}
+                    
+                    <!-- Soft Skills -->
+                    <h4>🤝 Soft Skills</h4>
+                    ${selectedYearData.softSkills ? selectedYearData.softSkills.map((softSkill, skillIndex) => `
+                        <div class="checklist-item">
+                            <input type="checkbox" id="softSkill_${skillIndex}" onchange="updateProgress('${domain}')">
+                            <label for="softSkill_${skillIndex}">${softSkill}</label>
+                        </div>
+                    `).join('') : ''}
+                    
+                    <!-- Certifications -->
+                    <h4>🏆 Certifications</h4>
+                    ${selectedYearData.certifications ? selectedYearData.certifications.map((certification, certIndex) => `
+                        <div class="checklist-item">
+                            <input type="checkbox" id="certification_${certIndex}" onchange="updateProgress('${domain}')">
+                            <label for="certification_${certIndex}">${certification}</label>
+                        </div>
+                    `).join('') : ''}
+                </div>
+                
+                <!-- Resources Section -->
+                <div class="resources-section">
+                    <h4>Recommended Resources</h4>
+                    <ul>
+                        ${selectedYearData.resources.map(resource => `
+                            <li><a href="${resource.url}" target="_blank">${resource.title}</a></li>
+                        `).join('')}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.querySelector('.roadmap-paths').innerHTML = roadmapContent;
+}
+
+
+        function getDomainIcon(domain) {
+            const icons = {
+                ai: '🤖',
+                cyber: '🛡️',
+                fullstack: '💻',
+                cloud: '☁️'
+            };
+            return icons[domain] || '💻';
+        }
+
+        function selectYear(year) {
+            document.getElementById('year').value = year;
+            updateRoadmap();
+        }
+
+        function updateProgress(domain) {
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            const checked = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked');
+            const progress = (checked.length / checkboxes.length) * 100;
+
+            // Update completed class
+            checkboxes.forEach(checkbox => {
+                const item = checkbox.parentElement;
+                if (checkbox.checked) {
+                    item.classList.add('completed');
+                } else {
+                    item.classList.remove('completed');
+                }
+            });
+        }
+
+        function generateResume() {
+    const domain = document.getElementById('domain').value;
+    const year = document.getElementById('year').value;
+    const data = roadmapData[domain][year];
+    
+    const completedItems = [];
+    document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').forEach(checkbox => {
+        completedItems.push(checkbox.nextElementSibling.textContent);
+    });
+
+    // Begin LaTeX content
+    let resumeContent = `\\documentclass[a4paper,10pt]{article}
+\\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+\\usepackage{hyperref}
+\\usepackage{enumitem}
+
+\\begin{document}
+
+\\title{${data.title} Achievement Report}
+\\author{Your Name}
+\\date{\\today}
+\\maketitle
+
+\\section*{Description}
+${data.description}
+
+\\section*{Skills}`;
+
+    // Add completed skills to LaTeX resume
+    if (completedItems.length > 0) {
+        completedItems.forEach(item => {
+            resumeContent += `\n\\item ${item}`;
+        });
+    }
+
+
+
+    // Calculate progress
+    const progressPercentage = Math.round((completedItems.length / data.skills.length) * 100);
+    resumeContent += `
+
+\\section*{Progress}
+Progress: ${progressPercentage}%
+
+\\end{document}`;
+
+    // Generate the Blob and trigger the download
+    const blob = new Blob([resumeContent], { type: 'application/x-tex' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${domain}-year${year}-resume.tex`;
+
+    // Trigger the download
+    a.click();
+
+    // Clean up
+    window.URL.revokeObjectURL(url);
+}
+
+        // Initialize the roadmap
+        updateRoadmap();
+    </script>
+</body>
+</html> 

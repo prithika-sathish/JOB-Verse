@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Task Spin - Quick Wins</title>
+  <style>
+    :root {
+      --primary-from: #00E6D0;
+      --primary-to: #735BFF;
+      --main-bg: #0D0D1A;
+      --card-bg: #1B1C29;
+      --bright-blue: #00E6D0;
+      --pink-highlight: #FF4E8D;
+      --xp-progress: #C270FF;
+      --xp-bg: #2C2C3E;
+      --high-priority: #B84040;
+      --yellow-xp: #FFEB75;
+      --green-status: #38FF88;
+      --red-status: #FF3860;
+      --purple-status: #A365FF;
+      --white: #FFFFFF;
+      --light-gray: #CCCCCC;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--main-bg);
+      color: var(--white);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      background: linear-gradient(135deg, var(--primary-from), var(--primary-to));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-top: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .spin-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+      position: relative;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 30px auto;
+    }
+
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(115, 91, 255, 0.4);
+      transition: transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+      transform: rotate(0deg);
+    }
+
+    .wheel-section {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      transform-origin: bottom right;
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .wheel-section:nth-child(1) {
+      background-color: var(--bright-blue);
+      color: var(--main-bg);
+      transform: rotate(0deg);
+    }
+
+    .wheel-section:nth-child(2) {
+      background-color: var(--pink-highlight);
+      color: var(--main-bg);
+      transform: rotate(120deg);
+    }
+
+    .wheel-section:nth-child(3) {
+      background-color: var(--purple-status);
+      color: var(--main-bg);
+      transform: rotate(240deg);
+    }
+
+    .wheel-marker {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 30px solid var(--yellow-xp);
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .center-circle {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: var(--card-bg);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bright-blue);
+    }
+
+    .wheel-text {
+      position: absolute;
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      width: 100px;
+      z-index: 3;
+    }
+
+    .wheel-text:nth-child(1) {
+      top: 70px;
+      left: 50px;
+      transform: rotate(-60deg);
+    }
+
+    .wheel-text:nth-child(2) {
+      top: 70px;
+      right: 50px;
+      transform: rotate(60deg);
+    }
+
+    .wheel-text:nth-child(3) {
+      bottom: 70px;
+      left: 100px;
+      transform: rotate(180deg);
+    }
+
+    .spin-btn {
+      background: linear-gradient(135deg, var(--primary-from), var(--primary-to));
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      padding: 12px 35px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(115, 91, 255, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .spin-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(115, 91, 255, 0.6);
+    }
+
+    .spin-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .task-container {
+      margin-top: 30px;
+      display: none;
+    }
+
+    .task-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .task-type-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .microtask-indicator {
+      background-color: var(--bright-blue);
+    }
+
+    .softskill-indicator {
+      background-color: var(--pink-highlight);
+    }
+
+    .dsaquiz-indicator {
+      background-color: var(--purple-status);
+    }
+
+    .task-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--white);
+      flex-grow: 1;
+    }
+
+    .task-xp {
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--yellow-xp);
+    }
+
+    .task-description {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: var(--light-gray);
+    }
+
+    .answer-container {
+      background-color: rgba(44, 44, 62, 0.5);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    textarea, .editor-container {
+      width: 100%;
+      min-height: 150px;
+      background-color: rgba(13, 13, 26, 0.7);
+      border: 1px solid var(--xp-bg);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--white);
+      font-family: inherit;
+      resize: vertical;
+      margin-bottom: 15px;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      background-color: rgba(13, 13, 26, 0.7);
+      border: 1px solid var(--xp-bg);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--white);
+      margin-bottom: 15px;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, var(--primary-from), var(--primary-to));
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(115, 91, 255, 0.4);
+    }
+
+    .result-container {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .result-success {
+      color: var(--green-status);
+      font-weight: bold;
+    }
+
+    .task-complete-container {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+    }
+
+    .task-complete-icon {
+      width: 24px;
+      height: 24px;
+      background-color: var(--green-status);
+      border-radius: 50%;
+      margin-right: 10px;
+      position: relative;
+    }
+
+    .task-complete-icon:after {
+      content: '';
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      width: 12px;
+      height: 6px;
+      border-left: 2px solid var(--main-bg);
+      border-bottom: 2px solid var(--main-bg);
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .task-complete-text {
+      font-weight: bold;
+      color: var(--white);
+    }
+
+    .xp-gained {
+      margin-left: auto;
+      color: var(--yellow-xp);
+      font-weight: bold;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .daily-limit-message {
+      text-align: center;
+      color: var(--light-gray);
+      margin-top: 20px;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .wheel-container {
+        width: 250px;
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Daily Task Spin</h1>
+      <p>Spin the wheel to get a random quick-win task. Complete one daily for XP and skill progression!</p>
+      
+      <div class="spin-container">
+        <div class="wheel-container">
+          <div class="wheel-marker"></div>
+          <div class="wheel">
+            <div class="wheel-section"></div>
+            <div class="wheel-section"></div>
+            <div class="wheel-section"></div>
+            <div class="center-circle">SPIN</div>
+            <div class="wheel-text">Microtask</div>
+            <div class="wheel-text">Soft Skill</div>
+            <div class="wheel-text">DSA Quiz</div>
+          </div>
+        </div>
+        
+        <button id="spinBtn" class="spin-btn">Spin the Wheel</button>
+        <div class="daily-limit-message" id="dailyLimitMessage">You've already completed your daily task. Come back tomorrow for a new challenge!</div>
+      </div>
+
+      <div id="taskContainer" class="task-container">
+        <div class="task-header">
+          <div id="taskTypeIndicator" class="task-type-indicator"></div>
+          <div id="taskType" class="task-title">Microtask</div>
+          <div id="taskXP" class="task-xp">+25 XP</div>
+        </div>
+
+        <div id="taskDescription" class="task-description">Your task description will appear here.</div>
+
+        <div class="answer-container">
+          <div id="answerPrompt">Your answer:</div>
+          <div id="taskAnswerContainer">
+            <!-- Dynamic input will be added here based on task type -->
+          </div>
+          <button id="submitTaskBtn" class="submit-btn">Submit Answer</button>
+        </div>
+      </div>
+
+      <div id="resultContainer" class="result-container">
+        <div class="task-complete-container">
+          <div class="task-complete-icon"></div>
+          <div class="task-complete-text">Task Complete!</div>
+          <div id="xpGained" class="xp-gained">+25 XP</div>
+        </div>
+        <p class="result-success">Great job! Your answer has been submitted successfully.</p>
+        <p>Check back tomorrow for a new challenge to keep your skills sharp.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Task database
+    const tasks = {
+      microtask: [
+        {
+          title: "Write a Professional Bio",
+          description: "Write a 2-3 sentence professional bio for your LinkedIn profile that highlights your key skills and career aspirations.",
+          type: "text",
+          xp: 25
+        },
+        {
+          title: "Elevator Pitch",
+          description: "Create a concise 30-second elevator pitch that explains who you are and what value you bring to a development team.",
+          type: "text",
+          xp: 20
+        },
+        {
+          title: "Product Feature",
+          description: "Write a brief product feature description for a mobile app that helps users track their daily water intake.",
+          type: "text",
+          xp: 25
+        },
+        {
+          title: "Bug Report",
+          description: "Write a clear, concise bug report for the following scenario: A user can't log in to the mobile app after updating to the latest version.",
+          type: "text",
+          xp: 30
+        },
+        {
+          title: "User Story",
+          description: "Write a user story for a feature that allows users to save articles for offline reading in a news app.",
+          type: "text",
+          xp: 25
+        },
+        {
+          title: "Email to Senior Developer",
+          description: "Draft a professional email asking a senior developer for help with a complex authentication issue you're facing.",
+          type: "text",
+          xp: 20
+        },
+        {
+          title: "Code Review Comment",
+          description: "Write a constructive code review comment for a junior developer who has written nested if statements that could be simplified.",
+          type: "text",
+          xp: 25
+        },
+        {
+          title: "API Documentation",
+          description: "Write a brief documentation for an API endpoint that allows users to update their profile information.",
+          type: "text",
+          xp: 30
+        }
+      ],
+      softskill: [
+        {
+          title: "Salary Negotiation",
+          description: "Write a script for negotiating a higher salary offer. The initial offer is $80,000, but market research suggests $95,000 is appropriate for your skills and experience. Role-play your response to the hiring manager.",
+          type: "text",
+          xp: 35
+        },
+        {
+          title: "Conflict Resolution",
+          description: "Describe how you would handle a situation where a team member consistently misses deadlines and affects the project timeline. What specific steps would you take to address this issue?",
+          type: "text",
+          xp: 30
+        },
+        {
+          title: "Client Communication",
+          description: "Draft an email to a client explaining that their requested feature will require additional development time and budget. Maintain professionalism while clearly explaining the situation.",
+          type: "text",
+          xp: 35
+        },
+        {
+          title: "Team Leadership",
+          description: "Outline a 5-minute stand-up meeting agenda for a team that's falling behind on sprint goals. Include specific discussion points and action items.",
+          type: "text",
+          xp: 35
+        },
+        {
+          title: "Feedback Delivery",
+          description: "Write constructive feedback for a colleague whose code quality is good but whose documentation is consistently lacking. Focus on improvement rather than criticism.",
+          type: "text",
+          xp: 30
+        },
+        {
+          title: "Project Prioritization",
+          description: "You have three urgent tasks but can only complete one today: fix a minor bug affecting many users, implement a new feature promised to a key client, or review a critical security patch. Explain which you would prioritize and why.",
+          type: "text",
+          xp: 40
+        },
+        {
+          title: "Client Presentation",
+          description: "Create a brief outline for a 5-minute presentation to stakeholders about the progress of your current project. Include key points you would highlight and any challenges you would address.",
+          type: "text",
+          xp: 35
+        },
+        {
+          title: "Time Management Strategy",
+          description: "Describe a specific time management strategy you would implement to balance coding tasks, meetings, and responding to urgent issues throughout your workday.",
+          type: "text",
+          xp: 30
+        }
+      ],
+      dsaquiz: [
+        {
+          title: "Array Manipulation",
+          description: "Explain how you would find the second largest number in an unsorted array without sorting the entire array. Include time complexity in your answer.",
+          type: "text",
+          xp: 40
+        },
+        {
+          title: "String Processing",
+          description: "Describe an algorithm to check if two strings are anagrams of each other. What is the time and space complexity of your solution?",
+          type: "text",
+          xp: 35
+        },
+        {
+          title: "Hash Tables",
+          description: "Explain how hash collisions are handled in hash tables and why collision resolution is important. Give examples of two different collision resolution strategies.",
+          type: "text",
+          xp: 45
+        },
+        {
+          title: "Tree Traversal",
+          description: "Describe the difference between in-order, pre-order, and post-order traversal of a binary tree. Give an example of when each might be useful.",
+          type: "text",
+          xp: 40
+        },
+        {
+          title: "Recursion",
+          description: "Explain how you would solve the Tower of Hanoi problem using recursion. What is the time complexity of this solution?",
+          type: "text",
+          xp: 50
+        },
+        {
+          title: "Graph Algorithms",
+          description: "Compare and contrast Breadth-First Search (BFS) and Depth-First Search (DFS) for graph traversal. Provide specific scenarios where one would be preferred over the other.",
+          type: "text",
+          xp: 45
+        },
+        {
+          title: "Sorting Algorithms",
+          description: "Explain the quicksort algorithm and analyze its best-case, average-case, and worst-case time complexities. How can the worst-case scenario be avoided?",
+          type: "text",
+          xp: 45
+        },
+        {
+          title: "Dynamic Programming",
+          description: "Explain how you would use dynamic programming to solve the coin change problem (finding the minimum number of coins needed to make a specific amount).",
+          type: "text",
+          xp: 50
+        }
+      ]
+    };
+
+    // DOM Elements
+    const spinBtn = document.getElementById('spinBtn');
+    const wheel = document.querySelector('.wheel');
+    const taskContainer = document.getElementById('taskContainer');
+    const taskTypeIndicator = document.getElementById('taskTypeIndicator');
+    const taskType = document.getElementById('taskType');
+    const taskXP = document.getElementById('taskXP');
+    const taskDescription = document.getElementById('taskDescription');
+    const taskAnswerContainer = document.getElementById('taskAnswerContainer');
+    const submitTaskBtn = document.getElementById('submitTaskBtn');
+    const resultContainer = document.getElementById('resultContainer');
+    const xpGained = document.getElementById('xpGained');
+    const dailyLimitMessage = document.getElementById('dailyLimitMessage');
+
+    // Initialize the page
+    function init() {
+      // Daily limit check removed for testing purposes
+      spinBtn.addEventListener('click', spinWheel);
+      submitTaskBtn.addEventListener('click', submitTask);
+    }
+
+    // Spin the wheel
+    function spinWheel() {
+      // Disable the spin button while spinning
+      spinBtn.disabled = true;
+      
+      // Hide any previously shown task
+      taskContainer.style.display = 'none';
+      resultContainer.style.display = 'none';
+      
+      // Random rotation between 5 and 10 full rotations plus the section
+      const sections = ['microtask', 'softskill', 'dsaquiz'];
+      const randomSection = Math.floor(Math.random() * sections.length);
+      const randomDegree = 1800 + (randomSection * 120) + Math.floor(Math.random() * 120);
+      
+      // Apply the rotation to the wheel
+      wheel.style.transform = `rotate(${randomDegree}deg)`;
+      
+      // Wait for the animation to finish then show the task
+      setTimeout(() => {
+        showTask(sections[randomSection]);
+      }, 5000); // Match this to the CSS transition time
+    }
+
+    // Show a random task from the selected category
+    function showTask(category) {
+      // Get a random task from the selected category
+      const taskList = tasks[category];
+      const randomTask = taskList[Math.floor(Math.random() * taskList.length)];
+      
+      // Set task details
+      taskType.textContent = getCategoryTitle(category);
+      taskXP.textContent = `+${randomTask.xp} XP`;
+      taskDescription.textContent = randomTask.description;
+      
+      // Set task type indicator color
+      taskTypeIndicator.className = 'task-type-indicator';
+      taskTypeIndicator.classList.add(`${category}-indicator`);
+      
+      // Set up answer container based on task type
+      setupAnswerInput(randomTask.type);
+      
+      // Store current task for submission
+      window.currentTask = {
+        category: category,
+        task: randomTask
+      };
+      
+      // Show the task container
+      taskContainer.style.display = 'block';
+    }
+
+    // Set up the appropriate input for answer submission
+    function setupAnswerInput(type) {
+      taskAnswerContainer.innerHTML = '';
+      
+      if (type === 'text') {
+        const textarea = document.createElement('textarea');
+        textarea.id = 'taskAnswer';
+        textarea.placeholder = 'Type your answer here...';
+        taskAnswerContainer.appendChild(textarea);
+      } else if (type === 'file') {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.id = 'taskAnswer';
+        taskAnswerContainer.appendChild(fileInput);
+      }
+    }
+
+    // Submit the task answer
+    function submitTask() {
+      // Disable submit button temporarily
+      submitTaskBtn.disabled = true;
+      
+      // Get the answer
+      let answer;
+      const answerElement = document.getElementById('taskAnswer');
+      
+      if (answerElement.tagName === 'TEXTAREA') {
+        answer = answerElement.value.trim();
+        if (!answer) {
+          alert('Please provide an answer before submitting.');
+          submitTaskBtn.disabled = false;
+          return;
+        }
+      } else if (answerElement.type === 'file') {
+        if (!answerElement.files || !answerElement.files[0]) {
+          alert('Please upload a file before submitting.');
+          submitTaskBtn.disabled = false;
+          return;
+        }
+        answer = answerElement.files[0].name;
+      }
+      
+      // In a real app, you would send this to the server
+      const taskData = {
+        category: window.currentTask.category,
+        taskTitle: window.currentTask.task.title,
+        answer: answer,
+        xp: window.currentTask.task.xp,
+        timestamp: new Date().toISOString()
+      };
+      
+      console.log('Task submitted:', taskData);
+      
+      // For demo purposes - simulate saving to database
+      const savedTasks = JSON.parse(localStorage.getItem('completedTasks') || '[]');
+      savedTasks.push(taskData);
+      localStorage.setItem('completedTasks', JSON.stringify(savedTasks));
+      
+      // Show success message
+      showResult(taskData.xp);
+    }
+
+    // Show result after submission
+    function showResult(xp) {
+      taskContainer.style.display = 'none';
+      xpGained.textContent = `+${xp} XP`;
+      resultContainer.style.display = 'block';
+      
+      // Enable spin button for testing - daily limit removed
+      spinBtn.disabled = false;
+      
+      // Add a button to go back to wheel
+      const backButton = document.createElement('button');
+      backButton.className = 'spin-btn';
+      backButton.style.marginTop = '20px';
+      backButton.textContent = 'Try Another Task';
+      backButton.onclick = function() {
+        resultContainer.style.display = 'none';
+        spinBtn.disabled = false;
+      };
+      
+      // Remove previous back button if it exists
+      const existingButton = resultContainer.querySelector('button');
+      if (existingButton) {
+        resultContainer.removeChild(existingButton);
+      }
+      
+      resultContainer.appendChild(backButton);
+    }
+
+    // Helper function to get category titles
+    function getCategoryTitle(category) {
+      switch(category) {
+        case 'microtask':
+          return 'Microtask';
+        case 'softskill':
+          return 'Soft Skill Challenge';
+        case 'dsaquiz':
+          return 'DSA Quiz';
+        default:
+          return 'Task';
+      }
+    }
+
+    // Initialize the page when loaded
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

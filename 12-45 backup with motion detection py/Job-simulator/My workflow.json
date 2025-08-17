@@ -1,0 +1,260 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "79a643a3-20ae-486f-87f4-c19c60bc2598",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://remoteok.io/remote-dev+python-jobs.rss",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "bd1cf9e5-57ad-44f3-9589-ac6523ed5e86",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "05aacb08-d94b-4fc2-92d0-846997ba73e4",
+              "leftValue": "={{ ($json[\"title\"] || \"\").toLowerCase() }}",
+              "rightValue": "(software|developer|backend|full stack|ml|ai)",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "0de851c2-0c32-4908-83b5-06314fa6cc1c",
+              "leftValue": "={{ $json[\"content\"] || $json[\"description\"] || \"\" }}\n",
+              "rightValue": "(machine learning|deep learning|llm|gen ai|chatgpt|django|react)",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "ee7b9c2a-225f-4f60-80e1-2eb21d726de7",
+              "leftValue": "={{$json[\"content\"]}}",
+              "rightValue": "Full Stack ",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "3f07556a-3cf1-4adf-b2d8-9e87ee17eb68",
+              "leftValue": "={{$json[\"content\"]}}",
+              "rightValue": "\tPython",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "65b5c274-0487-4214-b238-0ab2380c5fcc",
+              "leftValue": "={{$json[\"content\"]}}",
+              "rightValue": "Tech",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "abc0d7a3-ce96-4918-b919-93b5ac8f9d2a",
+              "leftValue": "={{ $json[\"link\"] || \"\" }}",
+              "rightValue": "http",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            },
+            {
+              "id": "9bac454e-f549-47da-8eff-a82c24a4d0e2",
+              "leftValue": "={{ $json[\"content\"] || \"\" }}",
+              "rightValue": "(₹\\s?\\d{4,6}|INR\\s?\\d{4,6}|[Ss]tipend.*\\d{4,6})",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "ae1b6791-7788-43ff-96ad-c65b778a3b2b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "23651eb9-a662-8087-9590-e81dbeb0cb29",
+          "mode": "list",
+          "cachedResultName": "JOB- Scrape ",
+          "cachedResultUrl": "https://www.notion.so/23651eb9a66280879590e81dbeb0cb29"
+        },
+        "title": "={{ $json.title }}",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Date |title",
+              "title": "={{ new Date($json.pubDate).toLocaleDateString(\"en-GB\", { day: '2-digit', month: 'short', year: 'numeric' }) }}\n"
+            },
+            {
+              "key": "Role |rich_text",
+              "textContent": "={{ $json.title }}"
+            },
+            {
+              "key": "Details |rich_text",
+              "textContent": "={{ $json.content.replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 1980) + '...' }}\n"
+            },
+            {
+              "key": "JOB link|rich_text",
+              "textContent": "={{ $json.link }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        80
+      ],
+      "id": "4a2738c5-1e4b-4fbf-8366-531c651ac21e",
+      "name": "Create a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "Ja385JEgOGSikdJG",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "prithikasathish.dev@gmail.com",
+        "toEmail": "prithikasathish.dev@gmail.com",
+        "subject": "n8n Job Summary",
+        "emailFormat": "=html",
+        "html": "=I just added {{ $items().length }} new jobs to your Notion board.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        832,
+        80
+      ],
+      "id": "a11c0e2d-d626-46ec-8e5e-dfddae8913c9",
+      "name": "Send email",
+      "webhookId": "f21ce111-8b26-47c7-8499-c7a06edcec3b",
+      "credentials": {
+        "smtp": {
+          "id": "GEHLVQ4AqWk1oUSe",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a database page": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "af71d14c-db6d-4b14-bbb3-e5d411600df6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "45a4264f2c0d19e9d54191c7487f92723ee85310cc2427a3cf4d389717fb5f1c"
+  },
+  "id": "eDCBCoIvKvNE8sUB",
+  "tags": []
+}

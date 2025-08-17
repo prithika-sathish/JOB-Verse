@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task & Deadline Execution Module</title>
+    <style>
+        :root {
+            --primary-gradient-from: #00E6D0;
+            --primary-gradient-to: #735BFF;
+            --main-bg: #0D0D1A;
+            --card-bg: #1B1C29;
+            --bright-blue: #00E6D0;
+            --pink-highlight: #FF4E8D;
+            --xp-bar: #C270FF;
+            --xp-bar-bg: #2C2C3E;
+            --high-priority: #B84040;
+            --yellow-xp: #FFEB75;
+            --green-status: #38FF88;
+            --red-status: #FF3860;
+            --purple-status: #A365FF;
+            --text-color: #FFFFFF;
+        }
+        
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            background: linear-gradient(to right, var(--primary-gradient-from), var(--primary-gradient-to));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #CCCCCC;
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .module-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .module-sidebar {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .module-content {
+            flex: 3;
+            min-width: 500px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--purple-status);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .profile-details h3 {
+            margin: 0;
+            color: var(--bright-blue);
+        }
+        
+        .profile-details p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #AAAAAA;
+        }
+        
+        .xp-bar-container {
+            margin-top: 10px;
+            background-color: var(--xp-bar-bg);
+            height: 8px;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .xp-bar {
+            height: 100%;
+            border-radius: 4px;
+            background-color: var(--xp-bar);
+            width: 65%;
+        }
+        
+        .xp-text {
+            color: var(--yellow-xp);
+            font-size: 12px;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .module-nav {
+            margin-top: 30px;
+        }
+        
+        .nav-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(to right, rgba(0, 230, 208, 0.1), rgba(115, 91, 255, 0.1));
+            border-left: 3px solid var(--bright-blue);
+        }
+        
+        .nav-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-item-header h4 {
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .status-complete {
+            background-color: var(--green-status);
+        }
+        
+        .status-in-progress {
+            background-color: var(--purple-status);
+        }
+        
+        .status-pending {
+            background-color: var(--red-status);
+        }
+        
+        .section-title {
+            color: var(--pink-highlight);
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background-color: rgba(255, 78, 141, 0.3);
+            margin-left: 15px;
+        }
+        
+        .task-list {
+            margin-bottom: 30px;
+        }
+        
+        .task-card {
+            background-color: rgba(27, 28, 41, 0.7);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 3px solid #555;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .task-high-priority {
+            border-left-color: var(--high-priority);
+        }
+        
+        .task-medium-priority {
+            border-left-color: #F0A202;
+        }
+        
+        .task-low-priority {
+            border-left-color: var(--green-status);
+        }
+        
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .task-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        .task-priority {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .priority-high {
+            background-color: var(--high-priority);
+        }
+        
+        .priority-medium {
+            background-color: #F0A202;
+        }
+        
+        .priority-low {
+            background-color: var(--green-status);
+        }
+        
+        .task-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #AAAAAA;
+            margin-bottom: 10px;
+        }
+        
+        .task-description {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+        
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .task-xp {
+            color: var(--yellow-xp);
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .task-actions button {
+            background: linear-gradient(to right, var(--primary-gradient-from), var(--primary-gradient-to));
+            border: none;
+            border-radius: 5px;
+            color: white;
+            padding: 5px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+        
+        .task-actions button:hover {
+            opacity: 0.9;
+        }
+        
+        .progress-tracker {
+            background-color: rgba(27, 28, 41, 0.7);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .boss-message {
+            background-color: rgba(115, 91, 255, 0.1);
+            border-left: 3px solid var(--primary-gradient-to);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .boss-message h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--bright-blue);
+        }
+        
+        .checkpoint-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .checkpoint-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkpoint-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid var(--xp-bar-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .checkpoint-checkbox.checked {
+            background-color: var(--bright-blue);
+            border-color: var(--bright-blue);
+        }
+        
+        .checkpoint-checkbox.checked::after {
+            content: "✓";
+            color: var(--main-bg);
+            font-weight: bold;
+        }
+        
+        .checkpoint-text {
+            flex: 1;
+        }
+        
+        .checkpoint-text span {
+            color: var(--bright-blue);
+            font-weight: bold;
+        }
+        
+        .skill-progress {
+            margin-top: 15px;
+        }
+        
+        .skill-item {
+            margin-bottom: 10px;
+        }
+        
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .skill-name {
+            font-size: 14px;
+            color: #CCCCCC;
+        }
+        
+        .skill-level {
+            font-size: 14px;
+            color: var(--yellow-xp);
+        }
+        
+        .skill-bar-container {
+            height: 6px;
+            background-color: var(--xp-bar-bg);
+            border-radius: 3px;
+        }
+        
+        .skill-bar {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(to right, var(--primary-gradient-from), var(--primary-gradient-to));
+        }
+        
+        .task-popup {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 99;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #AAAAAA;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-gradient-from), var(--primary-gradient-to));
+            border: none;
+            border-radius: 5px;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+        
+        /* Add responsive styles */
+        @media (max-width: 768px) {
+            .module-container {
+                flex-direction: column;
+            }
+            
+            .module-sidebar, .module-content {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="backButton" class="back-button" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <div class="header">
+            <h1>TASK AND DEADLINE EXECUTION MODULE</h1>
+        </div>
+        
+        <div class="module-container">
+            <div class="module-sidebar">
+                <div class="profile-info">
+                    <div class="profile-avatar" id="userInitial">U</div>
+                    <div class="profile-details">
+                        <h3 id="userName">Loading User...</h3>
+                        <p id="userRole">Loading Role...</p>
+                        <div class="xp-bar-container">
+                            <div class="xp-bar"></div>
+                        </div>
+                        <div class="xp-text">1,250 / 2,000 XP</div>
+                    </div>
+                </div>
+                
+                <div class="module-info">
+                    <div class="section-title">Module Info</div>
+                    <p>Build your project management muscles through realistic workplace scenarios and deadline challenges.</p>
+                </div>
+                
+                <div class="skill-progress">
+                    <div class="section-title">Skills Development</div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <div class="skill-name">Time Management</div>
+                            <div class="skill-level">65%</div>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <div class="skill-name">Prioritization</div>
+                            <div class="skill-level">45%</div>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <div class="skill-name">Scope Management</div>
+                            <div class="skill-level">30%</div>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="width: 30%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <div class="skill-name">Strategic Execution</div>
+                            <div class="skill-level">38%</div>
+                        </div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" style="width: 38%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-content">
+                <div class="boss-message">
+                    <h4>Message from Dwight (Your Boss):</h4>
+                    <p>"Michael, I need these tasks completed with absolute precision. The client meeting has been moved up, so our deliverables are now due tomorrow at 9 AM. You'll need to reprioritize and potentially cut scope or delegate. Remember our discussion on Parkinson's Law - work expands to fill the time available, so be strategic. I've flagged the high priority items. Show me what you've learned from the timeboxing training."</p>
+                </div>
+                
+                <div class="progress-tracker">
+                    <div class="section-title">Task Completion Status</div>
+                    <div class="checkpoint-list" id="taskCompletionList">
+                        <div class="checkpoint-item" id="task1-status">
+                            <div class="checkpoint-checkbox" id="task1-checkbox"></div>
+                            <div class="checkpoint-text"><span>Finalize Q3 Marketing Report</span></div>
+                        </div>
+                        <div class="checkpoint-item" id="task2-status">
+                            <div class="checkpoint-checkbox" id="task2-checkbox"></div>
+                            <div class="checkpoint-text"><span>Prepare Client Presentation</span></div>
+                        </div>
+                        <div class="checkpoint-item" id="task3-status">
+                            <div class="checkpoint-checkbox" id="task3-checkbox"></div>
+                            <div class="checkpoint-text"><span>Social Media Content Calendar</span></div>
+                        </div>
+                        <div class="checkpoint-item" id="task4-status">
+                            <div class="checkpoint-checkbox" id="task4-checkbox"></div>
+                            <div class="checkpoint-text"><span>Competitor Analysis Update</span></div>
+                        </div>
+                        <div class="checkpoint-item" id="task5-status">
+                            <div class="checkpoint-checkbox" id="task5-checkbox"></div>
+                            <div class="checkpoint-text"><span>Weekly Team Report</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="task-list">
+                    <div class="section-title">Current Tasks</div>
+                    
+                    <div class="task-card task-high-priority" data-task-id="task1">
+                        <div class="task-header">
+                            <h3 class="task-title">Finalize Q3 Marketing Report</h3>
+                            <span class="task-priority priority-high">High Priority</span>
+                        </div>
+                        <div class="task-info">
+                            <span>Due: Tomorrow 9:00 AM</span>
+                            <span>Estimated Time: 3 hours</span>
+                        </div>
+                        <p class="task-description">Complete the Q3 marketing performance report with all key metrics. Include campaign ROI, conversion rates, and recommendations for Q4. The client needs this for tomorrow's board meeting.</p>
+                        <div class="task-footer">
+                            <span class="task-xp">+350 XP</span>
+                            <div class="task-actions">
+                                <button onclick="startTask('task1')">Start Task</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card task-high-priority" data-task-id="task2">
+                        <div class="task-header">
+                            <h3 class="task-title">Prepare Client Presentation</h3>
+                            <span class="task-priority priority-high">High Priority</span>
+                        </div>
+                        <div class="task-info">
+                            <span>Due: Tomorrow 8:30 AM</span>
+                            <span>Estimated Time: 2.5 hours</span>
+                        </div>
+                        <p class="task-description">Create a 15-slide presentation summarizing our findings and strategic recommendations. Focus on visual impact and clear messaging for the executive audience.</p>
+                        <div class="task-footer">
+                            <span class="task-xp">+300 XP</span>
+                            <div class="task-actions">
+                                <button onclick="startTask('task2')">Start Task</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card task-medium-priority" data-task-id="task3">
+                        <div class="task-header">
+                            <h3 class="task-title">Social Media Content Calendar</h3>
+                            <span class="task-priority priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-info">
+                            <span>Due: Tomorrow 12:00 PM</span>
+                            <span>Estimated Time: 2 hours</span>
+                        </div>
+                        <p class="task-description">Draft content calendar for the next month with post ideas, copy suggestions, and visual requirements for each platform. Align with upcoming product launches.</p>
+                        <div class="task-footer">
+                            <span class="task-xp">+200 XP</span>
+                            <div class="task-actions">
+                                <button onclick="startTask('task3')">Start Task</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card task-low-priority" data-task-id="task4">
+                        <div class="task-header">
+                            <h3 class="task-title">Competitor Analysis Update</h3>
+                            <span class="task-priority priority-low">Low Priority</span>
+                        </div>
+                        <div class="task-info">
+                            <span>Due: Tomorrow 3:00 PM</span>
+                            <span>Estimated Time: 4 hours</span>
+                        </div>
+                        <p class="task-description">Update the competitor landscape analysis with recent market changes. Include pricing strategies, feature comparisons, and positioning opportunities.</p>
+                        <div class="task-footer">
+                            <span class="task-xp">+150 XP</span>
+                            <div class="task-actions">
+                                <button onclick="startTask('task4')">Start Task</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-card task-low-priority" data-task-id="task5">
+                        <div class="task-header">
+                            <h3 class="task-title">Weekly Team Report</h3>
+                            <span class="task-priority priority-low">Low Priority</span>
+                        </div>
+                        <div class="task-info">
+                            <span>Due: Tomorrow 5:00 PM</span>
+                            <span>Estimated Time: 1 hour</span>
+                        </div>
+                        <p class="task-description">Compile weekly performance metrics, project updates, and blockers for the team status report. Highlight achievements and resource needs.</p>
+                        <div class="task-footer">
+                            <span class="task-xp">+100 XP</span>
+                            <div class="task-actions">
+                                <button onclick="startTask('task5')">Start Task</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="task-popup" id="taskPopup">
+        <button class="close-btn" onclick="closeTaskPopup()">×</button>
+        <h2 id="popupTitle">Task Details</h2>
+        <div id="popupContent">
+            <!-- Task details will be filled here -->
+        </div>
+        <div id="timeboxingChallenge">
+            <h3>Timeboxing Challenge</h3>
+            <p>How would you break down this task using the timeboxing technique?</p>
+            <textarea id="timeboxingInput" placeholder="Break this task into time blocks (e.g. 30min for research, 45min for drafting...)..." style="width: 100%; height: 100px; padding: 10px; margin-top: 10px; background-color: rgba(27, 28, 41, 0.7); color: white; border: 1px solid #555; border-radius: 5px;"></textarea>
+            
+            <h3>Eisenhower Decision</h3>
+            <p>Given the moved up deadline, how would you categorize this task?</p>
+            <select id="eisenhowerSelect" style="width: 100%; padding: 10px; margin-top: 10px; background-color: rgba(27, 28, 41, 0.7); color: white; border: 1px solid #555; border-radius: 5px;">
+                <option value="">Select a category...</option>
+                <option value="urgent-important">Urgent & Important (Do First)</option>
+                <option value="not-urgent-important">Not Urgent but Important (Schedule)</option>
+                <option value="urgent-not-important">Urgent but Not Important (Delegate)</option>
+                <option value="not-urgent-not-important">Not Urgent & Not Important (Eliminate)</option>
+            </select>
+            
+            <h3>Scope Management</h3>
+            <p>What elements could you cut or simplify to meet the deadline?</p>
+            <textarea id="scopeInput" placeholder="Identify scope elements to cut or simplify (be specific)..." style="width: 100%; height: 100px; padding: 10px; margin-top: 10px; background-color: rgba(27, 28, 41, 0.7); color: white; border: 1px solid #555; border-radius: 5px;"></textarea>
+            
+            <div class="error-message" id="validationError" style="color: var(--red-status); margin-top: 10px; display: none;">
+                Please complete all fields before submitting.
+            </div>
+            
+            <button class="btn-primary" onclick="submitTask()">Submit Plan</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentTaskId = '';
+        
+        // Simulate user login data - in a real implementation, this would come from the backend
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate fetching user data
+            setTimeout(() => {
+                const userData = {
+                    name: "User",
+                    role: "Junior Project Manager",
+                    initial: "U"
+                };
+                
+                // Update the UI with user data
+                document.getElementById('userName').textContent = userData.name;
+                document.getElementById('userRole').textContent = userData.role;
+                document.getElementById('userInitial').textContent = userData.initial;
+            }, 500);
+            
+            // Add click event listener to the overlay for closing popup when clicking outside
+            document.getElementById('overlay').addEventListener('click', function(event) {
+                // Only close if the overlay itself was clicked (not its children)
+                if (event.target === this) {
+                    closeTaskPopup();
+                }
+            });
+        });
+        
+        function startTask(taskId) {
+            currentTaskId = taskId;
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('taskPopup').style.display = 'block';
+            
+            // Clear previous input values
+            const textareas = document.querySelectorAll('#taskPopup textarea');
+            textareas.forEach(textarea => textarea.value = '');
+            document.querySelector('#taskPopup select').value = '';
+            
+            // Set task title based on the selected task
+            if (taskId === 'task1') {
+                document.getElementById('popupTitle').textContent = 'Finalize Q3 Marketing Report';
+            } else if (taskId === 'task2') {
+                document.getElementById('popupTitle').textContent = 'Prepare Client Presentation';
+            } else if (taskId === 'task3') {
+                document.getElementById('popupTitle').textContent = 'Social Media Content Calendar';
+            } else if (taskId === 'task4') {
+                document.getElementById('popupTitle').textContent = 'Competitor Analysis Update';
+            } else if (taskId === 'task5') {
+                document.getElementById('popupTitle').textContent = 'Weekly Team Report';
+            }
+        }
+        
+        function closeTaskPopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('taskPopup').style.display = 'none';
+            currentTaskId = '';
+        }
+        
+        function validateTaskInputs() {
+            const timeboxingInput = document.getElementById('timeboxingInput').value.trim();
+            const eisenhowerSelect = document.getElementById('eisenhowerSelect').value;
+            const scopeInput = document.getElementById('scopeInput').value.trim();
+            
+            // Validate that all fields have meaningful content
+            if (timeboxingInput.length < 10) {
+                alert('Please provide more detail in your timeboxing plan.');
+                return false;
+            }
+            
+            if (!eisenhowerSelect) {
+                alert('Please select a priority category from the Eisenhower matrix.');
+                return false;
+            }
+            
+            if (scopeInput.length < 10) {
+                alert('Please provide more detail about your scope management approach.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function submitTask() {
+            // Validate user inputs before marking task as complete
+            if (!validateTaskInputs()) {
+                return;
+            }
+            
+            // Mark the task as completed
+            const checkbox = document.getElementById(`${currentTaskId}-checkbox`);
+            checkbox.classList.add('checked');
+            
+            // Cross off the task in the checklist
+            const taskText = document.querySelector(`#${currentTaskId}-status .checkpoint-text span`);
+            taskText.style.textDecoration = 'line-through';
+            
+            // Update the task card in the main list
+            const taskCard = document.querySelector(`.task-card[data-task-id="${currentTaskId}"]`);
+            if (taskCard) {
+                taskCard.style.opacity = '0.6';
+                const taskButton = taskCard.querySelector('button');
+                taskButton.textContent = 'Completed';
+                taskButton.disabled = true;
+                taskButton.style.opacity = '0.7';
+            }
+            
+            // Update XP (this would connect to a backend in a real implementation)
+            let xpGained = 0;
+            if (currentTaskId === 'task1') xpGained = 350;
+            else if (currentTaskId === 'task2') xpGained = 300;
+            else if (currentTaskId === 'task3') xpGained = 200;
+            else if (currentTaskId === 'task4') xpGained = 150;
+            else if (currentTaskId === 'task5') xpGained = 100;
+            
+            // Show success message with XP gained
+            alert(`Task completed successfully! You earned +${xpGained} XP for strategic planning.`);
+            
+            // Hide the popup
+            closeTaskPopup();
+        }
+    </script>
+</body>
+</html>

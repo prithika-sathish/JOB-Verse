@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role Play Simulator</title>
+    <style>
+        :root {
+            --primary-gradient-from: #00E6D0;
+            --primary-gradient-to: #735BFF;
+            --main-bg: #0D0D1A;
+            --card-bg: #1B1C29;
+            --bright-blue: #00E6D0;
+            --pink-highlight: #FF4E8D;
+            --xp-progress: #C270FF;
+            --xp-bg: #2C2C3E;
+            --priority-red: #B84040;
+            --yellow-xp: #FFEB75;
+            --green-status: #38FF88;
+            --red-status: #FF3860;
+            --purple-status: #A365FF;
+            --text-light: #FFFFFF;
+            --text-dim: #B0B0C0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            background: linear-gradient(to right, var(--primary-gradient-from), var(--primary-gradient-to));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .scenario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .scenario-header h2 {
+            font-size: 1.5rem;
+            color: var(--bright-blue);
+        }
+
+        .scenario-category {
+            background-color: var(--purple-status);
+            border-radius: 1rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: linear-gradient(to right, var(--primary-gradient-from), var(--primary-gradient-to));
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            border: 1px solid var(--primary-gradient-from);
+            color: var(--primary-gradient-from);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .scenario-card {
+            background-color: rgba(27, 28, 41, 0.7);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            height: 100%;
+        }
+
+        .scenario-card:hover {
+            border-color: var(--primary-gradient-from);
+            transform: translateY(-3px);
+        }
+
+        .scenario-card h3 {
+            color: var(--bright-blue);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .scenario-card p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .difficulty {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .difficulty span {
+            color: var(--yellow-xp);
+            margin-left: 0.25rem;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 60vh;
+            min-height: 400px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem 0;
+        }
+
+        .message {
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .bot-message {
+            background-color: rgba(115, 91, 255, 0.15);
+            border-left: 3px solid var(--primary-gradient-to);
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background-color: rgba(0, 230, 208, 0.15);
+            border-left: 3px solid var(--primary-gradient-from);
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .chat-input {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-input textarea {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: rgba(27, 28, 41, 0.7);
+            border: 1px solid #2C2C3E;
+            color: var(--text-light);
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .chat-input textarea:focus {
+            outline: none;
+            border-color: var(--primary-gradient-from);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .bot-avatar {
+            background: linear-gradient(to right, var(--primary-gradient-from), var(--primary-gradient-to));
+        }
+
+        .user-avatar {
+            background-color: var(--pink-highlight);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background-color: var(--xp-bg);
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--primary-gradient-from), var(--primary-gradient-to));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .evaluation-card {
+            background-color: rgba(27, 28, 41, 0.9);
+            border: 1px solid var(--xp-progress);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .evaluation-title {
+            font-size: 1.2rem;
+            color: var(--bright-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .score {
+            background: linear-gradient(to right, var(--primary-gradient-from), var(--primary-gradient-to));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .criteria {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .criterion {
+            background-color: rgba(44, 44, 62, 0.7);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .criterion-score {
+            margin-left: 0.5rem;
+            color: var(--yellow-xp);
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background-color: rgba(255, 78, 141, 0.15);
+            color: var(--pink-highlight);
+            border-radius: 1rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary-gradient-from);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Screen states */
+        #scenario-selection, #scenario-chat, #evaluation-screen {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SCENARIO SIMULATOR</h1>
+            <p>Train communication & leadership skills through realistic scenarios</p>
+        </div>
+
+        <!-- Scenario Selection Screen -->
+        <div id="scenario-selection">
+            <div class="card">
+                <div class="scenario-header">
+                    <h2>Choose a Scenario</h2>
+                    <div class="scenario-category">Communication</div>
+                </div>
+                <div class="scenario-grid">
+                    <div class="scenario-card" data-scenario="deadline">
+                        <h3>Deadline Extension</h3>
+                        <p>Convince your boss to extend a project deadline without affecting team morale.</p>
+                        <div class="difficulty">Difficulty: <span>⭐⭐⭐</span></div>
+                    </div>
+                    <div class="scenario-card" data-scenario="conflict">
+                        <h3>Team Conflict</h3>
+                        <p>Resolve a conflict between two team members with opposing viewpoints.</p>
+                        <div class="difficulty">Difficulty: <span>⭐⭐⭐⭐</span></div>
+                    </div>
+                    <div class="scenario-card" data-scenario="idea">
+                        <h3>Pitch an Idea</h3>
+                        <p>Present a new product idea to your skeptical manager.</p>
+                        <div class="difficulty">Difficulty: <span>⭐⭐</span></div>
+                    </div>
+                    <div class="scenario-card" data-scenario="feedback">
+                        <h3>Difficult Feedback</h3>
+                        <p>Provide constructive feedback to an underperforming team member.</p>
+                        <div class="difficulty">Difficulty: <span>⭐⭐⭐⭐</span></div>
+                    </div>
+                    <div class="scenario-card" data-scenario="negotiation">
+                        <h3>Salary Negotiation</h3>
+                        <p>Negotiate a salary increase with HR based on your performance.</p>
+                        <div class="difficulty">Difficulty: <span>⭐⭐⭐⭐⭐</span></div>
+                    </div>
+                    <div class="scenario-card" data-scenario="client">
+                        <h3>Difficult Client</h3>
+                        <p>Handle an upset client who is threatening to cancel their contract.</p>
+                        <div class="difficulty">Difficulty: <span>⭐⭐⭐⭐</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Scenario Screen -->
+        <div id="scenario-chat" class="hidden">
+            <div class="card">
+                <div class="scenario-header">
+                    <h2 id="scenario-title">Scenario Title</h2>
+                    <div class="scenario-category" id="scenario-category">Category</div>
+                </div>
+                <p id="scenario-description" style="color: var(--text-dim); margin-bottom: 1.5rem;">Description of the scenario context goes here.</p>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Messages will be added here dynamically -->
+                    </div>
+                    <div class="chat-input">
+                        <textarea id="user-input" placeholder="Type your response here..."></textarea>
+                        <div class="btn-container">
+                            <button id="send-response" class="btn">Send Response</button>
+                            <button id="end-scenario" class="btn btn-secondary">End Scenario</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Evaluation will appear here after submission -->
+            <div id="evaluation-container" class="hidden">
+                <div class="evaluation-card">
+                    <div class="evaluation-title">
+                        Response Evaluation <span class="score" id="overall-score">0/100</span>
+                    </div>
+                    
+                    <div id="evaluation-loading" class="hidden">
+                        <div class="spinner"></div>
+                        <p style="text-align: center; margin-top: 1rem; color: var(--text-dim);">Evaluating your response...</p>
+                    </div>
+                    
+                    <div id="evaluation-content">
+                        <p id="evaluation-summary" style="margin-bottom: 1rem;">Waiting for evaluation...</p>
+                        
+                        <h4 style="color: var(--bright-blue); margin-top: 1.5rem; margin-bottom: 0.5rem;">Evaluation Criteria</h4>
+                        <div class="criteria" id="criteria-list">
+                            <!-- Criteria will be added here dynamically -->
+                        </div>
+                        
+                        <h4 style="color: var(--bright-blue); margin-top: 1.5rem; margin-bottom: 0.5rem;">Skills Demonstrated</h4>
+                        <div class="skill-tags" id="skill-tags">
+                            <!-- Skill tags will be added here dynamically -->
+                        </div>
+                        
+                        <div class="btn-container" style="margin-top: 2rem;">
+                            <button id="try-again" class="btn">Try Again</button>
+                            <button id="next-scenario" class="btn btn-secondary">Choose New Scenario</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Main application state
+        const app = {
+            currentScenario: null,
+            scenarios: {
+                deadline: {
+                    title: "Deadline Extension",
+                    category: "Negotiation",
+                    description: "You're a project manager working on a critical client deliverable. You've realized that due to unexpected technical challenges, your team needs an additional week to deliver quality work. You need to convince your boss, who is very deadline-focused, to grant this extension.",
+                    initialMessage: "Hi there. I've just reviewed the project timeline you sent me. I'm concerned about the request for an extension. This client is very important to us, and we promised them this deliverable by the end of the month. What's going on?"
+                },
+                conflict: {
+                    title: "Team Conflict Resolution",
+                    category: "Leadership",
+                    description: "Two of your team members, Alex and Jordan, are in conflict over the approach to a major project. Alex wants to use new technology while Jordan prefers the established method. As the team lead, you need to mediate this situation before it affects team productivity.",
+                    initialMessage: "Thanks for calling this meeting. I've been frustrated with how this project is going. Alex keeps pushing for us to use this new framework that none of us are familiar with! It's going to slow us down and introduce so many risks. We should stick with what we know works."
+                },
+                idea: {
+                    title: "Pitch a New Idea",
+                    category: "Communication",
+                    description: "You've developed an idea for a new feature that could increase user engagement by 30%. However, your manager is risk-averse and typically skeptical of new ideas. You need to persuade them to approve a small pilot of your concept.",
+                    initialMessage: "I have about 15 minutes before my next meeting. I understand you wanted to discuss a new feature idea? I should mention that our current roadmap is already quite full, but I'm willing to hear you out."
+                },
+                feedback: {
+                    title: "Difficult Feedback",
+                    category: "Management",
+                    description: "One of your team members, Taylor, has been consistently missing deadlines and submitting work with errors. You need to provide constructive feedback while maintaining your professional relationship and motivating improvement.",
+                    initialMessage: "Hi, you wanted to speak with me? Is everything okay with the project?"
+                },
+                negotiation: {
+                    title: "Salary Negotiation",
+                    category: "Career Development",
+                    description: "After exceeding your targets for the past year and taking on additional responsibilities, you believe you deserve a 15% salary increase. You need to negotiate this with your HR manager, who is known for being tough in these discussions.",
+                    initialMessage: "Hello, I understand you wanted to discuss compensation. I've reviewed your personnel file ahead of our meeting. What specifically did you want to talk about?"
+                },
+                client: {
+                    title: "Difficult Client",
+                    category: "Client Management",
+                    description: "An important client is upset about delays in their project and is threatening to cancel their contract. You need to de-escalate the situation, address their concerns, and rebuild trust in your company's ability to deliver.",
+                    initialMessage: "This is the third time our project has been delayed. We've been patient, but our business depends on launching this new system. I'm starting to think we made a mistake choosing your company. I've already begun conversations with your competitors."
+                }
+            }
+        };
+
+        // DOM Elements
+        const scenarioSelection = document.getElementById('scenario-selection');
+        const scenarioChat = document.getElementById('scenario-chat');
+        const scenarioTitle = document.getElementById('scenario-title');
+        const scenarioCategory = document.getElementById('scenario-category');
+        const scenarioDescription = document.getElementById('scenario-description');
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendResponse = document.getElementById('send-response');
+        const endScenario = document.getElementById('end-scenario');
+        const evaluationContainer = document.getElementById('evaluation-container');
+        const evaluationLoading = document.getElementById('evaluation-loading');
+        const evaluationContent = document.getElementById('evaluation-content');
+        const overallScore = document.getElementById('overall-score');
+        const evaluationSummary = document.getElementById('evaluation-summary');
+        const criteriaList = document.getElementById('criteria-list');
+        const skillTags = document.getElementById('skill-tags');
+        const tryAgain = document.getElementById('try-again');
+        const nextScenario = document.getElementById('next-scenario');
+
+        // Initialize the scenario cards
+        document.querySelectorAll('.scenario-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const scenarioId = card.dataset.scenario;
+                startScenario(scenarioId);
+            });
+        });
+
+        // Start a new scenario
+        function startScenario(scenarioId) {
+            app.currentScenario = scenarioId;
+            const scenario = app.scenarios[scenarioId];
+            
+            // Update scenario details
+            scenarioTitle.textContent = scenario.title;
+            scenarioCategory.textContent = scenario.category;
+            scenarioDescription.textContent = scenario.description;
+            
+            // Clear previous messages
+            chatMessages.innerHTML = '';
+            
+            // Add initial bot message
+            addMessage('bot', scenario.initialMessage);
+            
+            // Show chat screen, hide selection
+            scenarioSelection.classList.add('hidden');
+            scenarioChat.classList.remove('hidden');
+            evaluationContainer.classList.add('hidden');
+            
+            // Focus on text input
+            userInput.value = '';
+            userInput.focus();
+        }
+
+        // Add a message to the chat
+        function addMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const header = document.createElement('div');
+            header.className = 'message-header';
+            
+            const avatar = document.createElement('div');
+            avatar.className = `avatar ${sender}-avatar`;
+            avatar.textContent = sender === 'bot' ? 'AI' : 'You';
+            
+            const name = document.createElement('div');
+            name.textContent = sender === 'bot' ? 'Role Play AI' : 'You';
+            
+            header.appendChild(avatar);
+            header.appendChild(name);
+            
+            const content = document.createElement('div');
+            content.textContent = text;
+            
+            messageDiv.appendChild(header);
+            messageDiv.appendChild(content);
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Handle sending a response
+        sendResponse.addEventListener('click', async () => {
+            const userText = userInput.value.trim();
+            if (!userText) return;
+            
+            // Add user message
+            addMessage('user', userText);
+            
+            // Clear input
+            userInput.value = '';
+            
+            // Disable send button and show evaluation
+            sendResponse.disabled = true;
+            evaluationContainer.classList.remove('hidden');
+            evaluationLoading.classList.remove('hidden');
+            evaluationContent.classList.add('hidden');
+            
+            // Generate evaluation using OpenAI API
+            try {
+                await evaluateResponse(userText);
+            } catch (error) {
+                console.error('Evaluation error:', error);
+                evaluationSummary.textContent = 'An error occurred during evaluation. Please try again.';
+                evaluationLoading.classList.add('hidden');
+                evaluationContent.classList.remove('hidden');
+            }
+            
+            // Re-enable send button
+            sendResponse.disabled = false;
+        });
+
+        // Evaluate user response
+        async function evaluateResponse(userResponse) {
+            // In a real implementation, you would call the OpenAI API here
+            // For this demo, we'll simulate the API call with a timeout
+
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            const scenario = app.scenarios[app.currentScenario];
+            
+            // This is where you would integrate with OpenAI API
+            // For demo purposes, we're creating a mock evaluation
+            
+            const mockEvaluation = {
+                score: Math.floor(Math.random() * 40) + 60, // Random score between 60-100
+                summary: generateEvaluationSummary(userResponse, scenario.title),
+                criteria: [
+                    { name: "Clarity", score: Math.floor(Math.random() * 3) + 3 },
+                    { name: "Empathy", score: Math.floor(Math.random() * 3) + 3 },
+                    { name: "Persuasiveness", score: Math.floor(Math.random() * 3) + 3 },
+                    { name: "Professionalism", score: Math.floor(Math.random() * 3) + 3 },
+                    { name: "Problem Solving", score: Math.floor(Math.random() * 3) + 3 }
+                ],
+                skills: ["Active Listening", "Conflict Resolution", "Negotiation", "Empathetic Communication"]
+            };
+            
+            
+            // In a real implementation, you would replace the above with:
+            /*
+            const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+                model: "gpt-4.1",
+                messages: [
+                    {
+                        role: "system",
+                        content: `You are an expert communication coach evaluating responses in a role-play scenario. 
+                                  The scenario is: ${scenario.title} - ${scenario.description}
+                                  The AI role player said: "${scenario.initialMessage}"
+                                  Evaluate the user's response on clarity, empathy, persuasiveness, professionalism, and problem-solving.
+                                  Provide a score out of 100, detailed feedback, and identify key communication skills demonstrated.`
+                    },
+                    {
+                        role: "user",
+                        content: userResponse
+                    }
+                ],
+                temperature: 0.7,
+                max_tokens: 500
+            }, {
+                headers: {
+                    'Authorization': `Bearer sk-abcdef1234567890abcdef1234567890abcdef12`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            // Then parse the response to extract evaluation data
+            const aiResponse = response.data.choices[0].message.content;
+            const evaluation = parseEvaluation(aiResponse);
+            */
+            
+            // Display the evaluation results
+            displayEvaluation(mockEvaluation);
+        }
+
+        // Generate a mock evaluation summary
+        function generateEvaluationSummary(response, scenarioTitle) {
+            const summaries = [
+                `Your response showed good awareness of the stakeholder's concerns. You addressed the main issue directly, which is effective. To improve, consider adding more specific examples to strengthen your argument.`,
+                `You demonstrated empathy and understanding of the situation. Your approach was professional and solution-oriented. Consider being more assertive in articulating the benefits of your proposal.`,
+                `Your communication was clear and structured. You maintained a professional tone throughout. To be more persuasive, try acknowledging potential counter-arguments before addressing them.`,
+                `You showed strong problem-solving skills and offered practical solutions. Your response could be improved by demonstrating more active listening and reflecting back the concerns raised.`
+            ];
+            
+            return summaries[Math.floor(Math.random() * summaries.length)];
+        }
+
+        // Display evaluation results
+        function displayEvaluation(evaluation) {
+            // Set overall score
+            overallScore.textContent = `${evaluation.score}/100`;
+            
+            // Set summary
+            evaluationSummary.textContent = evaluation.summary;
+            
+            // Clear previous criteria
+            criteriaList.innerHTML = '';
+            
+            // Add criteria
+            evaluation.criteria.forEach(criterion => {
+                const div = document.createElement('div');
+                div.className = 'criterion';
+                div.innerHTML = `${criterion.name} <span class="criterion-score">${criterion.score}/5</span>`;
+                criteriaList.appendChild(div);
+            });
+            
+            // Clear previous skill tags
+            skillTags.innerHTML = '';
+            
+            // Add skill tags
+            evaluation.skills.forEach(skill => {
+                const div = document.createElement('div');
+                div.className = 'skill-tag';
+                div.textContent = skill;
+                skillTags.appendChild(div);
+            });
+            
+            // Hide loading, show content
+            evaluationLoading.classList.add('hidden');
+            evaluationContent.classList.remove('hidden');
+        }
+
+        // Try again button
+        tryAgain.addEventListener('click', () => {
+            evaluationContainer.classList.add('hidden');
+            userInput.focus();
+        });
+
+        // Next scenario button
+        nextScenario.addEventListener('click', () => {
+            scenarioChat.classList.add('hidden');
+            scenarioSelection.classList.remove('hidden');
+            evaluationContainer.classList.add('hidden');
+        });
+
+        // End scenario button
+        endScenario.addEventListener('click', () => {
+            scenarioChat.classList.add('hidden');
+            scenarioSelection.classList.remove('hidden');
+            evaluationContainer.classList.add('hidden');
+        });
+
+        // Allow sending message with Enter key (Shift+Enter for new line)
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendResponse.click();
+            }
+        });
+
+        // Parse the evaluation from OpenAI (for real implementation)
+        function parseEvaluation(aiResponse) {
+            // This function would parse the OpenAI response to extract:
+            // - Overall score
+            // - Summary feedback
+            // - Individual criteria scores
+            // - Skills demonstrated
+            
+            // For a real implementation, you might use regex or structured output from OpenAI
+            
+            // Mock implementation
+            return {
+                score: 85,
+                summary: "Your response was clear and empathetic, demonstrating good understanding of the situation.",
+                criteria: [
+                    { name: "Clarity", score: 4 },
+                    { name: "Empathy", score: 5 },
+                    { name: "Persuasiveness", score: 4 },
+                    { name: "Professionalism", score: 5 },
+                    { name: "Problem Solving", score: 3 }
+                ],
+                skills: ["Active Listening", "Empathy", "Clear Communication"]
+            };
+        }
+    </script>
+</body>
+</html>

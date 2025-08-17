@@ -1,0 +1,166 @@
+🔹 Beginner-Level DSA MCQs
+✅ Questions (Not Language-Specific):
+Which data structure uses FIFO (First In First Out) principle?
+a) Stack
+b) Queue
+c) Tree
+d) Graph
+
+What is the time complexity of binary search in a sorted array?
+a) O(n)
+b) O(n log n)
+c) O(log n)
+d) O(1)
+
+Which data structure is best suited for implementing a recursive function stack?
+a) Queue
+b) Linked List
+c) Array
+d) Stack
+
+Which traversal method visits left subtree, root, then right subtree?
+a) Preorder
+b) Inorder
+c) Postorder
+d) Level Order
+
+In which case does a binary search tree (BST) become inefficient like a linked list?
+a) When balanced
+b) When it has both left and right children
+c) When nodes are inserted in sorted order
+d) When height is minimal
+
+What is the worst-case time complexity of inserting an element in an unsorted array?
+a) O(1)
+b) O(n)
+c) O(log n)
+d) O(n^2)
+
+Which of the following is not a characteristic of a heap?
+a) Complete binary tree
+b) Always balanced
+c) Root is smallest (in min-heap)
+d) Inorder traversal gives sorted order
+
+A graph is cyclic if:
+a) All nodes are connected
+b) There is at least one loop
+c) It has no edges
+d) It’s a tree
+
+What is the space complexity of merge sort?
+a) O(1)
+b) O(log n)
+c) O(n)
+d) O(n log n)
+
+Which sorting algorithm is best suited for small datasets and almost sorted inputs?
+a) Merge Sort
+b) Heap Sort
+c) Quick Sort
+d) Insertion Sort
+
+✅ DSA Answers:
+b) Queue
+
+c) O(log n)
+
+d) Stack
+
+b) Inorder
+
+c) When nodes are inserted in sorted order
+
+a) O(1)
+
+d) Inorder traversal gives sorted order
+
+b) There is at least one loop
+
+c) O(n)
+
+d) Insertion Sort
+
+🔸 Intermediate-Level Full Stack MCQs
+✅ Questions with Options:
+What is the primary purpose of CORS in web development?
+a) To encrypt API responses
+b) To allow or restrict cross-origin requests
+c) To manage user sessions
+d) To validate JWT tokens
+
+Which is true about SQL and NoSQL databases?
+a) SQL is schema-less and NoSQL is strictly structured
+b) SQL is best for unstructured data
+c) SQL uses fixed schemas; NoSQL offers flexible structures
+d) NoSQL can't store relationships
+
+What happens in the componentDidMount() method in React?
+a) Component is destroyed
+b) Component is updated
+c) DOM is created and API calls are made
+d) State is initialized
+
+How does JWT (JSON Web Token) authenticate users?
+a) By hashing the password and comparing it to a key
+b) By encoding user info in a token sent with requests
+c) By opening a socket connection
+d) By verifying cookies
+
+What is middleware used for in Express.js?
+a) Only to handle routes
+b) To set database schemas
+c) To intercept and process requests before they reach routes
+d) To render frontend components
+
+What is the key difference between SSR and CSR?
+a) SSR runs on client, CSR on server
+b) SSR renders HTML on server, CSR in browser
+c) CSR only supports HTML
+d) CSR is slower than SSR
+
+How can you handle state management in a React app?
+a) By using localStorage only
+b) Only through Redux
+c) Using tools like Context API, Redux, or Zustand
+d) Via MySQL
+
+Which is the correct difference between PUT and PATCH HTTP methods?
+a) PUT updates few fields, PATCH replaces the whole object
+b) PUT only works with JSON
+c) PUT replaces the whole resource, PATCH updates parts
+d) There is no difference
+
+How does Docker help in deployment?
+a) By converting backend to frontend
+b) By installing Node.js globally
+c) By packaging code and dependencies in containers
+d) By enabling Firebase
+
+What is the role of WebSockets in modern apps?
+a) To create database schemas
+b) To allow real-time, two-way communication
+c) To enhance SEO
+d) To serve static files
+
+✅ Answers:
+b) To allow or restrict cross-origin requests
+
+c) SQL uses fixed schemas; NoSQL offers flexible structures
+
+c) DOM is created and API calls are made
+
+b) By encoding user info in a token sent with requests
+
+c) To intercept and process requests before they reach routes
+
+b) SSR renders HTML on server, CSR in browser
+
+c) Using tools like Context API, Redux, or Zustand
+
+c) PUT replaces the whole resource, PATCH updates parts
+
+c) By packaging code and dependencies in containers
+
+b) To allow real-time, two-way communication
+

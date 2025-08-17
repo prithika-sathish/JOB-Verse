@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mock Interview Practice</title>
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #00E6D0, #735BFF);
+      --primary-text: #00E6D0;
+      --secondary: #1B1C29;
+      --text-dark: #ffffff;
+      --text-light: #a0a0a0;
+      --background: #0D0D1A;
+      --card-bg: #1B1C29;
+      --accent-pink: #FF4E8D;
+      --xp-progress: #C270FF;
+      --xp-bg: #2C2C3E;
+      --high-priority: #B84040;
+      --yellow-xp: #FFEB75;
+      --status-green: #38FF88;
+      --status-red: #FF3860;
+      --status-purple: #A365FF;
+    }
+
+    /* Webcam and warning styles */
+    #webcam-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 200px;
+      height: 150px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--primary-text);
+      z-index: 1000;
+      background: var(--secondary);
+    }
+
+    #webcam {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #motion-canvas {
+      display: none;
+    }
+
+    #warning {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--high-priority);
+      color: white;
+      padding: 25px 35px;
+      border-radius: 12px;
+      z-index: 1001;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      min-width: 300px;
+    }
+
+    #warning h3 {
+      margin-top: 0;
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      color: white;
+      background: none;
+      -webkit-text-fill-color: white;
+    }
+
+    #warning p {
+      margin: 0;
+      line-height: 1.5;
+      opacity: 0.9;
+    }
+
+    .close-warning {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 5px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+    }
+
+    .close-warning:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: none;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: var(--card-bg);
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .job-notification {
+      background: var(--secondary);
+      border: 1px solid var(--xp-progress);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .job-notification::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary-gradient);
+    }
+
+    .job-notification h3 {
+      color: var(--primary-text);
+      margin-top: 0;
+      font-size: 1.5em;
+    }
+
+    .job-notification p {
+      color: var(--text-light);
+      line-height: 1.6;
+      margin: 15px 0;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 25px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-yes {
+      background: var(--status-green);
+      color: var(--background);
+    }
+
+    .btn-no {
+      background: var(--status-red);
+      color: var(--text-dark);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    h2, h3 {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+
+    label {
+      color: var(--accent-pink);
+      font-weight: 500;
+      display: block;
+      margin-top: 15px;
+    }
+
+    select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      background: var(--xp-bg);
+      color: var(--text-dark);
+      border: 1px solid var(--xp-progress);
+    }
+
+    select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary-text);
+      box-shadow: 0 0 0 2px rgba(0, 230, 208, 0.2);
+    }
+
+    button {
+      background: var(--primary-gradient);
+      color: var(--text-dark);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      font-weight: 600;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .question-block {
+      background: var(--secondary);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      border: 1px solid var(--xp-progress);
+    }
+
+    .question-block:hover {
+      border-color: var(--primary-text);
+      box-shadow: 0 0 15px rgba(0, 230, 208, 0.1);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    input[type="radio"] {
+      accent-color: var(--primary-text);
+      margin-right: 10px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Calibration styles */
+    .calibration-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .calibration-content {
+      text-align: center;
+      color: white;
+    }
+
+    .countdown-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid var(--primary-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin: 20px auto;
+      position: relative;
+    }
+
+    .countdown-circle::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      border-radius: 50%;
+      border: 4px solid transparent;
+      border-top-color: var(--accent-pink);
+      animation: spin 3s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .calibrate-btn {
+      background: var(--primary-gradient);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .calibrate-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--xp-bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--xp-progress);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-text);
+    }
+  </style>
+</head>
+<body>
+  <!-- Webcam container -->
+  <div id="webcam-container">
+    <video id="webcam" autoplay playsinline></video>
+    <canvas id="motion-canvas"></canvas>
+  </div>
+
+  <!-- Calibration overlay -->
+  <div class="calibration-overlay" id="calibration-overlay">
+    <div class="calibration-content">
+      <h2>Face Position Calibration</h2>
+      <p>Please look straight at the camera and remain still</p>
+      <div class="countdown-circle">
+        <span id="countdown">3</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Warning popup -->
+  <div id="warning">
+    <button class="close-warning">×</button>
+    <h3>⚠️ Warning!</h3>
+    <p>Please remain still during the interview.</p>
+  </div>
+
+  <div class="container">
+    <div class="job-notification">
+      <h3>Hey, Forge is hiring!</h3>
+      <p>SentinelForge Security is on the lookout for sharp minds to join our Cyber Defense team. If you're into ethical hacking, network security, or threat analysis, this is your shot.</p>
+      <p>Wanna take a mock interview to see if you've got what it takes?</p>
+      <div class="button-group">
+        <button class="btn btn-yes" onclick="startInterview()">Yes, I'm Ready!</button>
+        <button class="btn btn-no" onclick="hideNotification()">Maybe Later</button>
+      </div>
+    </div>
+
+    <div id="interview-section" class="hidden">
+      <h2>Mock Interview Practice</h2>
+
+      <label for="role">Select a Role:</label>
+      <select id="role">
+        <option value="" disabled selected>Select a Role</option>
+        <option>Cybersecurity Analyst</option>
+        <option>Software Developer</option>
+        <option>Data Analyst</option>
+        <option>Product Manager</option>
+        <option>UI/UX Designer</option>
+        <option>System Administrator</option>
+        <option>DevOps Engineer</option>
+        <option>Machine Learning Engineer</option>
+        <option>HR Manager</option>
+        <option>Finance Analyst</option>
+      </select>
+
+      <label for="round">Select Round:</label>
+      <select id="round">
+        <option value="1">Round 1: MCQs</option>
+        <option value="2">Round 2: Technical Questions</option>
+        <option value="3">Round 3: Behavioral Questions</option>
+      </select>
+
+      <button onclick="startInterview()">Start Interview</button>
+
+      <div id="questions" class="hidden"></div>
+    </div>
+  </div>
+
+  <script>
+    const questionsContainer = document.getElementById("questions");
+    const interviewSection = document.getElementById("interview-section");
+    const jobNotification = document.querySelector(".job-notification");
+
+    const round1Questions = [
+      { q: "What does CIA in cybersecurity stand for?", options: ["Confidentiality, Integrity, Availability", "Cyber Intelligence Agency", "Control, Integrity, Access"], correct: 0 },
+      { q: "What is a firewall?", options: ["Malware", "Security device", "Encryption tool"], correct: 1 },
+      { q: "Which of the following is a strong password?", options: ["123456", "password", "G@v3$2kL"], correct: 2 },
+      { q: "What is phishing?", options: ["Legit login", "Social engineering scam", "Antivirus"], correct: 1 },
+      { q: "Which protocol is secure: HTTP or HTTPS?", options: ["HTTP", "HTTPS", "Both"], correct: 1 },
+      { q: "What is 2FA?", options: ["2-Factor Authentication", "Firewall Access", "Admin Login"], correct: 0 },
+      { q: "Which is NOT malware?", options: ["Trojan", "Worm", "Firewall"], correct: 2 },
+      { q: "What is penetration testing?", options: ["Network setup", "Simulated attack", "Password reset"], correct: 1 },
+      { q: "What's an example of encryption?", options: ["RSA", "Wi-Fi", "Google"], correct: 0 },
+      { q: "VPN stands for?", options: ["Virtual Private Network", "Very Private Net", "Verified Protocol Network"], correct: 0 }
+    ];
+
+    const round2Questions = [
+      "Explain how you would secure a company network.",
+      "How do you handle a data breach?",
+      "Explain the difference between IDS and IPS.",
+      "What is your approach to vulnerability assessment?",
+      "How would you train employees in cybersecurity?"
+    ];
+
+    const round3Questions = [
+      "Describe a time you resolved a team conflict.",
+      "Tell us about a challenge you overcame.",
+      "How do you prioritize under pressure?",
+      "What motivates you in this field?",
+      "Where do you see yourself in 5 years?"
+    ];
+
+    function hideNotification() {
+      jobNotification.innerHTML = `
+        <h3 style="color: var(--primary-text)">Stay Alert!</h3>
+        <p style="color: var(--text-light)">Alright, we'll keep you updated on new job roles. Check back soon for more opportunities!</p>
+        <div class="button-group">
+          <button class="btn btn-yes" onclick="startInterview()">Actually, I Changed My Mind</button>
+        </div>
+      `;
+      jobNotification.style.borderColor = "var(--status-purple)";
+    }
+
+    let isCalibrated = false;
+
+    function startCalibrationProcess() {
+      const overlay = document.getElementById('calibration-overlay');
+      const countdown = document.getElementById('countdown');
+      overlay.style.display = 'flex';
+      
+      let timeLeft = 3;
+      const timer = setInterval(() => {
+        timeLeft--;
+        countdown.textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          overlay.style.display = 'none';
+          isCalibrated = true;
+          initializeWebcam().then(() => {
+            showQuestions();
+          }).catch(console.error);
+        }
+      }, 1000);
+    }
+
+    function startInterview() {
+      jobNotification.style.display = "none";
+      interviewSection.classList.remove("hidden");
+      
+      const role = document.getElementById("role").value;
+      if (!role) {
+        alert("Please select a role first.");
+        return;
+      }
+
+      // Show calibration button first
+      questionsContainer.innerHTML = `
+        <div style="text-align: center; margin-bottom: 30px;">
+          <button class="calibrate-btn" onclick="startCalibrationProcess()">
+            Calibrate Face Position
+          </button>
+          <p style="color: var(--text-light); margin-top: 10px;">
+            Please calibrate your face position before starting the interview
+          </p>
+        </div>
+      `;
+      questionsContainer.classList.remove("hidden");
+    }
+
+    function showQuestions() {
+      const round = document.getElementById("round").value;
+      if (!round) return;
+
+      if (round === "1") {
+        questionsContainer.innerHTML = "<h3>Round 1: MCQs</h3>";
+        round1Questions.forEach((q, idx) => {
+          const block = document.createElement("div");
+          block.className = "question-block";
+          block.innerHTML = `<strong style="color: var(--primary-text)">Q${idx + 1}: ${q.q}</strong><br/>` +
+            q.options.map((opt, i) => `
+              <label style="color: var(--text-light)"><input type="radio" name="q${idx}" value="${i}"/> ${opt}</label>
+            `).join("");
+          questionsContainer.appendChild(block);
+        });
+        questionsContainer.innerHTML += '<button onclick="submitRound1()">Submit Answers</button>';
+      }
+
+      if (round === "2") {
+        questionsContainer.innerHTML = "<h3>Round 2: Technical Questions</h3>";
+        round2Questions.forEach((q, idx) => {
+          const block = document.createElement("div");
+          block.className = "question-block";
+          block.innerHTML = `<strong style="color: var(--primary-text)">Q${idx + 1}: ${q}</strong><br/>
+            <textarea rows="3" id="round2-q${idx}" placeholder="Type your answer..."></textarea>`;
+          questionsContainer.appendChild(block);
+        });
+        questionsContainer.innerHTML += '<button onclick="submitRound2()">Submit Answers</button>';
+      }
+
+      if (round === "3") {
+        questionsContainer.innerHTML = "<h3>Round 3: Behavioral Questions</h3>";
+        round3Questions.forEach((q, idx) => {
+          const block = document.createElement("div");
+          block.className = "question-block";
+          block.innerHTML = `<strong style="color: var(--primary-text)">Q${idx + 1}: ${q}</strong><br/>
+            <textarea rows="3" id="round3-q${idx}" placeholder="Type your answer..."></textarea>`;
+          questionsContainer.appendChild(block);
+        });
+        questionsContainer.innerHTML += '<button onclick="submitRound3()">Submit Answers</button>';
+      }
+    }
+
+    function submitRound1() {
+      const answers = [];
+      round1Questions.forEach((q, idx) => {
+        const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+        answers.push(selected ? selected.value : "Not answered");
+      });
+      localStorage.setItem("round1Answers", JSON.stringify(answers));
+      alert("Round 1 answers submitted!");
+    }
+
+    function submitRound2() {
+      const answers = [];
+      round2Questions.forEach((_, idx) => {
+        const ans = document.getElementById(`round2-q${idx}`).value;
+        answers.push(ans || "Not answered");
+      });
+      localStorage.setItem("round2Answers", JSON.stringify(answers));
+      alert("Round 2 answers submitted!");
+    }
+
+    function submitRound3() {
+      const answers = [];
+      round3Questions.forEach((_, idx) => {
+        const ans = document.getElementById(`round3-q${idx}`).value;
+        answers.push(ans || "Not answered");
+      });
+      localStorage.setItem("round3Answers", JSON.stringify(answers));
+      alert("Round 3 answers submitted!");
+    }
+
+    // Motion detection setup
+    let video, canvas, context, warning;
+    let lastImageData, baselineImageData;
+    let isCalibrating = true;
+    let calibrationFrames = 0;
+    const CALIBRATION_FRAMES = 30; // Collect 30 frames for baseline
+    const MOTION_THRESHOLD = 20; // More sensitive threshold
+    const CALIBRATION_MESSAGE = 'Please look straight at the camera. Calibrating...';
+
+    // Initialize webcam and start calibration
+    async function initializeWebcam() {
+      video = document.getElementById('webcam');
+      canvas = document.getElementById('motion-canvas');
+      warning = document.getElementById('warning');
+      context = canvas.getContext('2d');
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { width: 320, height: 240 }
+        });
+        video.srcObject = stream;
+        
+        // Set canvas size
+        canvas.width = 320;
+        canvas.height = 240;
+
+        // Start calibration once video is playing
+        video.onplay = () => {
+          showWarning(CALIBRATION_MESSAGE, false);
+          startCalibration();
+        };
+
+      } catch (err) {
+        console.error('Error accessing webcam:', err);
+        alert('Webcam access is required for this interview. Please enable camera access and refresh the page.');
+      }
+    }
+
+    // Start calibration process
+    function startCalibration() {
+      isCalibrating = true;
+      calibrationFrames = 0;
+      captureFrame();
+    }
+
+    // Capture and process video frames
+    function captureFrame() {
+      if (video.paused || video.ended) return;
+
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const currentImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+      if (isCalibrating) {
+        // During calibration, collect baseline data
+        if (!baselineImageData) {
+          baselineImageData = currentImageData;
+        } else {
+          // Average with previous frames
+          for (let i = 0; i < baselineImageData.data.length; i++) {
+            baselineImageData.data[i] = (baselineImageData.data[i] * calibrationFrames + currentImageData.data[i]) / (calibrationFrames + 1);
+          }
+        }
+
+        calibrationFrames++;
+        if (calibrationFrames >= CALIBRATION_FRAMES) {
+          isCalibrating = false;
+          closeWarning();
+          showWarning('Calibration complete. Interview will now begin.', true);
+        }
+      } else {
+        // After calibration, detect motion relative to baseline
+        const baselineDiff = calculateDifference(currentImageData.data, baselineImageData.data);
+        const recentDiff = lastImageData ? calculateDifference(currentImageData.data, lastImageData.data) : 0;
+
+        if (baselineDiff > MOTION_THRESHOLD * 1.5 || recentDiff > MOTION_THRESHOLD) {
+          showWarning('Please maintain your original position during the interview.');
+        }
+      }
+
+      lastImageData = currentImageData;
+      requestAnimationFrame(captureFrame);
+    }
+
+    // Calculate difference between frames
+    function calculateDifference(current, last) {
+      let diff = 0;
+      const step = 4; // Skip pixels for performance
+      
+      for (let i = 0; i < current.length; i += (4 * step)) {
+        diff += Math.abs(current[i] - last[i]); // Red
+        diff += Math.abs(current[i+1] - last[i+1]); // Green
+        diff += Math.abs(current[i+2] - last[i+2]); // Blue
+      }
+      
+      return diff / (current.length / 4);
+    }
+
+    // Show warning popup
+    function showWarning(message, autoClose = true) {
+      warning.querySelector('p').textContent = message;
+      warning.style.display = 'block';
+      if (autoClose) {
+        setTimeout(() => {
+          warning.style.display = 'none';
+        }, 2000);
+      }
+    }
+
+    // Close warning popup
+    function closeWarning() {
+      const warning = document.getElementById('warning');
+      if (warning) {
+        warning.style.display = 'none';
+      }
+    }
+
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click handler for close button
+      const closeButtons = document.querySelectorAll('.close-warning');
+      closeButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeWarning();
+        });
+      });
+    });
+
+    // No need to modify startInterview since webcam is initialized after calibration
+
+    // Add tab visibility detection
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        showWarning('Please stay on this tab during the interview.', false);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+/* Admin Dashboard Specific Styles */
+.search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: var(--card-dark);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+.add-employee-btn {
+    padding: 10px 20px;
+    background: var(--primary-dark);
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-employee-btn:hover {
+    background: var(--secondary-dark);
+}
+
+.employee-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.employee-card {
+    background: var(--card-dark);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    border: 1px solid var(--border-color);
+}
+
+.employee-info {
+    flex: 1;
+}
+
+.employee-info h3 {
+    margin: 0 0 10px 0;
+    color: var(--text-dark);
+}
+
+.employee-info p {
+    margin: 5px 0;
+    color: var(--text-dark);
+}
+
+.employee-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.employee-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    color: var(--text-dark);
+}
+
+.edit-btn:hover {
+    color: var(--primary-dark);
+}
+
+.delete-btn:hover {
+    color: var(--danger-color);
+}
+
+.timesheet-filters, .payroll-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: var(--card-dark);
+    border-radius: 8px;
+    align-items: center;
+    border: 1px solid var(--border-color);
+}
+
+.timesheet-filters select,
+.timesheet-filters input,
+.payroll-filters select {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+.generate-payroll-btn {
+    padding: 10px 20px;
+    background: var(--primary-dark);
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.generate-payroll-btn:hover {
+    background: var(--secondary-dark);
+}
+
+.timesheet-table, .payroll-summary {
+    background: var(--card-dark);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+}
+
+/* Responsive Design for Admin Dashboard */
+@media (max-width: 768px) {
+    .employee-list {
+        grid-template-columns: 1fr;
+    }
+
+    .timesheet-filters, .payroll-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-bar input {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .add-employee-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Task Management Styles */
+.task-management-container {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+.task-form {
+    flex: 1;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.task-form h2 {
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.assign-task-btn {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.875rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.assign-task-btn:hover {
+    background: var(--primary-color-dark);
+    transform: translateY(-1px);
+}
+
+.assign-task-btn:active {
+    transform: translateY(0);
+}
+
+.task-list {
+    flex: 2;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.task-list h2 {
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.task-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.task-filters select {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.tasks-table {
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.tasks-table table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.tasks-table th {
+    background: var(--table-header-bg);
+    color: var(--text-primary);
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.tasks-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.status-badge {
+    padding: 0.375rem 0.875rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status-badge.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.submitted {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.status-badge.approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.task-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.file-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.download-starter-btn,
+.submit-task-btn,
+.approve-btn,
+.reject-btn {
+    padding: 0.625rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+}
+
+.download-starter-btn {
+    background: var(--primary-color);
+    color: white;
+}
+
+.download-starter-btn:hover {
+    background: var(--primary-color-dark);
+}
+
+.submit-task-btn {
+    background: var(--success-color);
+    color: white;
+}
+
+.submit-task-btn:hover {
+    background: var(--success-color-dark);
+}
+
+.approve-btn {
+    background: var(--success-color);
+    color: white;
+}
+
+.approve-btn:hover {
+    background: var(--success-color-dark);
+}
+
+.reject-btn {
+    background: var(--danger-color);
+    color: white;
+}
+
+.reject-btn:hover {
+    background: var(--danger-color-dark);
+}
+
+.task-submission {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .task-management-container {
+        flex-direction: column;
+    }
+    
+    .file-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .task-filters {
+        flex-direction: column;
+    }
+}

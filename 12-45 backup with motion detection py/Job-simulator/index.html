@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOB Verse - Unlock Your Career Potential</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="dark-mode">
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <span>JOB</span>Verse
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#resources">Resources</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="typing-container">
+                <h1>
+                    <span class="line1">Unlock Your</span>
+                    <span class="line2">Career Potential</span>
+                </h1>
+            </div>
+            <h2>Step Into Your Future</h2>
+            <p>Experience real-world job scenarios and build your professional skills in a risk-free environment.</p>
+            <a href="#login" class="cta-button">Get Started</a>
+        </div>
+        <div class="hero-animation">
+            <div class="orbit-animation">
+                <img src="assets/image.png" alt="JOB Verse" class="orbit-logo">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2>Why Choose JOB Verse?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-vr-cardboard"></i>
+                <h3>Immersive Simulations</h3>
+                <p>Experience real job scenarios in a virtual environment</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Skill Development</h3>
+                <p>Track your progress and improve your professional skills</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h3>Expert Feedback</h3>
+                <p>Get valuable insights from industry professionals</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-certificate"></i>
+                <h3>Certifications</h3>
+                <p>Earn credentials recognized by top employers</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Form Modal -->
+    <div id="login" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Welcome <span>Back</span></h2>
+            <form class="login-form">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <p>Don't have an account? <a href="#register">Create one now</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Registration Form Modal -->
+    <div id="register" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create Your <span>Account</span></h2>
+            <form class="register-form">
+                <div class="form-section">
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-group">
+                        <label>Domain</label>
+                        <select id="registerDomain" required>
+                            <option value="">Select Domain</option>
+                            <option value="tech">Tech</option>
+                            <option value="business">Business & Strategy</option>
+                            <option value="design">Design & Creative</option>
+                            <option value="finance">Finance & Trading</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Skill</label>
+                        <select id="registerSkill" required disabled>
+                            <option value="">Select Skill</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Proficiency Level</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="proficiency" value="beginner" required>
+                                <span>Beginner</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="proficiency" value="intermediate">
+                                <span>Intermediate</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="proficiency" value="advanced">
+                                <span>Advanced</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label>Project Links</label>
+                        <input type="url" name="projectLinks" placeholder="GitHub, Behance, TradingView, etc.">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Months of Experience</label>
+                        <input type="number" name="monthsExperience" min="0" placeholder="Enter months of experience" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Career Guide</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="footer-section newsletter">
+                <h3>Stay Updated</h3>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-logo">JOB<span>Verse</span></div>
+            <p>&copy; 2024 JOB Verse. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyByE-IoxarDhlLKwLn4K1N3y0Swy2-hVxE",
+            authDomain: "job-verse-c35ff.firebaseapp.com",
+            databaseURL: "https://job-verse-c35ff-default-rtdb.firebaseio.com",
+            projectId: "job-verse-c35ff",
+            storageBucket: "job-verse-c35ff.firebasestorage.app",
+            messagingSenderId: "313840143364",
+            appId: "1:313840143364:web:7de4898b589edbff54b951",
+            measurementId: "G-F1VGQ7ELLW"
+        };
+
+        try {
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            const analytics = firebase.analytics();
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+
+            // Make Firebase instances available globally
+            window.db = db;
+            window.auth = auth;
+            window.analytics = analytics;
+
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Error initializing Firebase:', error);
+        }
+    </script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

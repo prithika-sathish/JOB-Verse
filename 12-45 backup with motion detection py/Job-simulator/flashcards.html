@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Learnables Flashcards</title>
+    <style>
+        :root {
+            --primary-start: #00E6D0;
+            --primary-end: #735BFF;
+            --main-bg: #0D0D1A;
+            --card-bg: #1B1C29;
+            --bright-blue: #00E6D0;
+            --pink-highlight: #FF4E8D;
+            --xp-progress: #C270FF;
+            --xp-bg: #2C2C3E;
+            --high-priority: #B84040;
+            --yellow-xp: #FFEB75;
+            --green-light: #38FF88;
+            --red-light: #FF3860;
+            --purple-light: #A365FF;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--main-bg);
+            color: white;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            background: linear-gradient(to right, var(--primary-start), var(--primary-end));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #ccc;
+            font-size: 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+        }
+        
+        .streak {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .streak-count {
+            color: var(--yellow-xp);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .streak-flame {
+            font-size: 1.5rem;
+        }
+
+        .xp-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+        
+        .xp-bar-container {
+            height: 15px;
+            background-color: var(--xp-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .xp-bar {
+            height: 100%;
+            width: 45%;
+            background: linear-gradient(to right, var(--primary-start), var(--xp-progress));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .xp-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+        
+        .xp-text span:last-child {
+            color: var(--yellow-xp);
+        }
+        
+        .cards-remaining {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .status-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--green-light);
+        }
+
+        .flashcards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .flashcard {
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            background-color: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .flashcard-front {
+            color: white;
+            border: 2px solid transparent;
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            background-image: 
+                linear-gradient(var(--card-bg), var(--card-bg)),
+                linear-gradient(to right, var(--primary-start), var(--primary-end));
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        /* Scrollbar styling */
+        .answer::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .answer::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .answer::-webkit-scrollbar-thumb {
+            background: var(--primary-start);
+            border-radius: 10px;
+        }
+
+        .category {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--pink-highlight);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-top: 80px;
+            width: 85%;
+            text-align: center;
+        }
+
+        .flip-hint {
+            position: absolute;
+            bottom: 10px;
+            color: #ccc;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .answer {
+            font-size: 1rem;
+            line-height: 1.5;
+            text-align: left;
+            margin-top: 40px;
+            width: 100%;
+            max-height: 210px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .answer code {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(to right, var(--primary-start), var(--primary-end));
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .flashcards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .xp-container {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        /* Flip animation and loader */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-start);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Daily Learnables</h1>
+            <p>Review your flashcards to build knowledge consistently</p>
+        </div>
+
+        <div class="stats">
+            <div class="streak">
+                <div class="streak-flame">🔥</div>
+                <div class="streak-count">3 day streak</div>
+            </div>
+            
+            <div class="xp-container">
+                <div class="xp-bar-container">
+                    <div class="xp-bar"></div>
+                </div>
+                <div class="xp-text">
+                    <span>Level 2</span>
+                    <span>450/1000 XP</span>
+                </div>
+            </div>
+            
+            <div class="cards-remaining">
+                <div class="status-light"></div>
+                <span>5 cards today</span>
+            </div>
+        </div>
+
+        <div class="flashcards-container" id="flashcards-container">
+            <!-- Flashcards will be loaded here -->
+            <div class="loader"></div>
+        </div>
+
+        <div class="control-buttons">
+            <button class="btn" id="reload-cards">Load New Cards</button>
+            <button class="btn" id="mark-complete">Mark Complete</button>
+        </div>
+    </div>
+
+    <script>
+        // Flashcards data
+        const flashcardsData = [
+            {
+                id: 1,
+                category: "JavaScript",
+                question: "What is the difference between let, const, and var in JavaScript?",
+                answer: "- <code>var</code>: Function-scoped, can be redeclared, hoisted with undefined value<br>- <code>let</code>: Block-scoped, cannot be redeclared in same scope, hoisted but not initialized<br>- <code>const</code>: Block-scoped, cannot be reassigned, must be initialized at declaration"
+            },
+            {
+                id: 2,
+                category: "React",
+                question: "Explain the useEffect hook in React",
+                answer: "useEffect is a React hook that allows you to perform side effects in functional components. It takes two arguments: a function containing side effect code, and a dependency array that determines when the effect should run.<br><br>If the dependency array is empty, the effect runs only on mount and cleanup on unmount. If specified with values, it runs when any dependency changes."
+            },
+            {
+                id: 3,
+                category: "CSS",
+                question: "What is the difference between Flexbox and Grid layout?",
+                answer: "Flexbox is one-dimensional and designed for layout in a single direction (row or column). It's best for component alignment, spacing and dynamic sizing.<br><br>CSS Grid is two-dimensional, designed for both rows and columns simultaneously. It's ideal for defining grid structures and positioning items precisely within a grid context."
+            },
+            {
+                id: 4,
+                category: "Soft Skills",
+                question: "What are effective ways to handle criticism at work?",
+                answer: "1. Listen actively without interrupting<br>2. Thank the person for their feedback<br>3. Ask clarifying questions to understand specifics<br>4. Avoid being defensive<br>5. Focus on the issue, not personal feelings<br>6. Take time to reflect before responding if needed<br>7. Create an action plan for improvement<br>8. Follow up after implementing changes"
+            },
+            {
+                id: 5,
+                category: "HR",
+                question: "What is the STAR method for interview responses?",
+                answer: "The STAR method provides a structured way to answer behavioral interview questions:<br><br><b>S</b>ituation: Describe the context/background<br><b>T</b>ask: Explain your responsibility/goal<br><b>A</b>ction: Detail the specific actions you took<br><b>R</b>esult: Share the outcomes and what you learned"
+            },
+            {
+                id: 6,
+                category: "Database",
+                question: "What is the difference between SQL and NoSQL databases?",
+                answer: "SQL (Relational) databases:<br>- Structured data with predefined schema<br>- Uses tables with rows and columns<br>- Strong consistency and ACID properties<br>- Vertical scaling<br>- Examples: MySQL, PostgreSQL<br><br>NoSQL databases:<br>- Flexible schema design<br>- Various data models (document, key-value, wide-column, graph)<br>- Horizontal scaling<br>- Eventually consistent (typically)<br>- Examples: MongoDB, Redis, Cassandra"
+            },
+            {
+                id: 7,
+                category: "Python",
+                question: "Explain list comprehensions in Python",
+                answer: "List comprehensions provide a concise way to create lists based on existing lists or other iterables. Syntax: <code>[expression for item in iterable if condition]</code><br><br>Example:<br><code>squares = [x**2 for x in range(10) if x % 2 == 0]</code><br>This creates a list of squares of even numbers from 0-9."
+            },
+            {
+                id: 8,
+                category: "Career Development",
+                question: "How can you effectively ask for a promotion?",
+                answer: "1. Document your achievements and added value<br>2. Research appropriate compensation<br>3. Identify skills you've developed<br>4. Choose appropriate timing (e.g., after completing major projects)<br>5. Schedule a formal meeting<br>6. Present your case professionally with evidence<br>7. Be prepared to discuss growth areas<br>8. Have a timeline and specific request in mind"
+            },
+            {
+                id: 9,
+                category: "Git",
+                question: "What is the difference between git merge and git rebase?",
+                answer: "Git merge:<br>- Creates a new merge commit<br>- Preserves complete history and chronological order<br>- Non-destructive operation<br>- Easier to recover from mistakes<br><br>Git rebase:<br>- Moves or combines a sequence of commits to a new base<br>- Creates a linear project history<br>- Rewrites commit history<br>- Results in cleaner history but requires care with shared branches"
+            },
+            {
+                id: 10,
+                category: "System Design",
+                question: "What is a microservices architecture?",
+                answer: "Microservices is an architectural style that structures an application as a collection of small, loosely coupled services where each:<br><br>- Focuses on a single business capability<br>- Runs in its own process<br>- Communicates via lightweight protocols (often HTTP/REST)<br>- Can be deployed independently<br>- Can be written in different programming languages<br>- Can use different data storage technologies"
+            },
+            {
+                id: 11,
+                category: "Communication",
+                question: "How do you deliver constructive feedback effectively?",
+                answer: "1. Choose an appropriate private setting<br>2. Start with positive observations<br>3. Be specific about behaviors, not personality<br>4. Use 'I' statements instead of 'you' accusations<br>5. Focus on actionable improvements<br>6. Check for understanding<br>7. Express confidence in their ability to improve<br>8. Follow up later to acknowledge progress"
+            },
+            {
+                id: 12,
+                category: "UI/UX",
+                question: "What are the key principles of responsive design?",
+                answer: "1. Fluid grids that use relative units (%, em, rem)<br>2. Flexible images and media<br>3. CSS media queries to adapt layouts<br>4. Mobile-first approach<br>5. Content prioritization across devices<br>6. Breakpoints based on content, not specific devices<br>7. Performance optimization for varied connection speeds<br>8. Touch-friendly interfaces with appropriate sizing"
+            },
+            {
+                id: 13,
+                category: "Algorithms",
+                question: "What is the time complexity of quicksort, and when might it perform poorly?",
+                answer: "Time complexity:<br>- Average case: O(n log n)<br>- Best case: O(n log n)<br>- Worst case: O(n²)<br><br>Quicksort performs poorly when:<br>- The pivot selection is unbalanced (e.g., always choosing first/last element with sorted data)<br>- There are many duplicate elements<br>- The input array is already sorted or reverse sorted<br><br>These issues can be mitigated by using techniques like randomized pivot selection or the median-of-three method."
+            },
+            {
+                id: 14,
+                category: "Time Management",
+                question: "What is the Eisenhower Matrix and how do you use it?",
+                answer: "The Eisenhower Matrix is a productivity tool that helps prioritize tasks by dividing them into four quadrants based on urgency and importance:<br><br>1. Urgent & Important: Do immediately<br>2. Important & Not Urgent: Schedule time for these<br>3. Urgent & Not Important: Delegate if possible<br>4. Not Urgent & Not Important: Eliminate<br><br>To use it, categorize all tasks into these quadrants, then address them according to their quadrant's recommended action."
+            },
+            {
+                id: 15,
+                category: "DevOps",
+                question: "What is Continuous Integration/Continuous Deployment (CI/CD)?",
+                answer: "CI/CD is a set of practices that automates software delivery processes:<br><br><b>Continuous Integration (CI)</b>: Developers frequently merge code changes into a central repository where automated builds and tests verify each integration.<br><br><b>Continuous Delivery</b>: Automatically preparing code changes for release to production.<br><br><b>Continuous Deployment</b>: Automatically deploying all code changes to production after passing automated tests."
+            }
+        ];
+
+        // Function to shuffle array
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Function to get random cards
+        function getRandomCards(count) {
+            return shuffleArray(flashcardsData).slice(0, count);
+        }
+
+        // Function to create flashcard HTML
+        function createFlashcardHTML(card) {
+            return `
+                <div class="flashcard" data-id="${card.id}">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="category">${card.category}</div>
+                            <div class="question">${card.question}</div>
+                            <div class="flip-hint">Click to flip</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="category">${card.category}</div>
+                            <div class="answer">${card.answer}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to load cards
+        function loadCards() {
+            const container = document.getElementById('flashcards-container');
+            container.innerHTML = '<div class="loader"></div>';
+            
+            // Simulate loading
+            setTimeout(() => {
+                const dailyCards = getRandomCards(5);
+                container.innerHTML = '';
+                
+                dailyCards.forEach(card => {
+                    container.innerHTML += createFlashcardHTML(card);
+                });
+                
+                // Add event listeners to flashcards
+                document.querySelectorAll('.flashcard').forEach(card => {
+                    card.addEventListener('click', () => {
+                        card.classList.toggle('flipped');
+                    });
+                });
+            }, 800);
+        }
+
+        // Load cards on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCards();
+            
+            // Add event listeners to buttons
+            document.getElementById('reload-cards').addEventListener('click', loadCards);
+            
+            document.getElementById('mark-complete').addEventListener('click', () => {
+                alert('Great job! Today\'s flashcards marked as complete. +50 XP awarded!');
+                
+                // Update XP bar animation
+                const xpBar = document.querySelector('.xp-bar');
+                const currentWidth = parseInt(xpBar.style.width || '45');
+                xpBar.style.width = Math.min(currentWidth + 5, 100) + '%';
+                
+                // Update XP text
+                const xpText = document.querySelector('.xp-text span:last-child');
+                const [current, total] = xpText.textContent.split('/');
+                const newCurrent = Math.min(parseInt(current) + 50, parseInt(total));
+                xpText.textContent = `${newCurrent}/1000 XP`;
+                
+                // Update streak
+                const streakCount = document.querySelector('.streak-count');
+                const currentStreak = parseInt(streakCount.textContent);
+                streakCount.textContent = `${currentStreak + 1} day streak`;
+            });
+        });
+    </script>
+</body>
+</html>

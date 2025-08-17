@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Finder - JOB Verse</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Job Finder Specific Dark Theme Styles */
+        .job-finder-container {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .job-finder-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .job-finder-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary-dark), var(--secondary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .job-finder-header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .job-finder-content {
+            display: flex;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filters-sidebar {
+            width: 300px;
+            background: var(--card-dark);
+            border-radius: 15px;
+            padding: 1.5rem;
+            height: fit-content;
+            border: 1px solid var(--border-color);
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filters-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .reset-btn {
+            background: transparent;
+            border: 1px solid var(--primary-dark);
+            color: var(--primary-dark);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: var(--primary-dark);
+            color: var(--bg-dark);
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .filter-input, .filter-select {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 0 2px rgba(0, 255, 213, 0.2);
+        }
+
+        .filter-select {
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-dark);
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .jobs-main {
+            flex: 1;
+            background: var(--card-dark);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-bar {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 0 2px rgba(0, 255, 213, 0.2);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-dark);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .search-btn i {
+            color: white;
+            font-size: 1rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .results-count {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .sort-select {
+            padding: 0.5rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .jobs-list {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .job-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .job-card:hover {
+            border-color: var(--primary-dark);
+            box-shadow: 0 4px 15px rgba(0, 255, 213, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .job-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .job-company {
+            font-size: 1rem;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .job-salary {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4CAF50;
+        }
+
+        .job-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .job-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .job-detail i {
+            color: var(--primary-dark);
+        }
+
+        .job-description {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .job-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .job-tag {
+            background: rgba(0, 255, 213, 0.1);
+            color: var(--primary-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(0, 255, 213, 0.2);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(45deg, var(--primary-dark), var(--secondary-dark));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 213, 0.3);
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--primary-dark);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .job-finder-content {
+                flex-direction: column;
+            }
+
+            .filters-sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            .jobs-main {
+                order: 1;
+            }
+
+            .job-finder-container {
+                padding: 1rem;
+            }
+
+            .job-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .job-salary {
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <button class="back-button" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <div class="job-finder-container">
+        <div class="job-finder-header">
+            <h1>Job Finder</h1>
+            <p>Discover amazing career opportunities tailored to your skills and interests</p>
+        </div>
+
+        <div class="job-finder-content">
+            <!-- Filters Sidebar -->
+            <div class="filters-sidebar">
+                <div class="filters-header">
+                    <h3>Filters</h3>
+                    <button class="reset-btn" onclick="resetFilters()">Reset</button>
+                </div>
+
+                <div class="filter-group">
+                    <label for="location">Location</label>
+                    <select id="location" class="filter-select" onchange="filterJobs()">
+                        <option value="">All Locations</option>
+                        <option value="remote">Remote</option>
+                        <option value="new-york">New York</option>
+                        <option value="san-francisco">San Francisco</option>
+                        <option value="london">London</option>
+                        <option value="berlin">Berlin</option>
+                        <option value="bangalore">Bangalore</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="experience">Experience Level</label>
+                    <select id="experience" class="filter-select" onchange="filterJobs()">
+                        <option value="">All Levels</option>
+                        <option value="entry">Entry Level</option>
+                        <option value="mid">Mid Level</option>
+                        <option value="senior">Senior Level</option>
+                        <option value="lead">Lead/Principal</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="salary-range">Salary Range</label>
+                    <select id="salary-range" class="filter-select" onchange="filterJobs()">
+                        <option value="">Any Salary</option>
+                        <option value="0-50k">$0 - $50k</option>
+                        <option value="50k-100k">$50k - $100k</option>
+                        <option value="100k-150k">$100k - $150k</option>
+                        <option value="150k+">$150k+</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Job Type</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="full-time" value="full-time" onchange="filterJobs()">
+                            <label for="full-time">Full Time</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="part-time" value="part-time" onchange="filterJobs()">
+                            <label for="part-time">Part Time</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="contract" value="contract" onchange="filterJobs()">
+                            <label for="contract">Contract</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="freelance" value="freelance" onchange="filterJobs()">
+                            <label for="freelance">Freelance</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Technologies</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="javascript" value="javascript" onchange="filterJobs()">
+                            <label for="javascript">JavaScript</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="python" value="python" onchange="filterJobs()">
+                            <label for="python">Python</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="react" value="react" onchange="filterJobs()">
+                            <label for="react">React</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="nodejs" value="nodejs" onchange="filterJobs()">
+                            <label for="nodejs">Node.js</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="aws" value="aws" onchange="filterJobs()">
+                            <label for="aws">AWS</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Jobs Content -->
+            <div class="jobs-main">
+                <div class="search-section">
+                    <div class="search-bar">
+                        <input type="text" id="search-input" class="search-input" placeholder="Search for jobs, companies, or keywords..." onkeyup="handleSearch(event)">
+                        <button class="search-btn" onclick="searchJobs()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div class="results-header">
+                        <div class="results-count" id="results-count">Showing 12 jobs</div>
+                        <select class="sort-select" id="sort-select" onchange="sortJobs()">
+                            <option value="date">Most Recent</option>
+                            <option value="salary">Highest Salary</option>
+                            <option value="relevance">Most Relevant</option>
+                            <option value="company">Company A-Z</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="loading-spinner" id="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading jobs...</p>
+                </div>
+
+                <div class="jobs-list" id="jobs-list">
+                    <!-- Jobs will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyByE-IoxarDhlLKwLn4K1N3y0Swy2-hVxE",
+            authDomain: "job-verse-c35ff.firebaseapp.com",
+            databaseURL: "https://job-verse-c35ff-default-rtdb.firebaseio.com",
+            projectId: "job-verse-c35ff",
+            storageBucket: "job-verse-c35ff.firebasestorage.app",
+            messagingSenderId: "313840143364",
+            appId: "1:313840143364:web:7de4898b589edbff54b951",
+            measurementId: "G-F1VGQ7ELLW"
+        };
+
+        try {
+            // Initialize Firebase
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            
+            // Enable offline persistence
+            db.enablePersistence()
+              .catch((err) => {
+                  if (err.code == 'failed-precondition') {
+                      console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+                  } else if (err.code == 'unimplemented') {
+                      console.log('The current browser does not support persistence.');
+                  }
+              });
+
+            // Make Firebase instances available globally
+            window.db = db;
+            window.auth = auth;
+
+            console.log('Firebase initialized successfully in job finder');
+        } catch (error) {
+            console.error('Error initializing Firebase in job finder:', error);
+        }
+    </script>
+
+    <!-- Include workflow service -->
+    <script src="workflow-service.js"></script>
+    
+    <script>
+        // Real job data from Firebase
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentJobs = [];
+        let workflowStatus = { isRunning: false, lastRun: null };
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeJobFinder();
+        });
+
+        // Initialize job finder with Firebase data
+        async function initializeJobFinder() {
+            // Wait for Firebase auth
+            firebase.auth().onAuthStateChanged(async function(user) {
+                if (user) {
+                    await loadJobsFromFirebase();
+                    updateWorkflowStatus();
+                    
+                    // Set up real-time listener for new jobs
+                    setupJobsListener();
+                    
+                    // Set up workflow status updates
+                    setInterval(updateWorkflowStatus, 30000); // Update every 30 seconds
+                } else {
+                    // Show login message or redirect
+                    showLoginMessage();
+                }
+            });
+        }
+
+        // Load jobs from Firebase
+        async function loadJobsFromFirebase() {
+            try {
+                showLoading();
+                
+                const jobsSnapshot = await window.db.collection('jobs')
+                    .orderBy('addedAt', 'desc')
+                    .limit(50)
+                    .get();
+                
+                allJobs = [];
+                jobsSnapshot.forEach(doc => {
+                    const jobData = doc.data();
+                    const job = {
+                        id: doc.id,
+                        title: jobData.title || 'Untitled Position',
+                        company: extractCompanyFromDescription(jobData.description) || 'Company Name',
+                        location: extractLocationFromDescription(jobData.description) || 'Remote',
+                        type: extractJobType(jobData.description) || 'full-time',
+                        experience: extractExperience(jobData.description) || 'mid',
+                        salary: extractSalary(jobData.description) || 'Competitive',
+                        salaryRange: categorizeSalary(extractSalary(jobData.description)),
+                        description: jobData.description || jobData.content || 'No description available',
+                        technologies: extractTechnologies(jobData.description || jobData.content),
+                        posted: calculateTimeAgo(jobData.addedAt),
+                        remote: true, // Most RemoteOK jobs are remote
+                        link: jobData.link,
+                        source: jobData.source || 'RemoteOK RSS',
+                        dateAdded: jobData.dateAdded
+                    };
+                    allJobs.push(job);
+                });
+                
+                filteredJobs = [...allJobs];
+                currentJobs = [...allJobs];
+                
+                hideLoading();
+                displayJobs(currentJobs);
+                updateResultsCount(currentJobs.length);
+                
+                console.log(`Loaded ${allJobs.length} jobs from Firebase`);
+                
+            } catch (error) {
+                console.error('Error loading jobs from Firebase:', error);
+                hideLoading();
+                showErrorMessage('Failed to load jobs. Please try again.');
+            }
+        }
+
+        // Set up real-time listener for new jobs
+        function setupJobsListener() {
+            window.db.collection('jobs')
+                .orderBy('addedAt', 'desc')
+                .limit(10)
+                .onSnapshot((snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === 'added') {
+                            const jobData = change.doc.data();
+                            const newJob = {
+                                id: change.doc.id,
+                                title: jobData.title || 'Untitled Position',
+                                company: extractCompanyFromDescription(jobData.description) || 'Company Name',
+                                location: extractLocationFromDescription(jobData.description) || 'Remote',
+                                type: extractJobType(jobData.description) || 'full-time',
+                                experience: extractExperience(jobData.description) || 'mid',
+                                salary: extractSalary(jobData.description) || 'Competitive',
+                                salaryRange: categorizeSalary(extractSalary(jobData.description)),
+                                description: jobData.description || jobData.content || 'No description available',
+                                technologies: extractTechnologies(jobData.description || jobData.content),
+                                posted: calculateTimeAgo(jobData.addedAt),
+                                remote: true,
+                                link: jobData.link,
+                                source: jobData.source || 'RemoteOK RSS',
+                                dateAdded: jobData.dateAdded
+                            };
+                            
+                            // Add to beginning of array if not already exists
+                            if (!allJobs.find(job => job.id === newJob.id)) {
+                                allJobs.unshift(newJob);
+                                filteredJobs = [...allJobs];
+                                currentJobs = [...allJobs];
+                                displayJobs(currentJobs);
+                                updateResultsCount(currentJobs.length);
+                                showNewJobNotification(newJob);
+                            }
+                        }
+                    });
+                });
+        }
+
+        // Update workflow status
+        function updateWorkflowStatus() {
+            if (window.workflowService) {
+                workflowStatus = window.workflowService.getStatus();
+                updateWorkflowIndicator();
+            }
+        }
+
+        // Show workflow status indicator
+        function updateWorkflowIndicator() {
+            let indicator = document.getElementById('workflow-indicator');
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.id = 'workflow-indicator';
+                indicator.style.cssText = `
+                    position: fixed;
+                    top: 70px;
+                    right: 20px;
+                    background: var(--card-dark);
+                    border: 1px solid var(--border-color);
+                    border-radius: 8px;
+                    padding: 0.75rem;
+                    font-size: 0.85rem;
+                    z-index: 1000;
+                    min-width: 200px;
+                `;
+                document.body.appendChild(indicator);
+            }
+            
+            const statusColor = workflowStatus.isRunning ? '#ff9800' : '#4caf50';
+            const statusText = workflowStatus.isRunning ? 'Running...' : 'Ready';
+            const lastRunText = workflowStatus.lastRun ? 
+                `Last run: ${workflowStatus.lastRun.toLocaleTimeString()}` : 
+                'Never run';
+            
+            indicator.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: ${statusColor};"></div>
+                    <strong>Workflow Status: ${statusText}</strong>
+                </div>
+                <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.8rem;">
+                    ${lastRunText}<br>
+                    Jobs processed: ${workflowStatus.jobsProcessed || 0}<br>
+                    Jobs filtered: ${workflowStatus.jobsFiltered || 0}
+                </div>
+                <button onclick="manualTriggerWorkflow()" style="
+                    margin-top: 0.5rem;
+                    padding: 0.4rem 0.8rem;
+                    background: var(--primary-dark);
+                    border: none;
+                    border-radius: 4px;
+                    color: white;
+                    cursor: pointer;
+                    font-size: 0.8rem;
+                    width: 100%;
+                " ${workflowStatus.isRunning ? 'disabled' : ''}>
+                    ${workflowStatus.isRunning ? 'Running...' : 'Run Now'}
+                </button>
+            `;
+        }
+
+        // Manual workflow trigger
+        async function manualTriggerWorkflow() {
+            if (window.workflowService && !workflowStatus.isRunning) {
+                try {
+                    const result = await window.workflowService.executeWorkflow();
+                    showSuccessMessage(`Workflow completed! Added ${result.jobsFiltered} new jobs.`);
+                    showNotionMessage(); // Show Notion link message
+                    await loadJobsFromFirebase(); // Refresh job list
+                } catch (error) {
+                    showErrorMessage(`Workflow failed: ${error.message}`);
+                }
+            }
+        }
+
+        // Show Notion integration message
+        function showNotionMessage() {
+            const notionMessage = document.createElement('div');
+            notionMessage.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--card-dark);
+                border: 2px solid var(--primary-dark);
+                border-radius: 12px;
+                padding: 2rem;
+                z-index: 1002;
+                max-width: 400px;
+                text-align: center;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            `;
+            
+            notionMessage.innerHTML = `
+                <div style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--primary-dark); margin-bottom: 1rem;"></i>
+                    <h3 style="margin: 0 0 0.5rem 0; color: var(--text-dark);">Jobs Added Successfully!</h3>
+                    <p style="margin: 0; color: rgba(255,255,255,0.8);">Check out your Notion to see the added jobs</p>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button onclick="window.open('https://www.notion.so/23651eb9a66280879590e81dbeb0cb29?v=23651eb9a6628045911b000c34abc67c&source=copy_link', '_blank')" style="
+                        padding: 0.75rem 1.5rem;
+                        background: var(--primary-dark);
+                        border: none;
+                        border-radius: 8px;
+                        color: white;
+                        cursor: pointer;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    ">
+                        <i class="fas fa-external-link-alt"></i>
+                        Open Notion
+                    </button>
+                    <button onclick="this.closest('div').remove()" style="
+                        padding: 0.75rem 1.5rem;
+                        background: transparent;
+                        border: 1px solid var(--border-color);
+                        border-radius: 8px;
+                        color: var(--text-dark);
+                        cursor: pointer;
+                        font-weight: 500;
+                    ">
+                        Close
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notionMessage);
+            
+            // Auto-close after 10 seconds
+            setTimeout(() => {
+                if (notionMessage.parentNode) {
+                    notionMessage.remove();
+                }
+            }, 10000);
+        }
+
+        // Helper functions for data extraction
+        function extractCompanyFromDescription(description) {
+            // Try to extract company name from description
+            const companyPatterns = [
+                /at\s+([A-Z][a-zA-Z\s&]+?)(?:\s|,|\.)/,
+                /([A-Z][a-zA-Z\s&]+?)\s+is\s+looking/,
+                /Join\s+([A-Z][a-zA-Z\s&]+?)(?:\s|,|\.)/
+            ];
+            
+            for (const pattern of companyPatterns) {
+                const match = description.match(pattern);
+                if (match) {
+                    return match[1].trim();
+                }
+            }
+            return null;
+        }
+
+        function extractLocationFromDescription(description) {
+            const locationPatterns = [
+                /Remote/i,
+                /([A-Z][a-zA-Z\s]+),\s*([A-Z]{2,})/,
+                /(New York|San Francisco|London|Berlin|Bangalore|Mumbai|Delhi)/i
+            ];
+            
+            for (const pattern of locationPatterns) {
+                const match = description.match(pattern);
+                if (match) {
+                    return match[0];
+                }
+            }
+            return 'Remote';
+        }
+
+        function extractJobType(description) {
+            if (/full.time|full-time/i.test(description)) return 'full-time';
+            if (/part.time|part-time/i.test(description)) return 'part-time';
+            if (/contract/i.test(description)) return 'contract';
+            if (/freelance/i.test(description)) return 'freelance';
+            return 'full-time';
+        }
+
+        function extractExperience(description) {
+            if (/senior|lead|principal/i.test(description)) return 'senior';
+            if (/junior|entry|graduate/i.test(description)) return 'entry';
+            return 'mid';
+        }
+
+        function extractSalary(description) {
+            const salaryPatterns = [
+                /\$[\d,]+\s*-\s*\$[\d,]+/,
+                /₹[\d,]+\s*-\s*₹[\d,]+/,
+                /\$[\d,]+/,
+                /₹[\d,]+/
+            ];
+            
+            for (const pattern of salaryPatterns) {
+                const match = description.match(pattern);
+                if (match) {
+                    return match[0];
+                }
+            }
+            return 'Competitive';
+        }
+
+        function categorizeSalary(salary) {
+            if (!salary || salary === 'Competitive') return '';
+            
+            const amount = parseInt(salary.replace(/[^0-9]/g, ''));
+            if (amount < 50000) return '0-50k';
+            if (amount < 100000) return '50k-100k';
+            if (amount < 150000) return '100k-150k';
+            return '150k+';
+        }
+
+        function extractTechnologies(content) {
+            const techKeywords = [
+                'javascript', 'python', 'react', 'nodejs', 'aws', 'docker', 
+                'kubernetes', 'django', 'tensorflow', 'mongodb', 'postgresql',
+                'java', 'typescript', 'vue', 'angular', 'go', 'rust', 'php'
+            ];
+            
+            const found = [];
+            const lowerContent = content.toLowerCase();
+            
+            techKeywords.forEach(tech => {
+                if (lowerContent.includes(tech)) {
+                    found.push(tech);
+                }
+            });
+            
+            return found.slice(0, 5); // Limit to 5 technologies
+        }
+
+        function calculateTimeAgo(timestamp) {
+            if (!timestamp) return 'Recently';
+            
+            const now = new Date();
+            const jobDate = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            const diffTime = Math.abs(now - jobDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 1) return '1 day ago';
+            if (diffDays < 7) return `${diffDays} days ago`;
+            if (diffDays < 14) return '1 week ago';
+            return `${Math.floor(diffDays / 7)} weeks ago`;
+        }
+
+        // Notification functions
+        function showNewJobNotification(job) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary-dark);
+                color: white;
+                padding: 1rem;
+                border-radius: 8px;
+                z-index: 1001;
+                max-width: 300px;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <strong>New Job Added!</strong><br>
+                ${job.title}<br>
+                <small>${job.company}</small>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        function showSuccessMessage(message) {
+            showMessage(message, '#4caf50');
+        }
+
+        function showErrorMessage(message) {
+            showMessage(message, '#f44336');
+        }
+
+        function showMessage(message, color) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${color};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 8px;
+                z-index: 1001;
+                font-weight: 500;
+            `;
+            messageDiv.textContent = message;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 4000);
+        }
+
+        function showLoginMessage() {
+            const jobsList = document.getElementById('jobs-list');
+            jobsList.innerHTML = `
+                <div style="text-align: center; padding: 3rem; color: rgba(255, 255, 255, 0.6);">
+                    <i class="fas fa-user-lock" style="font-size: 3rem; margin-bottom: 1rem; color: var(--primary-dark);"></i>
+                    <h3>Please Login</h3>
+                    <p>You need to be logged in to view job listings</p>
+                    <button onclick="window.location.href='index.html'" style="
+                        margin-top: 1rem;
+                        padding: 0.75rem 1.5rem;
+                        background: var(--primary-dark);
+                        border: none;
+                        border-radius: 8px;
+                        color: white;
+                        cursor: pointer;
+                    ">Go to Login</button>
+                </div>
+            `;
+        }
+
+        // Display jobs in the list
+        function displayJobs(jobs) {
+            const jobsList = document.getElementById('jobs-list');
+            
+            if (jobs.length === 0) {
+                jobsList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: rgba(255, 255, 255, 0.6);">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem; color: var(--primary-dark);"></i>
+                        <h3>No jobs found</h3>
+                        <p>Try running the workflow to fetch new jobs or adjusting your filters</p>
+                        <button onclick="manualTriggerWorkflow()" style="
+                            margin-top: 1rem;
+                            padding: 0.75rem 1.5rem;
+                            background: var(--primary-dark);
+                            border: none;
+                            border-radius: 8px;
+                            color: white;
+                            cursor: pointer;
+                        ">Run Workflow to Fetch Jobs</button>
+                    </div>
+                `;
+                return;
+            }
+
+            jobsList.innerHTML = jobs.map(job => `
+                <div class="job-card" onclick="viewJobDetails('${job.id}')">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">${job.title}</div>
+                            <div class="job-company">${job.company}</div>
+                        </div>
+                        <div class="job-salary">${job.salary}</div>
+                    </div>
+                    <div class="job-details">
+                        <div class="job-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${job.location}${job.remote ? ' (Remote)' : ''}</span>
+                        </div>
+                        <div class="job-detail">
+                            <i class="fas fa-briefcase"></i>
+                            <span>${job.type.charAt(0).toUpperCase() + job.type.slice(1).replace('-', ' ')}</span>
+                        </div>
+                        <div class="job-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>${job.posted}</span>
+                        </div>
+                        <div class="job-detail">
+                            <i class="fas fa-user-tie"></i>
+                            <span>${job.experience.charAt(0).toUpperCase() + job.experience.slice(1)} Level</span>
+                        </div>
+                        <div class="job-detail">
+                            <i class="fas fa-globe"></i>
+                            <span>${job.source}</span>
+                        </div>
+                    </div>
+                    <div class="job-description">${job.description.substring(0, 200)}${job.description.length > 200 ? '...' : ''}</div>
+                    <div class="job-tags">
+                        ${job.technologies.map(tech => `<span class="job-tag">${tech}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update results count
+        function updateResultsCount(count) {
+            document.getElementById('results-count').textContent = `Showing ${count} job${count !== 1 ? 's' : ''}`;
+        }
+
+        // Filter jobs based on selected criteria
+        function filterJobs() {
+            showLoading();
+            
+            setTimeout(() => {
+                const location = document.getElementById('location').value;
+                const experience = document.getElementById('experience').value;
+                const salaryRange = document.getElementById('salary-range').value;
+                
+                const jobTypes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                    .filter(cb => ['full-time', 'part-time', 'contract', 'freelance'].includes(cb.value))
+                    .map(cb => cb.value);
+                
+                const technologies = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                    .filter(cb => !['full-time', 'part-time', 'contract', 'freelance'].includes(cb.value))
+                    .map(cb => cb.value);
+
+                filteredJobs = allJobs.filter(job => {
+                    const locationMatch = !location || 
+                        (location === 'remote' && job.remote) || 
+                        job.location.toLowerCase().includes(location.replace('-', ' '));
+                    
+                    const experienceMatch = !experience || job.experience === experience;
+                    const salaryMatch = !salaryRange || job.salaryRange === salaryRange;
+                    const typeMatch = jobTypes.length === 0 || jobTypes.includes(job.type);
+                    const techMatch = technologies.length === 0 || 
+                        technologies.some(tech => job.technologies.includes(tech));
+
+                    return locationMatch && experienceMatch && salaryMatch && typeMatch && techMatch;
+                });
+
+                currentJobs = [...filteredJobs];
+                hideLoading();
+                displayJobs(currentJobs);
+                updateResultsCount(currentJobs.length);
+            }, 500);
+        }
+
+        // Search jobs
+        function searchJobs() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            if (!searchTerm) {
+                currentJobs = [...filteredJobs];
+            } else {
+                currentJobs = filteredJobs.filter(job => 
+                    job.title.toLowerCase().includes(searchTerm) ||
+                    job.company.toLowerCase().includes(searchTerm) ||
+                    job.description.toLowerCase().includes(searchTerm) ||
+                    job.technologies.some(tech => tech.toLowerCase().includes(searchTerm))
+                );
+            }
+            displayJobs(currentJobs);
+            updateResultsCount(currentJobs.length);
+        }
+
+        // Handle search on Enter key
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                searchJobs();
+            }
+        }
+
+        // Sort jobs
+        function sortJobs() {
+            const sortBy = document.getElementById('sort-select').value;
+            
+            currentJobs.sort((a, b) => {
+                switch(sortBy) {
+                    case 'salary':
+                        const salaryA = parseInt(a.salary.replace(/[^0-9]/g, ''));
+                        const salaryB = parseInt(b.salary.replace(/[^0-9]/g, ''));
+                        return salaryB - salaryA;
+                    case 'company':
+                        return a.company.localeCompare(b.company);
+                    case 'relevance':
+                        return a.id - b.id; // Simple relevance based on ID
+                    case 'date':
+                    default:
+                        const dateOrder = { '1 day ago': 1, '2 days ago': 2, '3 days ago': 3, '4 days ago': 4, '5 days ago': 5, '6 days ago': 6, '1 week ago': 7 };
+                        return (dateOrder[a.posted] || 8) - (dateOrder[b.posted] || 8);
+                }
+            });
+            
+            displayJobs(currentJobs);
+        }
+
+        // Reset all filters
+        function resetFilters() {
+            document.getElementById('location').value = '';
+            document.getElementById('experience').value = '';
+            document.getElementById('salary-range').value = '';
+            document.getElementById('search-input').value = '';
+            
+            // Uncheck all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            // Reset to show all jobs
+            filteredJobs = [...allJobs];
+            currentJobs = [...allJobs];
+            displayJobs(currentJobs);
+            updateResultsCount(currentJobs.length);
+        }
+
+        // View job details - enhanced to show real job data and link
+        function viewJobDetails(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (job) {
+                const jobDetails = `Job Details:
+
+Title: ${job.title}
+Company: ${job.company}
+Location: ${job.location}
+Salary: ${job.salary}
+Source: ${job.source}
+Posted: ${job.posted}
+
+Description: ${job.description}
+
+Technologies: ${job.technologies.join(', ')}
+
+${job.link ? 'Job Link: ' + job.link : ''}
+
+Click OK to ${job.link ? 'visit the job posting' : 'continue'}!`;
+                
+                if (confirm(jobDetails)) {
+                    if (job.link) {
+                        window.open(job.link, '_blank');
+                    }
+                }
+            }
+        }
+
+        // Show loading spinner
+        function showLoading() {
+            document.getElementById('loading-spinner').style.display = 'block';
+            document.getElementById('jobs-list').style.display = 'none';
+        }
+
+        // Hide loading spinner
+        function hideLoading() {
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('jobs-list').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

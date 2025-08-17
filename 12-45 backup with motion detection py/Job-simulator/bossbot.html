@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BossBot</title>
+  <style>
+    :root {
+      --bg-main: #0D0D1A;
+      --bg-card: #1B1C29;
+      --accent-cyan: #00E6D0;
+      --accent-pink: #FF4E8D;
+      --xp-bar: #C270FF;
+      --xp-bg: #2C2C3E;
+      --tag-high: #B84040;
+      --xp-yellow: #FFEB75;
+      --status-green: #38FF88;
+      --status-red: #FF3860;
+      --status-purple: #A365FF;
+      --primary-gradient: linear-gradient(135deg, var(--accent-cyan), #735BFF);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .main-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 280px;
+      background-color: var(--bg-card);
+      padding: 2rem;
+      border-right: 1px solid var(--xp-bar);
+    }
+
+    .sidebar-header {
+      margin-bottom: 2rem;
+    }
+
+    .sidebar-header h1 {
+      color: var(--accent-cyan);
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-header p {
+      color: var(--accent-pink);
+      font-size: 1rem;
+    }
+
+    /* XP Card in Sidebar */
+    .xp-card {
+      background-color: var(--bg-main);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .xp-card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .xp-bar {
+      background-color: var(--xp-bg);
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .xp-progress {
+      background-color: var(--xp-bar);
+      height: 100%;
+    }
+
+    .xp-progress-text {
+      color: var(--xp-yellow);
+      font-size: 0.9rem;
+    }
+
+    .status-lights {
+      display: flex;
+      gap: 8px;
+      margin-top: 1rem;
+    }
+
+    .status-lights div {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .status-green { background-color: var(--status-green); }
+    .status-red   { background-color: var(--status-red); }
+    .status-purple{ background-color: var(--status-purple); }
+
+    /* Main Content Area */
+    .content-area {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Chat Section */
+    .chat-section {
+      flex: 1;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .chat-embed {
+      height: 100%;
+      min-height: 500px;
+    }
+
+    .chat-embed iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h1>BossBot</h1>
+        <p>Your AI-powered career companion</p>
+      </div>
+
+      <div class="xp-card">
+        <h2>XP Progress</h2>
+        <div class="xp-bar">
+          <div class="xp-progress" style="width: 60%;"></div>
+        </div>
+        <p class="xp-progress-text">Level 3 – 1200 XP</p>
+        <div class="status-lights">
+          <div class="status-green" title="Online"></div>
+          <div class="status-red" title="Issue"></div>
+          <div class="status-purple" title="Busy"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+      <!-- Chat Section -->
+      <div class="chat-section">
+        <div class="chat-embed">
+          <iframe
+            src="https://www.chatbase.co/chatbot-iframe/b4LDtTtC6DWCt2kr3Ed-9"
+            frameborder="0"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

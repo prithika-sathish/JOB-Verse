@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company ERP Timesheet</title>
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-gradient-from: #00E6D0;
+      --primary-gradient-to: #735BFF;
+      --main-bg: #0D0D1A;
+      --card-bg: #1B1C29;
+      --bright-blue: #00E6D0;
+      --pink-highlight: #FF4E8D;
+      --xp-bar-progress: #C270FF;
+      --xp-bar-bg: #2C2C3E;
+      --high-priority: #B84040;
+      --medium-priority: #FF9F1C;
+      --low-priority: #4D7C8A;
+      --yellow-xp: #FFEB75;
+      --green-status: #38FF88;
+      --red-status: #FF3860;
+      --purple-status: #A365FF;
+      --text-light: #F8F9FA;
+      --text-muted: #ADB5BD;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--main-bg);
+      color: var(--text-light);
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-gradient-from), var(--primary-gradient-to));
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-title h1 {
+      font-size: 28px;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .header-title p {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-top: 5px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      border: 2px solid var(--primary-gradient-from);
+    }
+
+    .user-details {
+      text-align: right;
+    }
+
+    .user-name {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .user-role {
+      color: var(--bright-blue);
+      font-size: 14px;
+    }
+
+    .xp-bar-container {
+      margin-top: 5px;
+      background-color: var(--xp-bar-bg);
+      height: 8px;
+      width: 150px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .xp-bar {
+      background-color: var(--xp-bar-progress);
+      height: 100%;
+      width: 65%;
+    }
+
+    .xp-text {
+      color: var(--yellow-xp);
+      font-size: 12px;
+      text-align: right;
+      margin-top: 3px;
+    }
+
+    .role-section {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .role-title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+
+    .role-title h2 {
+      font-size: 20px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--primary-gradient-from), var(--primary-gradient-to));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .role-title .role-tag {
+      background-color: var(--pink-highlight);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: rgba(115, 91, 255, 0.2);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      color: var(--bright-blue);
+    }
+
+    tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    tbody tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .priority-tag {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .priority-high {
+      background-color: var(--high-priority);
+      color: white;
+    }
+
+    .priority-medium {
+      background-color: var(--medium-priority);
+      color: white;
+    }
+
+    .priority-low {
+      background-color: var(--low-priority);
+      color: white;
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+    }
+
+    .status-indicator i {
+      font-size: 16px;
+    }
+
+    .status-completed {
+      color: var(--green-status);
+    }
+
+    .status-pending {
+      color: var(--yellow-xp);
+    }
+
+    .status-ongoing {
+      color: var(--purple-status);
+    }
+
+    .dashboard-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .action-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--primary-gradient-from), var(--primary-gradient-to));
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .action-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 230, 208, 0.3);
+    }
+
+    .task-filter {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-button {
+      padding: 8px 15px;
+      border-radius: 4px;
+      background-color: var(--card-bg);
+      color: var(--text-light);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-button:hover, .filter-button.active {
+      background-color: rgba(0, 230, 208, 0.2);
+      border-color: var(--bright-blue);
+    }
+
+    .data-summary {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .summary-card {
+      flex: 1;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-width: 200px;
+    }
+
+    .summary-card-title {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .summary-card-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .summary-card-progress {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--green-status);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .time-selector {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .date-range {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .date-range input {
+      background-color: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-light);
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .description-cell {
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .deadline-approaching {
+      color: #FF9F1C;
+    }
+
+    .deadline-today {
+      color: #FF3860;
+      font-weight: 600;
+    }
+
+    @media screen and (max-width: 1200px) {
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+      
+      .data-summary {
+        flex-direction: column;
+      }
+      
+      .summary-card {
+        width: 100%;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .user-info {
+        margin-top: 20px;
+      }
+      
+      .user-details {
+        text-align: center;
+      }
+      
+      .xp-bar-container {
+        margin: 5px auto;
+      }
+      
+      .xp-text {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-title">
+        <h1>Company ERP Timesheet</h1>
+        <p>Track tasks, time, and team progress</p>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="user-details">
+          <div class="user-name">Alex Morgan</div>
+          <div class="user-role">Senior Developer</div>
+          <div class="xp-bar-container">
+            <div class="xp-bar"></div>
+          </div>
+          <div class="xp-text">Level 15 · 650/1000 XP</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="data-summary">
+      <div class="summary-card">
+        <div class="summary-card-title">COMPLETED TASKS</div>
+        <div class="summary-card-value">7</div>
+        <div class="summary-card-progress">
+          <i class="fas fa-arrow-up"></i> 12% from last week
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-title">PENDING TASKS</div>
+        <div class="summary-card-value">11</div>
+        <div class="summary-card-progress" style="color: var(--red-status);">
+          <i class="fas fa-arrow-up"></i> 3 due today
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-title">TOTAL HOURS</div>
+        <div class="summary-card-value">42.5</div>
+        <div class="summary-card-progress">
+          <i class="fas fa-check-circle"></i> On track
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-title">TEAM EFFICIENCY</div>
+        <div class="summary-card-value">85%</div>
+        <div class="summary-card-progress">
+          <i class="fas fa-arrow-up"></i> 5% from last week
+        </div>
+      </div>
+    </div>
+
+    <div class="time-selector">
+      <div class="date-range">
+        <input type="date" value="2025-05-01">
+        <span>to</span>
+        <input type="date" value="2025-05-07">
+      </div>
+      <div class="task-filter">
+        <button class="filter-button active">All Tasks</button>
+        <button class="filter-button">My Tasks</button>
+        <button class="filter-button">High Priority</button>
+        <button class="filter-button">Today's Deadline</button>
+      </div>
+    </div>
+
+    <div class="role-section">
+      <div class="role-title">
+        <h2>🧑‍💻 Intern Tasks</h2>
+        <span class="role-tag">Current Role Tasks</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Time Estimate</th>
+            <th>Deadline</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mobile Responsiveness Fix</td>
+            <td class="description-cell">Make the UI responsive across all devices using media queries and flexible layout techniques.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>2 hours</td>
+            <td class="deadline-today">2025-05-04</td>
+            <td><span class="status-indicator status-completed"><i class="fas fa-check-circle"></i> Completed</span></td>
+          </tr>
+          <tr>
+            <td>Attendance Hour Fix (HR Module)</td>
+            <td class="description-cell">Correct logic for updating working hours on Half-Day or On-Duty status to avoid full-day errors.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>3 hours</td>
+            <td class="deadline-approaching">2025-05-05</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Convert Meeting Notes to Tasks</td>
+            <td class="description-cell">Analyze meeting discussion and extract clear, actionable tasks.</td>
+            <td><span class="priority-tag priority-medium">Medium</span></td>
+            <td>1 hour</td>
+            <td class="deadline-today">2025-05-04</td>
+            <td><span class="status-indicator status-completed"><i class="fas fa-check-circle"></i> Completed</span></td>
+          </tr>
+          <tr>
+            <td>Buggy Login Page Fix</td>
+            <td class="description-cell">Fix password case sensitivity issue to prevent authentication bypass.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>1.5 hours</td>
+            <td class="deadline-today">2025-05-04</td>
+            <td><span class="status-indicator status-completed"><i class="fas fa-check-circle"></i> Completed</span></td>
+          </tr>
+          <tr>
+            <td>Implement Smart Contact Autocomplete</td>
+            <td class="description-cell">Function that returns contact suggestions matching a typed query from a contact list.</td>
+            <td><span class="priority-tag priority-medium">Medium</span></td>
+            <td>2 hours</td>
+            <td class="deadline-approaching">2025-05-05</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Create Issue Reporting Feature in Client ERP</td>
+            <td class="description-cell">Allow users to raise and track issues directly from the ERP for better internal communication.</td>
+            <td><span class="priority-tag priority-medium">Medium</span></td>
+            <td>2.5 hours</td>
+            <td>2025-05-06</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Fix UI Bug</td>
+            <td class="description-cell">Resolve misalignment and styling glitches in forms and buttons across the dashboard.</td>
+            <td><span class="priority-tag priority-medium">Medium</span></td>
+            <td>1 hour</td>
+            <td class="deadline-today">2025-05-04</td>
+            <td><span class="status-indicator status-completed"><i class="fas fa-check-circle"></i> Completed</span></td>
+          </tr>
+          <tr>
+            <td>Fix Mandatory Field Filling</td>
+            <td class="description-cell">Ensure all required fields are validated and throw proper errors on empty submission.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>1.5 hours</td>
+            <td class="deadline-today">2025-05-04</td>
+            <td><span class="status-indicator status-completed"><i class="fas fa-check-circle"></i> Completed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="role-section">
+      <div class="role-title">
+        <h2>👩‍💻 Junior Developer Tasks</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Time Estimate</th>
+            <th>Deadline</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Refactor Legacy Code Blocks</td>
+            <td class="description-cell">Clean up and modularize old spaghetti code without breaking functionality.</td>
+            <td><span class="priority-tag priority-medium">Medium</span></td>
+            <td>3 hours</td>
+            <td class="deadline-approaching">2025-05-05</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Add Unit Tests for Login Module</td>
+            <td class="description-cell">Write unit tests for authentication flow to ensure code reliability.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>2 hours</td>
+            <td>2025-05-06</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Assist in Fixing UI Bug</td>
+            <td class="description-cell">Pair with a senior to resolve misalignment and layout inconsistencies.</td>
+            <td><span class="priority-tag priority-medium">Medium</span></td>
+            <td>1.5 hours</td>
+            <td class="deadline-approaching">2025-05-05</td>
+            <td><span class="status-indicator status-completed"><i class="fas fa-check-circle"></i> Completed</span></td>
+          </tr>
+          <tr>
+            <td>Implement Form Validation Logic</td>
+            <td class="description-cell">Add client-side and basic server-side validation to all input fields.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>2.5 hours</td>
+            <td>2025-05-06</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Write Basic API Documentation</td>
+            <td class="description-cell">Document endpoints for internal APIs used in the dashboard.</td>
+            <td><span class="priority-tag priority-low">Low</span></td>
+            <td>1.5 hours</td>
+            <td>2025-05-07</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="role-section">
+      <div class="role-title">
+        <h2>🧠 Senior Developer Tasks</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Time Estimate</th>
+            <th>Deadline</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Architect Role-Based Access Control</td>
+            <td class="description-cell">Design and implement a scalable RBAC system across all modules.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>5 hours</td>
+            <td>2025-05-08</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Optimize Attendance Hour Logic</td>
+            <td class="description-cell">Audit and optimize logic for real-time working hour updates in HR module.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>3 hours</td>
+            <td>2025-05-06</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Review & Merge Pull Requests</td>
+            <td class="description-cell">Do thorough reviews for code quality, security, and performance.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>2 hours/day</td>
+            <td>Daily</td>
+            <td><span class="status-indicator status-ongoing"><i class="fas fa-sync-alt"></i> Ongoing</span></td>
+          </tr>
+          <tr>
+            <td>Design API Rate Limiter</td>
+            <td class="description-cell">Implement a rate-limiting strategy to protect endpoints from abuse.</td>
+            <td><span class="priority-tag priority-medium">Medium</span></td>
+            <td>3.5 hours</td>
+            <td>2025-05-09</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Mentor Junior Developer</td>
+            <td class="description-cell">Pair program and conduct weekly check-ins with junior team members.</td>
+            <td><span class="priority-tag priority-medium">Medium</span></td>
+            <td>1 hour</td>
+            <td>Weekly</td>
+            <td><span class="status-indicator status-ongoing"><i class="fas fa-sync-alt"></i> Ongoing</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="role-section">
+      <div class="role-title">
+        <h2>📊 Project Manager Tasks</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Time Estimate</th>
+            <th>Deadline</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sprint Planning & Task Distribution</td>
+            <td class="description-cell">Organize sprint backlog, assign tasks based on skill, and track estimations.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>2 hours</td>
+            <td>Sprint Day</td>
+            <td><span class="status-indicator status-completed"><i class="fas fa-check-circle"></i> Completed</span></td>
+          </tr>
+          <tr>
+            <td>Conduct Daily Stand-Ups</td>
+            <td class="description-cell">Ensure blockers are identified, goals are aligned, and progress is tracked.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>30 mins/day</td>
+            <td>Daily</td>
+            <td><span class="status-indicator status-ongoing"><i class="fas fa-sync-alt"></i> Ongoing</span></td>
+          </tr>
+          <tr>
+            <td>Create Client Feedback Loop</td>
+            <td class="description-cell">Set up structured feedback channels between users and dev team.</td>
+            <td><span class="priority-tag priority-medium">Medium</span></td>
+            <td>2 hours</td>
+            <td>2025-05-06</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Approve Feature Scope & Deadlines</td>
+            <td class="description-cell">Review business requirements, approve scope, and finalize deadlines with stakeholders.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>3 hours</td>
+            <td>2025-05-07</td>
+            <td><span class="status-indicator status-pending"><i class="fas fa-hourglass-half"></i> Pending</span></td>
+          </tr>
+          <tr>
+            <td>Report Sprint Progress to Leadership</td>
+            <td class="description-cell">Summarize team velocity, blockers, and key milestones for leadership and stakeholders.</td>
+            <td><span class="priority-tag priority-high">High</span></td>
+            <td>1.5 hours</td>
+            <td>Weekly</td>
+            <td><span class="status-indicator status-ongoing"><i class="fas fa-sync-alt"></i> Ongoing</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="dashboard-actions">
+      <button class="action-button">
+        <i class="fas fa-plus"></i> Add New Task
+      </button>
+      <button class="action-button">
+        <i class="fas fa-file-export"></i> Export Timesheet
+      </button>
+      <button class="action-button">
+        <i class="fas fa-calendar-alt"></i> View Calendar
+      </button>
+      <button class="action-button">
+        <i class="fas fa-chart-line"></i> Analytics
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript for interactivity
+    document.addEventListener('DOMContentLoaded', function() {
+      // Filter buttons functionality
+      const filterButtons = document.querySelectorAll('.filter-button');
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Here we would normally filter the tasks based on the selected filter
+          // For demo purposes, we're just toggling the 'active' class
+        });
+      });
+      
+      // Action buttons hover effect
+      const actionButtons = document.querySelectorAll('.action-button');
+      actionButtons.forEach(button => {
+        button.addEventListener('mouseover', function() {
+          this.style.transform = 'translateY(-2px)';
+        });
+        
+        button.addEventListener('mouseout', function() {
+          this.style.transform = 'translateY(0)';
+        });
+        
+        button.addEventListener('click', function() {
+          // Here we would handle the action button click
+          // For demo purposes, we're just adding a temporary effect
+          this.style.opacity = '0.8';
+          setTimeout(() => {
+            this.style.opacity = '1';
+          }, 200);
+        });
+      });
+      
+      // Get current date to highlight today's tasks
+      const today = new Date().toISOString().split('T')[0];
+      const deadlineCells = document.querySelectorAll('td:nth-child(5)');
+      deadlineCells.forEach(cell => {
+        if (cell.textContent.trim() === today) {
+          cell.classList.add('deadline-today');
+        }
+      });
+      
+      // Calculate task statistics
+      function calculateStats() {
+        const completedTasks = document.querySelectorAll('.status-completed').length;
+        const pendingTasks = document.querySelectorAll('.status-pending').length;
+        const ongoingTasks = document.querySelectorAll('.status-ongoing').length;
+        
+        // Update the summary cards
+        document.querySelector('.data-summary .summary-card:nth-child(1) .summary-card-value').textContent = completedTasks;
+        document.querySelector('.data-summary .summary-card:nth-child(2) .summary-card-value').textContent = pendingTasks;
+        
+        // Calculate total hours from the tasks
+        let totalHours = 0;
+        document.querySelectorAll('td:nth-child(4)').forEach(cell => {
+          const hoursText = cell.textContent.trim();
+          if (hoursText.includes('hours')) {
+            const hours = parseFloat(hoursText.split(' ')[0]);
+            if (!isNaN(hours)) {
+              totalHours += hours;
+            }
+          } else if (hoursText.includes('mins')) {
+            const mins = parseFloat(hoursText.split(' ')[0]);
+            if (!isNaN(mins)) {
+              totalHours += mins / 60;
+            }
+          }
+        });
+        
+        // Update total hours card with one decimal place
+        document.querySelector('.data-summary .summary-card:nth-child(3) .summary-card-value').textContent = totalHours.toFixed(1);
+      }
+      
+      // Calculate due today count
+      function calculateDueToday() {
+        // Count tasks due today that are not completed
+        let dueTodayCount = 0;
+        document.querySelectorAll('.deadline-today').forEach(cell => {
+          const statusCell = cell.parentElement.querySelector('td:last-child');
+          if (!statusCell.textContent.includes('Completed')) {
+            dueTodayCount++;
+          }
+        });
+        
+        const dueTodayText = document.querySelector('.data-summary .summary-card:nth-child(2) .summary-card-progress');
+        dueTodayText.innerHTML = `<i class="fas fa-arrow-up"></i> ${dueTodayCount} due today`;
+      }
+      
+      // Add task row functionality
+      document.querySelector('.action-button:first-child').addEventListener('click', function() {
+        // We would normally show a form to add a new task
+        alert('Add new task form would appear here!');
+      });
+      
+      // Export timesheet functionality
+      document.querySelector('.action-button:nth-child(2)').addEventListener('click', function() {
+        alert('Exporting timesheet...');
+        // In a real application, this would generate and download a CSV/PDF
+      });
+      
+      // Make table rows clickable to view task details
+      const tableRows = document.querySelectorAll('tbody tr');
+      tableRows.forEach(row => {
+        row.style.cursor = 'pointer';
+        row.addEventListener('click', function() {
+          // Get task name from first cell
+          const taskName = this.querySelector('td:first-child').textContent;
+          alert(`Task details for: ${taskName} would appear in a modal here.`);
+        });
+      });
+      
+      // Date range change event
+      const dateInputs = document.querySelectorAll('.date-range input');
+      dateInputs.forEach(input => {
+        input.addEventListener('change', function() {
+          alert('Date range changed - would refresh tasks based on selected dates.');
+        });
+      });
+      
+      // Initialize statistics
+      calculateStats();
+      calculateDueToday();

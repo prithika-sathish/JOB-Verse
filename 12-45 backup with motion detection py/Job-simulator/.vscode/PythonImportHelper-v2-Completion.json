@@ -1,0 +1,63 @@
+[
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "keras",
+        "importPath": "tensorflow",
+        "description": "tensorflow",
+        "isExtraImport": true,
+        "detail": "tensorflow",
+        "documentation": {}
+    },
+    {
+        "label": "StandardScaler",
+        "importPath": "sklearn.preprocessing",
+        "description": "sklearn.preprocessing",
+        "isExtraImport": true,
+        "detail": "sklearn.preprocessing",
+        "documentation": {}
+    },
+    {
+        "label": "cv2",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "cv2",
+        "description": "cv2",
+        "detail": "cv2",
+        "documentation": {}
+    },
+    {
+        "label": "MotionDetectionModel",
+        "kind": 6,
+        "importPath": "motion_detection_ML.motion-detection",
+        "description": "motion_detection_ML.motion-detection",
+        "peekOfCode": "class MotionDetectionModel:\n    def __init__(self):\n        # Dummy model architecture\n        self.model = keras.Sequential([\n            keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 3)),\n            keras.layers.MaxPooling2D((2, 2)),\n            keras.layers.Conv2D(64, (3, 3), activation='relu'),\n            keras.layers.MaxPooling2D((2, 2)),\n            keras.layers.Flatten(),\n            keras.layers.Dense(64, activation='relu'),",
+        "detail": "motion_detection_ML.motion-detection",
+        "documentation": {}
+    },
+    {
+        "label": "model",
+        "kind": 5,
+        "importPath": "motion_detection_ML.motion-detection",
+        "description": "motion_detection_ML.motion-detection",
+        "peekOfCode": "model = MotionDetectionModel()\n# During calibration phase\ncalibration_frames = []  # Collect frames during 3-second calibration\nmodel.calibrate(calibration_frames)\n# During monitoring phase\nwhile True:\n    current_frame = capture_frame()  # Get frame from webcam\n    result = model.detect_movement(current_frame)\n    if result['movement_detected']:\n        show_warning(\"Please maintain your position\")",
+        "detail": "motion_detection_ML.motion-detection",
+        "documentation": {}
+    },
+    {
+        "label": "calibration_frames",
+        "kind": 5,
+        "importPath": "motion_detection_ML.motion-detection",
+        "description": "motion_detection_ML.motion-detection",
+        "peekOfCode": "calibration_frames = []  # Collect frames during 3-second calibration\nmodel.calibrate(calibration_frames)\n# During monitoring phase\nwhile True:\n    current_frame = capture_frame()  # Get frame from webcam\n    result = model.detect_movement(current_frame)\n    if result['movement_detected']:\n        show_warning(\"Please maintain your position\")",
+        "detail": "motion_detection_ML.motion-detection",
+        "documentation": {}
+    }
+]

@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Soft Skills Training - Professional Development</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0D0D1A, #1B1C29);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: #12131f;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(115, 91, 255, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00E6D0, #735BFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        nav {
+            margin-top: 0.5rem;
+        }
+        nav a {
+            color: #735BFF;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #00E6D0;
+        }
+        main {
+            flex: 1;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        section {
+            background: #1B1C29;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(115, 91, 255, 0.3);
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #00E6D0, #735BFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1.5px;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+        .module-list {
+            list-style: none;
+        }
+        .module-list li {
+            background: #2C2C3E;
+            margin-bottom: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .module-list li:hover {
+            background: #735BFF;
+            color: #fff;
+        }
+        .module-list li.completed {
+            background: #00E6D0;
+            color: #0D0D1A;
+            text-decoration: line-through;
+        }
+        .module-list li .status {
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.2);
+            user-select: none;
+        }
+        .module-list li.completed .status {
+            background: #0D0D1A;
+            color: #00E6D0;
+        }
+        button {
+            background: linear-gradient(90deg, #00E6D0, #735BFF);
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 25px;
+            color: #0D0D1A;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+            margin-top: 1rem;
+            display: block;
+            margin-left: auto;
+        }
+        button:hover {
+            box-shadow: 0 0 15px #735BFF;
+        }
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Quiz styles */
+        .quiz {
+            margin-top: 1rem;
+        }
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .quiz-options {
+            list-style: none;
+            padding-left: 0;
+        }
+        .quiz-options li {
+            background: #2C2C3E;
+            margin-bottom: 0.8rem;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .quiz-options li:hover {
+            background: #735BFF;
+            color: #fff;
+        }
+        .quiz-options li.selected {
+            background: #00E6D0;
+            color: #0D0D1A;
+            font-weight: 700;
+        }
+        .quiz-feedback {
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+        /* Progress bar */
+        .progress-container {
+            background: #2C2C3E;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 2rem 0;
+            height: 20px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00E6D0, #735BFF);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            main {
+                margin: 1rem;
+                padding: 0 0.5rem;
+            }
+            header h1 {
+                font-size: 1.8rem;
+            }
+            nav a {
+                margin: 0 0.5rem;
+                font-size: 0.9rem;
+            }
+            button {
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Professional Soft Skills Training</h1>
+        <nav>
+            <a href="career-roadmap.html">Career Roadmap</a>
+            <a href="soft-skills.html" aria-current="page" style="font-weight: bold; color: #00E6D0;">Soft Skills</a>
+            <a href="networking.html">Networking</a>
+        </nav>
+    </header>
+    <main>
+        <section id="overview" class="visible">
+            <h2>Why Soft Skills Matter</h2>
+            <p>Soft skills are essential for career success and personal growth. They enhance your ability to communicate, collaborate, and lead effectively in any professional environment.</p>
+        </section>
+        <section id="modules">
+            <h2>Training Modules</h2>
+            <ul class="module-list" id="moduleList">
+                <!-- Modules will be dynamically inserted here -->
+            </ul>
+            <button id="completeAllBtn">Mark All as Complete</button>
+        </section>
+        <section id="quizSection" style="display:none;">
+            <h2>Quiz</h2>
+            <div id="quizContainer"></div>
+        </section>
+        <section id="progressSection" style="display:none;">
+            <h2>Your Progress</h2>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p id="progressText">0% Complete</p>
+        </section>
+    </main>
+    <script>
+        const modules = [
+            {
+                id: 1,
+                title: "Effective Communication",
+                description: "Learn how to communicate clearly and confidently in the workplace.",
+                quiz: {
+                    question: "What is active listening?",
+                    options: [
+                        "Ignoring the speaker",
+                        "Listening and responding thoughtfully",
+                        "Interrupting frequently",
+                        "Multitasking while listening"
+                    ],
+                    answer: 1
+                }
+            },
+            {
+                id: 2,
+                title: "Time Management",
+                description: "Master techniques to manage your time efficiently and meet deadlines.",
+                quiz: {
+                    question: "Which technique helps prioritize tasks?",
+                    options: [
+                        "Procrastination",
+                        "Eisenhower Matrix",
+                        "Multitasking",
+                        "Ignoring deadlines"
+                    ],
+                    answer: 1
+                }
+            },
+            {
+                id: 3,
+                title: "Teamwork & Collaboration",
+                description: "Develop skills to work effectively within a team and build strong relationships.",
+                quiz: {
+                    question: "What is a key to successful teamwork?",
+                    options: [
+                        "Poor communication",
+                        "Clear roles and responsibilities",
+                        "Avoiding conflict",
+                        "Working in isolation"
+                    ],
+                    answer: 1
+                }
+            },
+            {
+                id: 4,
+                title: "Problem Solving",
+                description: "Enhance your ability to analyze problems and find effective solutions.",
+                quiz: {
+                    question: "What is the first step in problem solving?",
+                    options: [
+                        "Ignoring the problem",
+                        "Identifying the problem",
+                        "Jumping to solutions",
+                        "Blaming others"
+                    ],
+                    answer: 1
+                }
+            },
+            {
+                id: 5,
+                title: "Leadership",
+                description: "Learn leadership qualities and how to inspire and motivate others.",
+                quiz: {
+                    question: "Which is a trait of a good leader?",
+                    options: [
+                        "Micromanaging",
+                        "Empathy",
+                        "Avoiding responsibility",
+                        "Ignoring feedback"
+                    ],
+                    answer: 1
+                }
+            }
+        ];
+
+        let completedModules = new Set();
+
+        const moduleList = document.getElementById('moduleList');
+        const quizSection = document.getElementById('quizSection');
+        const quizContainer = document.getElementById('quizContainer');
+        const progressSection = document.getElementById('progressSection');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const completeAllBtn = document.getElementById('completeAllBtn');
+
+        function renderModules() {
+            moduleList.innerHTML = '';
+            modules.forEach(module => {
+                const li = document.createElement('li');
+                li.textContent = module.title;
+                li.title = module.description;
+                li.className = completedModules.has(module.id) ? 'completed' : '';
+                const statusSpan = document.createElement('span');
+                statusSpan.className = 'status';
+                statusSpan.textContent = completedModules.has(module.id) ? 'Completed' : 'Pending';
+                li.appendChild(statusSpan);
+                li.addEventListener('click', () => {
+                    // For Time Management module, open task_management.html in new tab
+                    if (module.title === "Time Management") {
+                        window.open('task_management.html', '_blank');
+                        return;
+                    }
+                    
+                    if (completedModules.has(module.id)) {
+                        completedModules.delete(module.id);
+                    } else {
+                        completedModules.add(module.id);
+                    }
+                    updateProgress();
+                    renderModules();
+                    showQuiz(module);
+                });
+                moduleList.appendChild(li);
+            });
+        }
+
+        function showQuiz(module) {
+            quizSection.style.display = 'block';
+            quizContainer.innerHTML = '';
+            const questionEl = document.createElement('div');
+            questionEl.className = 'quiz-question';
+            questionEl.textContent = module.quiz.question;
+            quizContainer.appendChild(questionEl);
+
+            const optionsList = document.createElement('ul');
+            optionsList.className = 'quiz-options';
+
+            module.quiz.options.forEach((option, index) => {
+                const optionEl = document.createElement('li');
+                optionEl.textContent = option;
+                optionEl.addEventListener('click', () => {
+                    if (optionEl.classList.contains('selected')) return;
+                    Array.from(optionsList.children).forEach(child => child.classList.remove('selected'));
+                    optionEl.classList.add('selected');
+                    const feedback = document.createElement('div');
+                    feedback.className = 'quiz-feedback';
+                    if (index === module.quiz.answer) {
+                        feedback.textContent = 'Correct!';
+                        feedback.style.color = '#00E6D0';
+                    } else {
+                        feedback.textContent = 'Incorrect. Try again.';
+                        feedback.style.color = '#FF3860';
+                    }
+                    quizContainer.appendChild(feedback);
+                });
+                optionsList.appendChild(optionEl);
+            });
+
+            quizContainer.appendChild(optionsList);
+
+            // Add interactive animated activity for soft skills
+            addInteractiveActivity(module);
+        }
+
+        // Modal styles
+        const modalStyles = `
+            .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 1000;
+                justify-content: center;
+                align-items: center;
+            }
+            .modal-content {
+                background: #1B1C29;
+                padding: 2rem;
+                border-radius: 15px;
+                width: 90%;
+                max-width: 600px;
+                position: relative;
+                animation: modalFadeIn 0.3s ease;
+            }
+            .close-modal {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                font-size: 1.5rem;
+                color: #735BFF;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+            .close-modal:hover {
+                color: #00E6D0;
+            }
+            .speech-practice {
+                margin-top: 1rem;
+            }
+            .practice-text {
+                font-size: 1.2rem;
+                line-height: 1.6;
+                margin-bottom: 1rem;
+                padding: 1rem;
+                background: rgba(115, 91, 255, 0.1);
+                border-radius: 8px;
+                transition: opacity 0.3s ease-out;
+            }
+            .practice-text.fade-out {
+                opacity: 0;
+            }
+            .practice-text.fade-in {
+                opacity: 1;
+                animation: slideUp 0.5s ease-out;
+            }
+            @keyframes slideUp {
+                from {
+                    transform: translateY(10px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            .timer {
+                font-size: 2rem;
+                text-align: center;
+                margin: 1rem 0;
+                color: #00E6D0;
+            }
+            .recognition-result {
+                margin-top: 1rem;
+                padding: 1rem;
+                background: rgba(0, 230, 208, 0.1);
+                border-radius: 8px;
+                position: relative;
+            }
+            .recognition-result.listening::before {
+                content: '🎤';
+                position: absolute;
+                right: 1rem;
+                top: 1rem;
+                font-size: 1.5rem;
+                animation: micPulse 1.5s ease-in-out infinite;
+            }
+            @keyframes micPulse {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.2);
+                    opacity: 0.7;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+            .feedback {
+                margin-top: 1rem;
+                font-weight: bold;
+            }
+            .start-btn {
+                background: linear-gradient(90deg, #00E6D0, #735BFF);
+                border: none;
+                padding: 0.8rem 1.8rem;
+                border-radius: 25px;
+                color: #fff;
+                font-weight: 700;
+                font-size: 1.1rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin: 1rem auto;
+                display: block;
+            }
+            .start-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(115, 91, 255, 0.4);
+            }
+            @keyframes modalFadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.2);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes glow {
+                from {
+                    box-shadow: 0 0 5px #00E6D0, 0 0 10px #00E6D0, 0 0 15px #735BFF;
+                }
+                to {
+                    box-shadow: 0 0 10px #00E6D0, 0 0 20px #00E6D0, 0 0 30px #735BFF;
+                }
+            }
+        `;
+
+        // Add styles to document
+        const styleSheet = document.createElement("style");
+        styleSheet.textContent = modalStyles;
+        document.head.appendChild(styleSheet);
+
+        function addInteractiveActivity(module) {
+            if (module.title === 'Effective Communication') {
+                // Create container for both activities
+                const activityContainer = document.createElement('div');
+                activityContainer.style.display = 'flex';
+                activityContainer.style.gap = '1rem';
+                activityContainer.style.marginTop = '2rem';
+
+                // Speech Practice Button
+                const speechBtn = document.createElement('button');
+                speechBtn.textContent = '🎤 Practice Speaking';
+                speechBtn.onclick = createSpeechPracticeModal;
+                
+                // Typing Practice Button
+                const typingBtn = document.createElement('button');
+                typingBtn.textContent = '⌨️ Practice Typing';
+                typingBtn.onclick = createTimerChallenge;
+
+                activityContainer.appendChild(speechBtn);
+                activityContainer.appendChild(typingBtn);
+                quizContainer.appendChild(activityContainer);
+            }
+        }
+
+        function createSpeechPracticeModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+
+            const modalContent = document.createElement('div');
+            modalContent.className = 'modal-content';
+
+            const closeBtn = document.createElement('span');
+            closeBtn.className = 'close-modal';
+            closeBtn.innerHTML = '×';
+            closeBtn.onclick = () => modal.style.display = 'none';
+
+            const practiceContainer = document.createElement('div');
+            practiceContainer.className = 'speech-practice';
+
+            const sentences = [
+                "quick brown fox jumps over the lazy dog.",
+                "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+                "Innovation distinguishes between a leader and a follower.",
+                "The best way to predict the future is to create it.",
+                "Leadership is the capacity to translate vision into reality."
+            ];
+
+            let currentSentenceIndex = 0;
+            const practiceText = document.createElement('div');
+            practiceText.className = 'practice-text';
+            practiceText.textContent = sentences[currentSentenceIndex];
+
+            const timer = document.createElement('div');
+            timer.className = 'timer';
+
+            // Create container for recognition result and AI suggestions
+            const recognitionContainer = document.createElement('div');
+            recognitionContainer.style.marginTop = '1rem';
+
+            // Recognition result box
+            const recognitionResult = document.createElement('div');
+            recognitionResult.className = 'recognition-result';
+            recognitionResult.textContent = 'Your speech will appear here...';
+
+            // AI suggestions box
+            const aiSuggestions = document.createElement('div');
+            aiSuggestions.style.marginTop = '1rem';
+            aiSuggestions.style.padding = '1rem';
+            aiSuggestions.style.background = 'rgba(115, 91, 255, 0.1)';
+            aiSuggestions.style.borderRadius = '8px';
+            aiSuggestions.style.border = '1px solid #735BFF';
+            aiSuggestions.innerHTML = `
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 1.2rem; margin-right: 0.5rem;">🤖</span>
+                    <span style="color: #00E6D0; font-weight: bold;">AI Suggestions</span>
+                </div>
+                <div style="color: #ccc; font-style: italic;">AI feedback will appear here after you speak...</div>
+            `;
+
+            recognitionContainer.appendChild(recognitionResult);
+            recognitionContainer.appendChild(aiSuggestions);
+
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback';
+
+            const startBtn = document.createElement('button');
+            startBtn.className = 'start-btn';
+            startBtn.textContent = 'Start Speaking';
+
+            let recognition;
+            try {
+                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.continuous = false;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+            } catch (e) {
+                startBtn.textContent = 'Speech recognition not supported';
+                startBtn.disabled = true;
+            }
+
+            if (recognition) {
+                startBtn.onclick = () => {
+                    startBtn.disabled = true;
+                    startBtn.textContent = 'Get Ready...';
+                    
+                    // Add countdown animation
+                    let countdown = 3;
+                    timer.style.fontSize = '4rem';
+                    timer.style.animation = 'pulse 1s infinite';
+                    timer.textContent = countdown;
+                    
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        if (countdown > 0) {
+                            timer.textContent = countdown;
+                        } else {
+                            clearInterval(countdownInterval);
+                            timer.style.animation = '';
+                            timer.style.fontSize = '2rem';
+                            startSpeechRecognition();
+                        }
+                    }, 1000);
+                };
+
+                async function getGeminiAnalysis(transcript, targetText) {
+                    try {
+                        const accuracy = compareTexts(targetText, transcript);
+                        const missingWords = findMissingWords(targetText, transcript);
+                        const extraWords = findExtraWords(targetText, transcript);
+                        
+                        let feedback = '';
+                        if (accuracy >= 90) {
+                            feedback = `Excellent pronunciation! (${accuracy.toFixed(1)}% accuracy)\n\n`;
+                            feedback += "✓ Clear articulation\n";
+                            feedback += "✓ Good pace\n";
+                            feedback += "Tip: Try varying your intonation for even more natural speech.";
+                        } else if (accuracy >= 70) {
+                            feedback = `Good effort! (${accuracy.toFixed(1)}% accuracy)\n\n`;
+                            if (missingWords.length > 0) {
+                                feedback += `Missing words: "${missingWords.join('", "')}"\n`;
+                            }
+                            feedback += "Tip: Focus on pronouncing each word clearly and maintaining a steady pace.";
+                        } else {
+                            feedback = `Keep practicing! (${accuracy.toFixed(1)}% accuracy)\n\n`;
+                            if (missingWords.length > 0) {
+                                feedback += `Try including: "${missingWords.join('", "')}"\n`;
+                            }
+                            if (extraWords.length > 0) {
+                                feedback += `Extra words used: "${extraWords.join('", "')}"\n`;
+                            }
+                            feedback += "\nTip: Break down the sentence into smaller parts:\n";
+                            const parts = targetText.split(/[,.!?]/);
+                            parts.forEach(part => {
+                                if (part.trim()) {
+                                    feedback += `• "${part.trim()}"\n`;
+                                }
+                            });
+                        }
+                        return feedback;
+                    } catch (error) {
+                        console.error('Error getting AI feedback:', error);
+                        return null;
+                    }
+                }
+
+                function startSpeechRecognition() {
+                    let timeLeft = calculateTimeLimit(sentences[currentSentenceIndex]);
+                    timer.textContent = timeLeft;
+                    startBtn.textContent = 'Speaking...';
+                    
+                    // Add longer delay and visual feedback before starting recognition
+                    recognitionResult.textContent = 'Getting microphone ready...';
+                    recognitionResult.style.animation = 'glow 1.5s ease-in-out infinite alternate';
+                    
+                    // First show "Ready!" for 1 second
+                    setTimeout(() => {
+                        recognitionResult.textContent = 'Ready!';
+                        
+                        // Then show "Listening..." and start recognition after another second
+                        setTimeout(() => {
+                            recognition.start();
+                            recognitionResult.textContent = 'Listening...';
+                            recognitionResult.classList.add('listening');
+                        }, 100);
+                    }, 100);
+                    
+                    const timerInterval = setInterval(() => {
+                        timeLeft--;
+                        timer.textContent = timeLeft;
+                        if (timeLeft <= 0) {
+                            clearInterval(timerInterval);
+                            recognition.stop();
+                            startBtn.disabled = false;
+                            startBtn.textContent = 'Try Again';
+                            recognitionResult.classList.remove('listening');
+                        }
+                    }, 1000);
+                }
+
+                recognition.onresult = async (event) => {
+                    const transcript = Array.from(event.results)
+                        .map(result => result[0].transcript)
+                        .join('');
+                    
+                    recognitionResult.textContent = transcript;
+                    
+                    if (event.results[0].isFinal) {
+                        const accuracy = compareTexts(
+                            sentences[currentSentenceIndex].toLowerCase(),
+                            transcript.toLowerCase()
+                        );
+                        
+                        // Get AI feedback
+                        const aiFeedback = await getGeminiAnalysis(transcript, sentences[currentSentenceIndex]);
+                        if (aiFeedback) {
+                            aiSuggestions.innerHTML = `
+                                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 1.2rem; margin-right: 0.5rem;">🤖</span>
+                                    <span style="color: #00E6D0; font-weight: bold;">AI Analysis</span>
+                                </div>
+                                <div style="margin-bottom: 0.5rem; color: #00E6D0;">Accuracy: ${accuracy.toFixed(1)}%</div>
+                                <div style="white-space: pre-line; color: #fff;">${aiFeedback}</div>
+                            `;
+                            aiSuggestions.style.animation = 'glow 1.5s ease-in-out infinite alternate';
+                        } else {
+                            provideFeedback(accuracy, feedback);
+                        }
+                        
+                        // Animate sentence transition
+                        practiceText.classList.add('fade-out');
+                        setTimeout(() => {
+                            currentSentenceIndex = (currentSentenceIndex + 1) % sentences.length;
+                            practiceText.textContent = sentences[currentSentenceIndex];
+                            practiceText.classList.remove('fade-out');
+                            practiceText.classList.add('fade-in');
+                            startBtn.disabled = false;
+
+                            // Remove fade-in class after animation completes
+                            setTimeout(() => {
+                                practiceText.classList.remove('fade-in');
+                            }, 500);
+                        }, 300);
+                    }
+                };
+
+                recognition.onerror = (event) => {
+                    recognitionResult.textContent = 'Error occurred in recognition: ' + event.error;
+                    startBtn.disabled = false;
+                };
+            }
+
+            practiceContainer.append(practiceText, timer, startBtn, recognitionContainer, feedback);
+            modalContent.append(closeBtn, practiceContainer);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+        }
+
+        function calculateTimeLimit(sentence) {
+            const words = sentence.split(' ').length;
+            return Math.max(6, Math.ceil(words * 1.3)); // Minimum 6 seconds, or ~0.8 seconds per word
+        }
+
+        function findMissingWords(targetText, spokenText) {
+            const targetWords = targetText.toLowerCase().replace(/[.,!?]/g, '').trim().split(' ');
+            const spokenWords = spokenText.toLowerCase().replace(/[.,!?]/g, '').trim().split(' ');
+            return targetWords.filter(word => !spokenWords.includes(word));
+        }
+
+        function findExtraWords(targetText, spokenText) {
+            const targetWords = targetText.toLowerCase().replace(/[.,!?]/g, '').trim().split(' ');
+            const spokenWords = spokenText.toLowerCase().replace(/[.,!?]/g, '').trim().split(' ');
+            return spokenWords.filter(word => !targetWords.includes(word));
+        }
+
+        function compareTexts(original, spoken) {
+            // Clean and normalize the texts
+            const cleanOriginal = original.toLowerCase().replace(/[.,!?]/g, '').trim();
+            const cleanSpoken = spoken.toLowerCase().replace(/[.,!?]/g, '').trim();
+            
+            // Handle empty input cases
+            if (!cleanSpoken) return 0;
+            if (cleanSpoken === cleanOriginal) return 100;
+            
+            const originalWords = cleanOriginal.split(' ');
+            const spokenWords = cleanSpoken.split(' ');
+            
+            let score = 0;
+            const maxScore = originalWords.length;
+            
+            // Create arrays to track matched words
+            const matchedOriginal = new Array(originalWords.length).fill(false);
+            const matchedSpoken = new Array(spokenWords.length).fill(false);
+            
+            // First pass: Find exact matches at same positions (100% score)
+            spokenWords.forEach((spokenWord, index) => {
+                if (index < originalWords.length && spokenWord === originalWords[index]) {
+                    score += 1;
+                    matchedOriginal[index] = true;
+                    matchedSpoken[index] = true;
+                }
+            });
+            
+            // Second pass: Find exact matches at different positions (80% score with position penalty)
+            spokenWords.forEach((spokenWord, spokenIndex) => {
+                if (!matchedSpoken[spokenIndex]) {
+                    let bestMatch = {
+                        index: -1,
+                        score: 0
+                    };
+                    
+                    originalWords.forEach((originalWord, originalIndex) => {
+                        if (!matchedOriginal[originalIndex] && spokenWord === originalWord) {
+                            const positionDiff = Math.abs(spokenIndex - originalIndex);
+                            const positionPenalty = Math.max(0, 1 - (positionDiff * 0.2));
+                            const matchScore = 0.8 * positionPenalty;
+                            
+                            if (matchScore > bestMatch.score) {
+                                bestMatch = {
+                                    index: originalIndex,
+                                    score: matchScore
+                                };
+                            }
+                        }
+                    });
+                    
+                    if (bestMatch.index !== -1) {
+                        score += bestMatch.score;
+                        matchedOriginal[bestMatch.index] = true;
+                        matchedSpoken[spokenIndex] = true;
+                    }
+                }
+            });
+            
+            // Third pass: Find partial matches for remaining unmatched words (50% score with position penalty)
+            spokenWords.forEach((spokenWord, spokenIndex) => {
+                if (!matchedSpoken[spokenIndex]) {
+                    let bestMatch = {
+                        index: -1,
+                        score: 0
+                    };
+                    
+                    originalWords.forEach((originalWord, originalIndex) => {
+                        if (!matchedOriginal[originalIndex]) {
+                            // Check for substring matches both ways
+                            if (originalWord.includes(spokenWord) || spokenWord.includes(originalWord)) {
+                                const positionDiff = Math.abs(spokenIndex - originalIndex);
+                                const positionPenalty = Math.max(0, 1 - (positionDiff * 0.2));
+                                const matchScore = 0.5 * positionPenalty;
+                                
+                                if (matchScore > bestMatch.score) {
+                                    bestMatch = {
+                                        index: originalIndex,
+                                        score: matchScore
+                                    };
+                                }
+                            }
+                        }
+                    });
+                    
+                    if (bestMatch.index !== -1) {
+                        score += bestMatch.score;
+                        matchedOriginal[bestMatch.index] = true;
+                        matchedSpoken[spokenIndex] = true;
+                    }
+                }
+            });
+            
+            // Calculate final accuracy percentage
+            let accuracy = (score / maxScore) * 100;
+            
+            // Apply small penalty for extra words
+            const extraWordsPenalty = Math.max(0, spokenWords.length - originalWords.length) * 5;
+            accuracy = Math.max(0, accuracy - extraWordsPenalty);
+            
+            return Math.min(100, accuracy);
+        }
+
+        function provideFeedback(accuracy, feedbackElement) {
+            if (accuracy >= 90) {
+                feedbackElement.textContent = 'Excellent pronunciation! Well done!';
+                feedbackElement.style.color = '#00E6D0';
+            } else if (accuracy >= 70) {
+                feedbackElement.textContent = 'Good effort! Keep practicing to improve.';
+                feedbackElement.style.color = '#735BFF';
+            } else {
+                feedbackElement.textContent = 'Try again. Focus on speaking clearly and at a steady pace.';
+                feedbackElement.style.color = '#FF3860';
+            }
+        }
+
+        // Typing exercise for Effective Communication
+        function createTypingExercise(container) {
+            const prompt = "Type the following sentence as fast and accurately as you can:\n\"Clear communication is key to success.\"";
+            const promptEl = document.createElement('p');
+            promptEl.style.whiteSpace = 'pre-wrap';
+            promptEl.textContent = prompt;
+            container.appendChild(promptEl);
+
+            const input = document.createElement('textarea');
+            input.rows = 3;
+            input.style.width = '100%';
+            input.style.marginTop = '0.5rem';
+            input.placeholder = 'Start typing here...';
+            container.appendChild(input);
+
+            const result = document.createElement('p');
+            result.style.marginTop = '0.5rem';
+            container.appendChild(result);
+
+            let startTime = null;
+
+            input.addEventListener('focus', () => {
+                startTime = new Date();
+                result.textContent = '';
+            });
+
+            input.addEventListener('input', () => {
+                const targetText = "Clear communication is key to success.";
+                if (input.value === targetText) {
+                    const endTime = new Date();
+                    const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+                    result.textContent = `Well done! You typed it in ${timeTaken} seconds.`;
+                    result.style.color = '#00E6D0';
+                    input.disabled = true;
+                }
+            });
+        }
+
+        // Timer challenge for Time Management
+        function createTimerChallenge(container) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+
+            const modalContent = document.createElement('div');
+            modalContent.className = 'modal-content';
+
+            const closeBtn = document.createElement('span');
+            closeBtn.className = 'close-modal';
+            closeBtn.innerHTML = '×';
+            closeBtn.onclick = () => modal.style.display = 'none';
+
+            const practiceContainer = document.createElement('div');
+            practiceContainer.className = 'typing-practice';
+
+            const sentences = [
+                "The key to effective time management is prioritization and focus.",
+                "Success comes from planning, dedication, and consistent effort.",
+                "Leadership requires clear vision and strong communication skills.",
+                "Innovation drives progress and creates new opportunities.",
+                "Teamwork makes the dream work in any professional setting."
+            ];
+
+            let currentSentenceIndex = 0;
+            const practiceText = document.createElement('div');
+            practiceText.className = 'practice-text';
+            practiceText.textContent = sentences[currentSentenceIndex];
+
+            const timer = document.createElement('div');
+            timer.className = 'timer';
+
+            const inputContainer = document.createElement('div');
+            inputContainer.style.marginTop = '1rem';
+
+            const typingInput = document.createElement('textarea');
+            typingInput.className = 'typing-input';
+            typingInput.placeholder = 'Start typing here...';
+            typingInput.style.width = '100%';
+            typingInput.style.padding = '1rem';
+            typingInput.style.borderRadius = '8px';
+            typingInput.style.backgroundColor = 'rgba(115, 91, 255, 0.1)';
+            typingInput.style.border = '1px solid #735BFF';
+            typingInput.style.color = '#fff';
+            typingInput.style.resize = 'none';
+            typingInput.rows = 3;
+
+            const aiSuggestions = document.createElement('div');
+            aiSuggestions.style.marginTop = '1rem';
+            aiSuggestions.style.padding = '1rem';
+            aiSuggestions.style.background = 'rgba(115, 91, 255, 0.1)';
+            aiSuggestions.style.borderRadius = '8px';
+            aiSuggestions.style.border = '1px solid #735BFF';
+            aiSuggestions.innerHTML = `
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 1.2rem; margin-right: 0.5rem;">🤖</span>
+                    <span style="color: #00E6D0; font-weight: bold;">AI Analysis</span>
+                </div>
+                <div style="color: #ccc; font-style: italic;">Type the sentence above to see AI feedback...</div>
+            `;
+
+            const startBtn = document.createElement('button');
+            startBtn.className = 'start-btn';
+            startBtn.textContent = 'Start Typing Test';
+
+            let startTime = null;
+            let timerInterval = null;
+
+            startBtn.onclick = () => {
+                startBtn.disabled = true;
+                startBtn.textContent = 'Get Ready...';
+                typingInput.value = '';
+                typingInput.disabled = true;
+                
+                // Add countdown animation
+                let countdown = 3;
+                timer.style.fontSize = '4rem';
+                timer.style.animation = 'pulse 1s infinite';
+                timer.textContent = countdown;
+                
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdown > 0) {
+                        timer.textContent = countdown;
+                    } else {
+                        clearInterval(countdownInterval);
+                        timer.style.animation = '';
+                        timer.style.fontSize = '2rem';
+                        startTypingTest();
+                    }
+                }, 1000);
+            };
+
+            function startTypingTest() {
+                typingInput.disabled = false;
+                typingInput.focus();
+                startTime = new Date();
+                startBtn.textContent = 'Typing...';
+                
+                let timeLeft = 60; // 60 seconds to type
+                timer.textContent = timeLeft;
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    timer.textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        typingInput.disabled = true;
+                        startBtn.disabled = false;
+                        startBtn.textContent = 'Try Again';
+                        analyzeTyping();
+                    }
+                }, 1000);
+
+                typingInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault(); // Prevent newline in textarea
+                        clearInterval(timerInterval);
+                        typingInput.disabled = true;
+                        startBtn.disabled = false;
+                        startBtn.textContent = 'Next Sentence';
+                        analyzeTyping();
+                    }
+                });
+            }
+
+            function analyzeTyping() {
+                const endTime = new Date();
+                const timeElapsed = (endTime - startTime) / 1000;
+                const typedText = typingInput.value;
+                const targetText = sentences[currentSentenceIndex];
+                
+                // Calculate typing speed (WPM)
+                const words = typedText.trim().split(/\s+/).length;
+                const minutes = timeElapsed / 60;
+                const wpm = Math.round(words / minutes);
+                
+                // Calculate accuracy
+                const accuracy = calculateAccuracy(targetText, typedText);
+                
+                // Generate AI feedback
+                const feedback = generateTypingFeedback(wpm, accuracy, targetText, typedText);
+                
+                aiSuggestions.innerHTML = `
+                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.2rem; margin-right: 0.5rem;">🤖</span>
+                        <span style="color: #00E6D0; font-weight: bold;">AI Analysis</span>
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">
+                        <span style="color: #00E6D0;">Speed:</span> ${wpm} WPM
+                        <br>
+                        <span style="color: #00E6D0;">Accuracy:</span> ${accuracy.toFixed(1)}%
+                    </div>
+                    <div style="white-space: pre-line; color: #fff;">${feedback}</div>
+                `;
+                
+                // Prepare for next sentence
+                currentSentenceIndex = (currentSentenceIndex + 1) % sentences.length;
+                practiceText.textContent = sentences[currentSentenceIndex];
+            }
+
+            function calculateAccuracy(target, typed) {
+                if (!typed) return 0;
+                if (typed === target) return 100;
+                
+                // Split into words and clean
+                const targetWords = target.toLowerCase().split(' ');
+                const typedWords = typed.toLowerCase().split(' ');
+                
+                // Count exact word matches
+                let correctWords = 0;
+                const totalWords = targetWords.length;
+                
+                typedWords.forEach((word, index) => {
+                    if (index < targetWords.length && word === targetWords[index]) {
+                        correctWords++;
+                    }
+                });
+                
+                // Calculate percentage
+                return (correctWords / totalWords) * 100;
+            }
+
+            function generateTypingFeedback(wpm, accuracy, target, typed) {
+                let feedback = '';
+                
+                // Speed feedback
+                if (wpm >= 60) {
+                    feedback += "Excellent typing speed! ";
+                } else if (wpm >= 40) {
+                    feedback += "Good typing speed. ";
+                } else {
+                    feedback += "Focus on building speed while maintaining accuracy. ";
+                }
+                
+                // Accuracy feedback
+                if (accuracy >= 95) {
+                    feedback += "Outstanding accuracy!\n\n";
+                } else if (accuracy >= 80) {
+                    feedback += "Good accuracy, but there's room for improvement.\n\n";
+                } else {
+                    feedback += "Focus on accuracy before increasing speed.\n\n";
+                }
+                
+                // Detailed error analysis
+                const targetWords = target.split(' ');
+                const typedWords = typed.split(' ');
+                const errors = [];
+                
+                typedWords.forEach((word, index) => {
+                    if (index < targetWords.length && word !== targetWords[index]) {
+                        errors.push(`"${word}" should be "${targetWords[index]}"`);
+                    }
+                });
+                
+                if (errors.length > 0) {
+                    feedback += "Corrections needed:\n";
+                    errors.forEach(error => {
+                        feedback += `• ${error}\n`;
+                    });
+                }
+                
+                return feedback;
+            }
+
+            inputContainer.appendChild(typingInput);
+            practiceContainer.append(practiceText, timer, startBtn, inputContainer, aiSuggestions);
+            modalContent.append(closeBtn, practiceContainer);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+        }
+
+        // Drag and drop exercise for Teamwork & Collaboration
+        function createDragDropExercise(container) {
+            const prompt = "Drag the tasks to the correct team roles:";
+            const promptEl = document.createElement('p');
+            promptEl.textContent = prompt;
+            container.appendChild(promptEl);
+
+            const roles = ['Developer', 'Designer', 'Project Manager'];
+            const tasks = ['Create UI mockups', 'Write code', 'Manage deadlines'];
+
+            const rolesContainer = document.createElement('div');
+            rolesContainer.style.display = 'flex';
+            rolesContainer.style.justifyContent = 'space-around';
+            rolesContainer.style.marginTop = '1rem';
+
+            roles.forEach(role => {
+                const roleDiv = document.createElement('div');
+                roleDiv.textContent = role;
+                roleDiv.style.border = '2px dashed #735BFF';
+                roleDiv.style.borderRadius = '8px';
+                roleDiv.style.padding = '1rem';
+                roleDiv.style.width = '30%';
+                roleDiv.style.minHeight = '100px';
+                roleDiv.style.color = '#fff';
+                roleDiv.style.textAlign = 'center';
+                roleDiv.dataset.role = role;
+                roleDiv.addEventListener('dragover', e => e.preventDefault());
+                roleDiv.addEventListener('drop', e => {
+                    e.preventDefault();
+                    const taskId = e.dataTransfer.getData('text/plain');
+                    const taskEl = document.getElementById(taskId);
+                    if (taskEl) {
+                        roleDiv.appendChild(taskEl);
+                        checkDragDropCompletion(container, rolesContainer, tasks);
+                    }
+                });
+                rolesContainer.appendChild(roleDiv);
+            });
+
+            const tasksContainer = document.createElement('div');
+            tasksContainer.style.display = 'flex';
+            tasksContainer.style.justifyContent = 'space-around';
+            tasksContainer.style.marginTop = '1rem';
+
+            tasks.forEach((task, index) => {
+                const taskDiv = document.createElement('div');
+                taskDiv.textContent = task;
+                taskDiv.id = 'task-' + index;
+                taskDiv.draggable = true;
+                taskDiv.style.background = '#00E6D0';
+                taskDiv.style.color = '#0D0D1A';
+                taskDiv.style.padding = '0.5rem 1rem';
+                taskDiv.style.borderRadius = '8px';
+                taskDiv.style.cursor = 'grab';
+                taskDiv.addEventListener('dragstart', e => {
+                    e.dataTransfer.setData('text/plain', taskDiv.id);
+                });
+                tasksContainer.appendChild(taskDiv);
+            });
+
+            container.appendChild(rolesContainer);
+            container.appendChild(tasksContainer);
+
+            const feedback = document.createElement('p');
+            feedback.id = 'dragDropFeedback';
+            feedback.style.marginTop = '1rem';
+            container.appendChild(feedback);
+        }
+
+        function checkDragDropCompletion(container, rolesContainer, tasks) {
+            const feedback = document.getElementById('dragDropFeedback');
+            let correctCount = 0;
+            const correctMapping = {
+                'Developer': 'Write code',
+                'Designer': 'Create UI mockups',
+                'Project Manager': 'Manage deadlines'
+            };
+            rolesContainer.childNodes.forEach(roleDiv => {
+                const role = roleDiv.dataset.role;
+                const children = Array.from(roleDiv.children);
+                children.forEach(child => {
+                    if (child.textContent === correctMapping[role]) {
+                        correctCount++;
+                    }
+                });
+            });
+            if (correctCount === tasks.length) {
+                feedback.textContent = 'Great job! All tasks correctly assigned.';
+                feedback.style.color = '#00E6D0';
+            } else {
+                feedback.textContent = 'Keep trying to assign tasks correctly.';
+                feedback.style.color = '#FF3860';
+            }
+        }
+
+        // Puzzle activity for Problem Solving
+        function createPuzzleActivity(container) {
+            const prompt = "Solve this simple puzzle: What comes next in the sequence? 2, 4, 8, 16, ?";
+            const promptEl = document.createElement('p');
+            promptEl.textContent = prompt;
+            container.appendChild(promptEl);
+
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.placeholder = 'Your answer';
+            input.style.marginTop = '0.5rem';
+            input.style.padding = '0.5rem';
+            input.style.borderRadius = '6px';
+            input.style.border = 'none';
+            input.style.width = '100%';
+            container.appendChild(input);
+
+            const feedback = document.createElement('p');
+            feedback.style.marginTop = '0.5rem';
+            container.appendChild(feedback);
+
+            input.addEventListener('input', () => {
+                if (input.value === '32') {
+                    feedback.textContent = 'Correct! Well done.';
+                    feedback.style.color = '#00E6D0';
+                    input.disabled = true;
+                } else {
+                    feedback.textContent = '';
+                }
+            });
+        }
+
+        // Scenario quiz for Leadership
+        function createScenarioQuiz(container) {
+            const prompt = "You notice a team member struggling with their tasks. What do you do?";
+            const promptEl = document.createElement('p');
+            promptEl.textContent = prompt;
+            container.appendChild(promptEl);
+
+            const options = [
+                "Ignore and focus on your own work",
+                "Offer help and guidance",
+                "Report to manager immediately",
+                "Take over their tasks"
+            ];
+
+            const optionsList = document.createElement('ul');
+            optionsList.className = 'quiz-options';
+            container.appendChild(optionsList);
+
+            options.forEach((option, index) => {
+                const optionEl = document.createElement('li');
+                optionEl.textContent = option;
+                optionEl.addEventListener('click', () => {
+                    if (optionEl.classList.contains('selected')) return;
+                    Array.from(optionsList.children).forEach(child => child.classList.remove('selected'));
+                    optionEl.classList.add('selected');
+                    const feedback = document.createElement('div');
+                    feedback.className = 'quiz-feedback';
+                    if (index === 1) {
+                        feedback.textContent = 'Correct! Offering help shows leadership.';
+                        feedback.style.color = '#00E6D0';
+                    } else {
+                        feedback.textContent = 'Consider a more supportive approach.';
+                        feedback.style.color = '#FF3860';
+                    }
+                    container.appendChild(feedback);
+                });
+                optionsList.appendChild(optionEl);
+            });
+        }
+
+        function updateProgress() {
+            const total = modules.length;
+            const completed = completedModules.size;
+            const percent = Math.round((completed / total) * 100);
+            progressBar.style.width = percent + '%';
+            progressText.textContent = percent + '% Complete';
+            progressSection.style.display = 'block';
+        }
+
+        completeAllBtn.addEventListener('click', () => {
+            modules.forEach(m => completedModules.add(m.id));
+            updateProgress();
+            renderModules();
+            quizSection.style.display = 'none';
+        });
+
+        // Initial render
+        renderModules();
+        updateProgress();
+    </script>
+</body>
+</html>
