@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const AGENTIC_JOB_FINDER_BRIDGE_PAGE = 'job_finder.html';
+
     // Initialize back button
     let backBtn = document.getElementById('backButton');
     if (backBtn) {
@@ -74,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (sectionId === 'erp') {
                     window.location.href = 'erp_timesheet.html';
                 } else if (sectionId === 'job-finder') {
-                    window.location.href = 'job_finder.html';
+                    window.location.href = AGENTIC_JOB_FINDER_BRIDGE_PAGE;
                 } else if (sectionId === 'code-lab') {
                     window.location.href = 'code_editor.html';
                 } else if (sectionId === 'network-shop') {
